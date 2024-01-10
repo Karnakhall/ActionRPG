@@ -17,6 +17,11 @@ void AItem::BeginPlay()
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Warning, TEXT("Siema"));
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(1, 60.f, FColor::Green, FString("Siema!"));
+	}
 	
 }
 
