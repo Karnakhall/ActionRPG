@@ -14,8 +14,9 @@ AItem::AItem()
 // Called when the game starts or when spawned
 void AItem::BeginPlay()
 {
-	Super::BeginPlay();
-	
+	Super::BeginPlay();  
+
+	UE_LOG();
 }
 
 // Called every frame
