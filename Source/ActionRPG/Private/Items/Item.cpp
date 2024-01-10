@@ -23,5 +23,7 @@ void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	cout
+
 }
 
