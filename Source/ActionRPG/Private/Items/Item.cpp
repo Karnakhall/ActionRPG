@@ -15,6 +15,8 @@ AItem::AItem()
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UE_LOG();
 	
 }
 
