@@ -2,10 +2,9 @@
 
 
 #include "Items/Item.h"
-#include "DrawDebugHelpers.h"
-#include "ActionRPG/ActionRPG.h"
+#include "ActionRPG/DebugMacros.h"
 
-#define THIRTY 30
+
 
 
 
