@@ -2,6 +2,13 @@
 
 
 #include "Items/Item.h"
+#include "DrawDebugHelpers.h"
+#include "ActionRPG/ActionRPG.h"
+
+#define THIRTY 30
+
+
+
 
 // Sets default values
 AItem::AItem()
@@ -22,7 +29,12 @@ void AItem::BeginPlay()
 	{
 		GEngine->AddOnScreenDebugMessage(1, 60.f, FColor::Green, FString("Siema!"));
 	}
-	
+
+	UWorld* World = GetWorld();
+
+	FVector Location = GetActorLocation();
+	DRAW_SPHERE(Location)
+
 }
 
 // Called every frame
