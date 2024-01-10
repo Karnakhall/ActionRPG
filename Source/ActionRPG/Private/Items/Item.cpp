@@ -16,7 +16,7 @@ void AItem::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG();
+	UE_LOG(LogTemp, Warning, TEXT("Siema"));
 	
 }
 
