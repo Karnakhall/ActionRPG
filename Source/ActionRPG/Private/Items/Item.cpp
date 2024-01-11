@@ -29,18 +29,19 @@ void AItem::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(1, 60.f, FColor::Green, FString("Siema!"));
 	}*/
 
-	UWorld* World = GetWorld();
+	// UWorld* World = GetWorld();
 
-	SetActorLocation(FVector(0.f, 0.f, 100.f));
-	SetActorRotation(FRotator(0.f, 45.f, 0.f));
-	FVector Location = GetActorLocation();
-	FVector Forward = GetActorForwardVector();
+	// SetActorLocation(FVector(0.f, 0.f, 100.f));
+	// SetActorRotation(FRotator(0.f, 45.f, 0.f));
 	
-	DRAW_SPHERE(Location);
+	// FVector Location = GetActorLocation();
+	// FVector Forward = GetActorForwardVector();
+	
+	// DRAW_SPHERE(Location);
 	//DRAW_LINE(Location, Location + Forward * 100.f);
 	//DRAW_POINT(Location + Forward * 100.f);
 	//zamiast dwóch powy¿szych linijek makro, poni¿ej zosta³a stworzona jedna linijka makro któa zawiera dwie powy¿sze instrukcje w sobie
-	DRAW_VECTOR(Location, Location + Forward * 100.f);
+	// DRAW_VECTOR(Location, Location + Forward * 100.f);
 }
 
 // Called every frame
@@ -48,7 +49,10 @@ void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	
+	AddActorWorldOffset(FVector(1.f, 0.f, 0.f));			// Przesuwamy "aktora" o 1 w osi X
+	DRAW_SPHERE_SingleFrame(GetActorLocation());
+
+
 	
 	/*UE_LOG(LogTemp, Warning, TEXT("DeltaTime: %f"), DeltaTime);
 
