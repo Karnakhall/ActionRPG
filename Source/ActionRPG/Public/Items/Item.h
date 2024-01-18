@@ -22,7 +22,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere)	// (EditDefaultsOnly)I can change Amplitude in the blueprint BP_Item only
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)	// (EditDefaultsOnly)I can change Amplitude in the blueprint BP_Item only
 	float Amplitude = 0.25f;	// I can assigned Amplitude here
 	
 private:
