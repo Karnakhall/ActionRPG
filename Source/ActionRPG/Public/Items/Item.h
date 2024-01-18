@@ -22,13 +22,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere)	// (EditDefaultsOnly)I can change Amplitude in the blueprint BP_Item only
+	float Amplitude = 0.25f;	// I can assigned Amplitude here
+	
 private:
 
 	UPROPERTY(VisibleAnywhere)
 	float RunningTime;
 
-	UPROPERTY(EditAnywhere)	// (EditDefaultsOnly)I can change Amplitude in the blueprint BP_Item only
-	float Amplitude = 0.25f;	// I can assigned Amplitude here
 	
 	UPROPERTY(EditAnywhere)	// (EditInstanceOnly) I can change TimeConstant in the Instances in the game only
 	float TimeConstant = 5.f;
