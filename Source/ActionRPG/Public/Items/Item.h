@@ -24,6 +24,8 @@ protected:
 
 private:
 	float RunningTime;
+
+	UPROPERTY(EditDefaultsOnly)
 	float Amplitude = 0.25f;	// I can assigned Amplitude here
 	float TimeConstant = 5.f;
 
