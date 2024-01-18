@@ -23,6 +23,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+
+	UPROPERTY(VisibleAnywhere)
 	float RunningTime;
 
 	UPROPERTY(EditAnywhere)	// (EditDefaultsOnly)I can change Amplitude in the blueprint BP_Item only
