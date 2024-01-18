@@ -25,8 +25,10 @@ protected:
 private:
 	float RunningTime;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)	// (EditDefaultsOnly)I can change Amplitude in the blueprint BP_Item only
 	float Amplitude = 0.25f;	// I can assigned Amplitude here
+	
+	UPROPERTY(EditAnywhere)	// (EditInstanceOnly) I can change TimeConstant in the Instances in the game only
 	float TimeConstant = 5.f;
 
 };
