@@ -34,6 +34,9 @@ protected:
 	UFUNCTION(BlueprintPure)
 	float TransformedCos();
 
+	template<typename T>
+	T Avg(T First, T Second);
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))	// meta = (AllowPrivateAccess = "true") allows to see and change variables in private section
