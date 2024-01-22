@@ -81,7 +81,7 @@ void AItem::Tick(float DeltaTime)
 
 	RunningTime += DeltaTime; // This is the same RunningTime = RunningTime + DeltaTime
 
-	// AddActorWorldRotation(FRotator(0.f, 50.f * DeltaTime, 0.f));	// Actor rotator - Section 6 Challenge
+	AddActorWorldRotation(FRotator(0.f, 50.f * DeltaTime, 0.f));	// Actor rotator - Section 6 Challenge
 
 	// float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);		// period = 2*pi/K
 
