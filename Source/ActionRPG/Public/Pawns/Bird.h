@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "Bird.generated.h"
 
+class UCapsuleComponent;
+
 UCLASS()
 class ACTIONRPG_API ABird : public APawn
 {
@@ -27,6 +29,6 @@ protected:
 
 private:
 	UPROPERTY(VisibleAnywhere)
-	class UCapsuleComponent* Capsule;
+	UCapsuleComponent* Capsule;
 
 };
