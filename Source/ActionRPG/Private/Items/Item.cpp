@@ -85,7 +85,10 @@ void AItem::Tick(float DeltaTime)
 	DRAW_SPHERE_SingleFrame(GetActorLocation());
 	DRAW_VECTOR_SingleFrame(GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100.f);
 	
+	FVector AvgVector = Avg<FVector>(GetActorLocation(), FVector::ZeroVector);
+	DRAW_POINT_SingleFrame(AvgVector);
 
+	// FRotator AvgRotator = Avg<FRotator>(GetActorRotation(), FRotator::ZeroRotator);  W tym przypadku nasza funkcja nie dzia³a poniewa¿ w odniesieniu nie ma wbudowanego dzielenia, wiêc nie mo¿emy go wykorzystac w tym przypadku
 	
 	/*Informacje wyœwietlacj¹ce w output log oraz na ekranie
 	UE_LOG(LogTemp, Warning, TEXT("DeltaTime: %f"), DeltaTime);
