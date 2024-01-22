@@ -28,6 +28,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sine Parameters")	// (EditInstanceOnly) I can change TimeConstant in the Instances in the game only
 	float TimeConstant = 5.f;
 
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Rotation")
+	//float RotationRate = 90.f;
+
+
 	UFUNCTION(BlueprintPure)
 	float TransformedSin();
 
