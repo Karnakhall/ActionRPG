@@ -42,7 +42,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))	// meta = (AllowPrivateAccess = "true") allows to see and change variables in private section
 	float RunningTime;
 
-	
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* ItemMesh;
 	
 
 };

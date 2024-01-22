@@ -15,6 +15,9 @@ AItem::AItem() // I can asigned here Amplitude(0.25f)
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMeshComponent"));
+	RootComponent = ItemMesh;
+
 	// I can assigned amplitude here Amplitude = 0.25f;
 
 }
@@ -82,11 +85,11 @@ void AItem::Tick(float DeltaTime)
 
 	// AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
 
-	DRAW_SPHERE_SingleFrame(GetActorLocation());
+	/*DRAW_SPHERE_SingleFrame(GetActorLocation());
 	DRAW_VECTOR_SingleFrame(GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100.f);
 	
 	FVector AvgVector = Avg<FVector>(GetActorLocation(), FVector::ZeroVector);
-	DRAW_POINT_SingleFrame(AvgVector);
+	DRAW_POINT_SingleFrame(AvgVector);*/
 
 	// FRotator AvgRotator = Avg<FRotator>(GetActorRotation(), FRotator::ZeroRotator);  W tym przypadku nasza funkcja nie dzia³a poniewa¿ w odniesieniu nie ma wbudowanego dzielenia, wiêc nie mo¿emy go wykorzystac w tym przypadku
 	
