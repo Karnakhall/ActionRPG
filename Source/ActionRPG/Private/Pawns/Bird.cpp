@@ -38,7 +38,7 @@ void ABird::BeginPlay()
 	
 }
 
-void ABird::MoveForward(float Value)
+void ABird::MoveForward(float Value)	//Moving with the W,S keys
 {
 	if (Controller && (Value != 0.f))
 	{
@@ -47,7 +47,7 @@ void ABird::MoveForward(float Value)
 	}
 }
 
-void ABird::Turn(float Value)
+void ABird::Turn(float Value)			//Turning right/left with the mouse
 {
 	AddControllerYawInput(Value);
 }
@@ -58,7 +58,7 @@ void ABird::LookUp(float Value)
 }
 
 // Called every frame
-void ABird::Tick(float DeltaTime)
+void ABird::Tick(float DeltaTime)		//Looking up/down with the mouse
 {
 	Super::Tick(DeltaTime);
 

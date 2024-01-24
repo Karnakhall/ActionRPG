@@ -30,11 +30,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void MoveForward(float Value);
+	void MoveForward(float Value);	//Moving with the W,S keys
 
-	void Turn(float Value);
+	void Turn(float Value);			//Turning right/left with the mouse
 
-	void LookUp(float Value);
+	void LookUp(float Value);		//Looking up/down with the mouse
 
 private:
 	UPROPERTY(VisibleAnywhere)
