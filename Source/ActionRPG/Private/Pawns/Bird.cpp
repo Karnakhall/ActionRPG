@@ -69,8 +69,8 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis(FName("MoveForward"), this, &ABird::MoveForward);
-	PlayerInputComponent->BindAxis(FName("Turn"), this, &ABird::Turn);
-	PlayerInputComponent->BindAxis(FName("LookUp"), this, &ABird::LookUp);
+	PlayerInputComponent->BindAxis(FName("MoveForward"), this, &ABird::MoveForward);//Moving with the W,S keys
+	PlayerInputComponent->BindAxis(FName("Turn"), this, &ABird::Turn);//Turning right/left with the mouse
+	PlayerInputComponent->BindAxis(FName("LookUp"), this, &ABird::LookUp);//Looking up/down with the mouse
 }
 
