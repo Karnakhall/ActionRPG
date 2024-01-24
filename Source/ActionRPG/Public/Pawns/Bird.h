@@ -32,6 +32,10 @@ protected:
 
 	void MoveForward(float Value);
 
+	void Turn(float Value);
+
+	void LookUp(float Value);
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	UCapsuleComponent* Capsule;
