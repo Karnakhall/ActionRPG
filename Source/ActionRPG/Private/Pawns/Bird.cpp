@@ -68,6 +68,10 @@ void ABird::LookUp(float Value)
 	AddControllerPitchInput(Value);
 }
 
+void ABird::Move(const FInputActionValue& Value)
+{
+
+}
 // Called every frame
 void ABird::Tick(float DeltaTime)		//Looking up/down with the mouse
 {
