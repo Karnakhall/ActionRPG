@@ -10,6 +10,7 @@ class UCapsuleComponent;
 class USkeletalMeshComponent;
 class USpringArmComponent;
 class UCameraComponent;
+class UInputMappingContext;
 
 UCLASS()
 class ACTIONRPG_API ABird : public APawn
@@ -35,6 +36,9 @@ protected:
 	void Turn(float Value);			//Turning right/left with the mouse
 
 	void LookUp(float Value);		//Looking up/down with the mouse
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputMappingContext* BirdMappingContext;
 
 private:
 	UPROPERTY(VisibleAnywhere)

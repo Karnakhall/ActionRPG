@@ -6,6 +6,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+//#include "EnhancedInputSubsystems.h"
 
 // Sets default values
 ABird::ABird()
@@ -35,7 +36,13 @@ ABird::ABird()
 void ABird::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//Add Input Mapping Context
 	
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		//UEnhancedInputLocalPlayerSubsystem* Subsystem
+	}
 }
 
 void ABird::MoveForward(float Value)	//Moving with the W,S keys
