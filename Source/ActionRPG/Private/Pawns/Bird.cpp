@@ -6,7 +6,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-//#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputSubsystems.h"
 
 
 // Sets default values
@@ -42,7 +42,8 @@ void ABird::BeginPlay()
 	
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
-		//UEnhancedInputLocalPlayerSubsystem* Subsystem
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+		
 	}
 }
 
