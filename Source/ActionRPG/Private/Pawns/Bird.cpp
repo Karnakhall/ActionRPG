@@ -42,8 +42,10 @@ void ABird::BeginPlay()
 	
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
-		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-		
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(BirdMappingContext, 0);
+		}
 	}
 }
 
