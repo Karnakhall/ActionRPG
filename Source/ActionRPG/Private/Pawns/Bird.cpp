@@ -4,10 +4,11 @@
 #include "Pawns/Bird.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputSubsystems.h"
-
+#include "EnhancedInputComponent.h"
 
 // Sets default values
 ABird::ABird()
@@ -51,11 +52,11 @@ void ABird::BeginPlay()
 
 void ABird::MoveForward(float Value)	//Moving with the W,S keys
 {
-	if (Controller && (Value != 0.f))
+	/*if (Controller && (Value != 0.f))
 	{
 		FVector Forward = GetActorForwardVector();
 		AddMovementInput(Forward, Value);
-	}
+	}*/
 }
 
 void ABird::Turn(float Value)			//Turning right/left with the mouse
@@ -68,9 +69,15 @@ void ABird::LookUp(float Value)
 	AddControllerPitchInput(Value);
 }
 
+//Move Input
 void ABird::Move(const FInputActionValue& Value)
 {
-
+	const bool CurrentValue = Value.Get<bool>();
+	if (CurrentValue)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Move triggered"));
+	}
+	
 }
 // Called every frame
 void ABird::Tick(float DeltaTime)		//Looking up/down with the mouse
@@ -83,9 +90,17 @@ void ABird::Tick(float DeltaTime)		//Looking up/down with the mouse
 void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	//New way of input - EnhancedInput
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABird::Move);
+	}
 
-	PlayerInputComponent->BindAxis(FName("MoveForward"), this, &ABird::MoveForward);//Moving with the W,S keys
+	//Old way of Input
+	/*PlayerInputComponent->BindAxis(FName("MoveForward"), this, &ABird::MoveForward);//Moving with the W,S keys
 	PlayerInputComponent->BindAxis(FName("Turn"), this, &ABird::Turn);//Turning right/left with the mouse
 	PlayerInputComponent->BindAxis(FName("LookUp"), this, &ABird::LookUp);//Looking up/down with the mouse
+	*/
 }
 
