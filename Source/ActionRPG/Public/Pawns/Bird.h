@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "InputActionValue.h"
 #include "Bird.generated.h"
 
 class UCapsuleComponent;
@@ -11,6 +12,7 @@ class USkeletalMeshComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
+class UInputAction;
 
 UCLASS()
 class ACTIONRPG_API ABird : public APawn
@@ -43,10 +45,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* MoveAction;
 
-	void Move(const FInputActionValue& Value)
-	{
-
-	}
+	void Move(const FInputActionValue& Value);
 
 private:
 	UPROPERTY(VisibleAnywhere)
