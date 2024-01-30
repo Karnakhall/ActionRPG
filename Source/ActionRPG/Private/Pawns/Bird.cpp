@@ -52,11 +52,11 @@ void ABird::BeginPlay()
 
 void ABird::MoveForward(float Value)	//Moving with the W,S keys
 {
-	/*if (Controller && (Value != 0.f))
+	if (Controller && (Value != 0.f))
 	{
 		FVector Forward = GetActorForwardVector();
 		AddMovementInput(Forward, Value);
-	}*/
+	}
 }
 
 void ABird::Turn(float Value)			//Turning right/left with the mouse
@@ -72,11 +72,18 @@ void ABird::LookUp(float Value)
 //Move Input
 void ABird::Move(const FInputActionValue& Value)
 {
-	const bool CurrentValue = Value.Get<bool>();
+	const float	DirectionValue = Value.Get<float>();
+
+	if (Controller && (DirectionValue != 0.f))
+	{
+		FVector Forward = GetActorForwardVector();
+		AddMovementInput(Forward, DirectionValue);
+	}
+	/*const bool CurrentValue = Value.Get<bool>();
 	if (CurrentValue)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("IA_Move triggered"));
-	}
+	}*/
 	
 }
 // Called every frame
