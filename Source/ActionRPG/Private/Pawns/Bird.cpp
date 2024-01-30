@@ -59,7 +59,8 @@ void ABird::MoveForward(float Value)	//Moving with the W,S keys
 	}
 }
 
-void ABird::Turn(float Value)			//Turning right/left with the mouse
+//Old way of input and turning the camera
+/*void ABird::Turn(float Value)			//Turning right/left with the mouse
 {
 	AddControllerYawInput(Value);
 }
@@ -67,7 +68,7 @@ void ABird::Turn(float Value)			//Turning right/left with the mouse
 void ABird::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
-}
+}*/
 
 //Move Input
 void ABird::Move(const FInputActionValue& Value)
@@ -86,6 +87,15 @@ void ABird::Move(const FInputActionValue& Value)
 	}*/
 	
 }
+void ABird::Look(const FInputActionValue& Value)
+{
+	const FVector2D LookAxisValue = Value.Get<FVector2D>();
+	if (GetController())
+	{
+		AddControllerYawInput(LookAxisValue.X);
+		AddControllerPitchInput(LookAxisValue.Y);
+	}
+}
 // Called every frame
 void ABird::Tick(float DeltaTime)		//Looking up/down with the mouse
 {
@@ -102,6 +112,7 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABird::Move);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABird::Look);
 	}
 
 	//Old way of Input
