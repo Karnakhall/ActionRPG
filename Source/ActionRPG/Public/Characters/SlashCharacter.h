@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "SlashCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+
 UCLASS()
 class ACTIONRPG_API ASlashCharacter : public ACharacter
 {
@@ -23,10 +26,10 @@ public:
 protected:
 	void MoveForward(float Value);
 
-protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+private:
+	
 
 	
 
