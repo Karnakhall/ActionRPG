@@ -28,6 +28,8 @@ protected:
 	virtual void BeginPlay() override;
 	//Moving the character forward and backward
 	void MoveForward(float Value);
+	//Moving the character right and left
+	void MoveRight(float Value);
 	//Turning the character
 	void Turn(float Value);
 	//Looking up and down
