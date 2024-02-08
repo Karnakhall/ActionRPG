@@ -24,13 +24,22 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 protected:
-	void MoveForward(float Value);
-
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	//Moving the character forward and backward
+	void MoveForward(float Value);
+	//Turning the character
+	void Turn(float Value);
+	//Looking up and down
+	void LookUp(float Value);
+	
 private:
 	
+	UPROPERTY(VisibleAnywhere)
+	USpringArmComponent* CameraBoom;
 
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* ViewCamera;
 	
 
 };
