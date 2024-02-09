@@ -69,10 +69,18 @@ void ASlashCharacter::MoveRight(float Value)
 {
 	if (Controller && (Value != 0.f))
 	{
-		
-		FVector Right = GetActorRightVector();
+		//Moving only in the left and right	direction
+		/*FVector Right = GetActorRightVector();
 		AddMovementInput(Right, Value);
-		
+		*/
+
+		//find out which way is right
+		const FRotator ControlRotation = GetControlRotation();
+		const FRotator YawRotation(0.f, ControlRotation.Yaw, 0.f);
+
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		AddMovementInput(Direction, Value);
+
 	}
 }
 
