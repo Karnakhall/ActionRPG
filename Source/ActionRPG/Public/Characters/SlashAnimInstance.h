@@ -17,16 +17,16 @@ class ACTIONRPG_API USlashAnimInstance : public UAnimInstance
 public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaTime)	override;
-
+	//Our character
 	UPROPERTY(BlueprintReadOnly)
 	class ASlashCharacter* SlashCharacter;
-
+	//Our character movement
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	class UCharacterMovementComponent* SlashCharacterMovement;
-
+	//Our character speed
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	float GroundSpeed;
-
+	//Is Our character falling?
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	bool IsFalling;
 };

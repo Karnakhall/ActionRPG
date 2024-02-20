@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
+// In blueprint is called BlueprintInitializeAnimation
 void USlashAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
@@ -17,6 +18,7 @@ void USlashAnimInstance::NativeInitializeAnimation()
 	}
 }
 
+// In blueprint is called BlueprintUpdateAnimation
 void USlashAnimInstance::NativeUpdateAnimation(float DeltaTime)
 {
 	Super::NativeUpdateAnimation(DeltaTime);
