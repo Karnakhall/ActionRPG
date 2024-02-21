@@ -102,22 +102,22 @@ void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	/* Poruszanie aktorem (sfer¹), razem z pokazaniem vektora ruchu // Movement rate in units of cm/s
+	/*Poruszanie aktorem(sfer¹), razem z pokazaniem vektora ruchu // Movement rate in units of cm/s
 	float MovementRate = 50.f;
 	float RotationRate = 45.f;
 
-	// MovementRate * DeltaTime (cm/s) * (s/frame) = (cm/frame)
+	MovementRate * DeltaTime (cm/s) * (s/frame) = (cm/frame)
 	AddActorWorldOffset(FVector(MovementRate * DeltaTime, 0.f, 0.f));			// Przesuwamy "aktora" o 50 w osi X, bez wzglêdu na to ile FPS ma dany komputer
 	AddActorWorldRotation(FRotator(0.f, RotationRate * DeltaTime, 0.f));
 	*/
 
 	RunningTime += DeltaTime; // This is the same RunningTime = RunningTime + DeltaTime
 
-	AddActorWorldRotation(FRotator(0.f, 50.f * DeltaTime, 0.f));	// Actor rotator - Section 6 Challenge
+	AddActorWorldRotation(FRotator(0.f, 100.f * DeltaTime, 0.f));	// Actor rotator - Section 6 Challenge
 
-	// float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);		// period = 2*pi/K
+	float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);		// period = 2*pi/K  funkcja powoduj¹ca unoszenie siê i opadanie danego obiektu
 
-	// AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
+	AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
 
 	/*DRAW_SPHERE_SingleFrame(GetActorLocation());
 	DRAW_VECTOR_SingleFrame(GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100.f);
