@@ -44,9 +44,12 @@ protected:
 	T Avg(T First, T Second);
 
 	//Delegate function for sphere overlap
-	UFUNCTION()//Without UFUNCTION() it will not bind
+	UFUNCTION() //Without UFUNCTION() it will not bind
 	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	//Delegate funtion for sphere endoverlap
+	UFUNCTION()	//Without UFUNCTION() it will not bind
+	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))	// meta = (AllowPrivateAccess = "true") allows to see and change variables in private section
