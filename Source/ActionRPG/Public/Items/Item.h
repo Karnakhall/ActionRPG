@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+class USphereComponent;
+
 UCLASS()
 class ACTIONRPG_API AItem : public AActor
 {
@@ -41,6 +43,10 @@ protected:
 	template<typename T>
 	T Avg(T First, T Second);
 
+	//Delegate function for sphere overlap
+	UFUNCTION()
+	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))	// meta = (AllowPrivateAccess = "true") allows to see and change variables in private section
@@ -49,7 +55,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* ItemMesh;
 	
-
+	//Sphere component for overlaping
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent* Sphere;
 };
 
 template<typename T>

@@ -3,6 +3,7 @@
 
 #include "Items/Item.h"
 #include "ActionRPG/DebugMacros.h"
+#include "Components/SphereComponent.h"
 
 
 
@@ -20,12 +21,19 @@ AItem::AItem() // I can asigned here Amplitude(0.25f)
 
 	// I can assigned amplitude here Amplitude = 0.25f;
 
+
+	//Added sphere component
+	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
+	Sphere->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//Binding the callback to the delegate
+	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnSphereOverlap);
 	// Moja funkcja
 	/*int32 AvgInt = Avg<int32>(1, 3);
 	UE_LOG(LogTemp, Warning, TEXT("Avg of 1 and 3: %d"), AvgInt);
@@ -63,6 +71,17 @@ float AItem::TransformedSin()
 float AItem::TransformedCos()
 {
 	return Amplitude * FMath::Cos(RunningTime * TimeConstant);
+}
+//Delagate function
+void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	//Taking name of the object that overlapped with the sphere
+	const FString OtherActorName = OtherActor->GetName();
+	//show messege on engine screen
+	if(GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(1, 30.f, FColor::Red, OtherActorName);
+	}
 }
 
 // Called every frame
