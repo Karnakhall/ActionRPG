@@ -44,7 +44,7 @@ protected:
 	T Avg(T First, T Second);
 
 	//Delegate function for sphere overlap
-	UFUNCTION()
+	UFUNCTION()//Without UFUNCTION() it will not bind
 	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 private:
