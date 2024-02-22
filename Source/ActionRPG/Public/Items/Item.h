@@ -50,13 +50,16 @@ protected:
 	//Delegate funtion for sphere endoverlap
 	UFUNCTION()	//Without UFUNCTION() it will not bind
 	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* ItemMesh;
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))	// meta = (AllowPrivateAccess = "true") allows to see and change variables in private section
 	float RunningTime;
 
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* ItemMesh;
+	
 	
 	//Sphere component for overlaping
 	UPROPERTY(VisibleAnywhere)
