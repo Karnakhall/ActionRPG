@@ -9,6 +9,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class UGroomComponent;
+class AItem;
 
 UCLASS()
 class ACTIONRPG_API ASlashCharacter : public ACharacter
@@ -37,7 +38,7 @@ protected:
 	void LookUp(float Value);
 	//Funtcion to equip
 	void EKeyPresed();
-	
+
 private:
 	
 	UPROPERTY(VisibleAnywhere)
@@ -51,5 +52,14 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Hair")
 	UGroomComponent* Eyebrows;
+
+	//Item that is currently overlapping and we can try to pickup
+	UPROPERTY(VisibleInstanceOnly)
+	AItem* OverlappingItem;
+
+public:
+	//Function to pickup items
+	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
+
 
 };

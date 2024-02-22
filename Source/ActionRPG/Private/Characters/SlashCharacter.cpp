@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GroomComponent.h"
+#include "Items/Item.h"		//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ
+#include "Items/Weapons/Weapon.h"	//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ
 
 // Sets default values
 ASlashCharacter::ASlashCharacter()
@@ -114,4 +116,10 @@ void ASlashCharacter::LookUp(float Value)
 
 void ASlashCharacter::EKeyPresed()
 {
+	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
+	if (OverlappingWeapon)
+	{
+		//Jeœli klikniemy przycisk E, to podnosimy broñ i doczepiamy do socketu w d³oni
+		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+	}
 }

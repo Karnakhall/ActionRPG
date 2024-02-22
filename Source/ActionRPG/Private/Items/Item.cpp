@@ -4,6 +4,7 @@
 #include "Items/Item.h"
 #include "ActionRPG/DebugMacros.h"
 #include "Components/SphereComponent.h"
+#include "Characters/SlashCharacter.h"	//Musimy dodaæ plik nag³ówkowy z naszym bohaterem aby móc podnieœæ broñ
 
 
 
@@ -77,6 +78,7 @@ float AItem::TransformedCos()
 //Delagate function
 void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	/* Poni¿szy kod sprwdza czy actor overlappuje z naszym przedmiotem i wyœwietlamy informacjê na ekranie
 	//Taking name of the object that overlapped with the sphere
 	const FString OtherActorName = OtherActor->GetName();
 	//show messege on engine screen
@@ -84,16 +86,31 @@ void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	{
 		GEngine->AddOnScreenDebugMessage(1, 30.f, FColor::Red, OtherActorName);
 	}
+	*/
+	
+	//Sprawdzamy czy bohater overlappuje z naszym przedmiotem, jesli tak, mo¿emy podnieœæ przedmiot
+	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
+	if (SlashCharacter)
+	{
+		SlashCharacter->SetOverlappingItem(this);
+	}
 }
 //Delegate function end overlaping actor
 void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	/*
 	//Taking name of the object that end overlapped with the sphere
-	const FString OtherActorName = /*We can add some temporary string object*/FString("Ending Overlap with: ") + OtherActor->GetName();
+	const FString OtherActorName = //We can add some temporary string object FString("Ending Overlap with: ") + OtherActor->GetName();
 	//Show messege on engine screen
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(1, 10.f, FColor::Emerald, OtherActorName);
+	} 
+	*/
+	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
+	if (SlashCharacter)
+	{
+		SlashCharacter->SetOverlappingItem(nullptr);
 	}
 }
 

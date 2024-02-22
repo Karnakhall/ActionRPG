@@ -13,6 +13,8 @@ UCLASS()
 class ACTIONRPG_API AWeapon : public AItem
 {
 	GENERATED_BODY()
+public:
+	void Equip(USceneComponent* InParent, FName InSocketName);
 protected:
 	//Delegate function for sphere overlap
 	//UFUNCTION nie mo¿e byæ w klasie pochodnej. Dostaniemy b³êdy w kompilacji 
