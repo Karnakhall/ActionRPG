@@ -35,6 +35,8 @@ protected:
 	void Turn(float Value);
 	//Looking up and down
 	void LookUp(float Value);
+	//Funtcion to equip
+	void EKeyPresed();
 	
 private:
 	
