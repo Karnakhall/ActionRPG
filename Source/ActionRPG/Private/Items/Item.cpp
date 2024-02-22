@@ -111,13 +111,13 @@ void AItem::Tick(float DeltaTime)
 	AddActorWorldRotation(FRotator(0.f, RotationRate * DeltaTime, 0.f));
 	*/
 
-	RunningTime += DeltaTime; // This is the same RunningTime = RunningTime + DeltaTime
+	//RunningTime += DeltaTime; - This is the same RunningTime = RunningTime + DeltaTime
 
-	AddActorWorldRotation(FRotator(0.f, 100.f * DeltaTime, 0.f));	// Actor rotator - Section 6 Challenge
+	//AddActorWorldRotation(FRotator(0.f, 100.f * DeltaTime, 0.f));	// Actor rotator - Section 6 Challenge
 
-	float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);		// period = 2*pi/K  funkcja powoduj¹ca unoszenie siê i opadanie danego obiektu
+	//float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);		// period = 2*pi/K  funkcja powoduj¹ca unoszenie siê i opadanie danego obiektu
 
-	AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
+	//AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
 
 	/*DRAW_SPHERE_SingleFrame(GetActorLocation());
 	DRAW_VECTOR_SingleFrame(GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100.f);
