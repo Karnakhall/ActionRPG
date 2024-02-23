@@ -121,5 +121,6 @@ void ASlashCharacter::EKeyPresed()
 	{
 		//Jeœli klikniemy przycisk E, to podnosimy broñ i doczepiamy do socketu w d³oni
 		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 	}
 }
