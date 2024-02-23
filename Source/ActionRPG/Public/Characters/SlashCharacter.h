@@ -11,6 +11,15 @@ class UCameraComponent;
 class UGroomComponent;
 class AItem;
 
+//Allows us to use the enum in blueprint
+UENUM(BlueprintType)
+//Enum to keep track of the character state
+enum class ECharacterState : uint8
+{
+	ECS_Unequipped UMETA(DisplayName = "Unequipped")/*UMETA makro pozwala zmieniæ wyœwietlan¹ nazwê w blueprintach */,
+	ECS_EquippedOneHandedWeapon UMETA(DisplayName = "EquippedOneHandedWeapon"),
+	ECS_EquippedTwoHandedWeapon UMETA(DisplayName = "EquippedTwoHandedWeapon"),
+};
 UCLASS()
 class ACTIONRPG_API ASlashCharacter : public ACharacter
 {
@@ -40,7 +49,14 @@ protected:
 	void EKeyPresed();
 
 private:
-	
+	/* Rozwi¹zanie dla zwyk³ej wersji c++
+	//Variable to keep track of the character state
+	CharacterState State = Unequipped;
+	*/
+
+	//Variable to keep track of the character state
+	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
 
