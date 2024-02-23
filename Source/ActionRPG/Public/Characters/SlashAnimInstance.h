@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "SlashCharacter.h"
+#include "CharacterTypes.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ enuma"
 #include "SlashAnimInstance.generated.h"
 
 /**

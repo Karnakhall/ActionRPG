@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "CharacterTypes.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ enuma
 #include "SlashCharacter.generated.h"
 
 class USpringArmComponent;
@@ -11,15 +12,6 @@ class UCameraComponent;
 class UGroomComponent;
 class AItem;
 
-//Allows us to use the enum in blueprint
-UENUM(BlueprintType)
-//Enum to keep track of the character state
-enum class ECharacterState : uint8
-{
-	ECS_Unequipped UMETA(DisplayName = "Unequipped")/*UMETA makro pozwala zmieniæ wyœwietlan¹ nazwê w blueprintach */,
-	ECS_EquippedOneHandedWeapon UMETA(DisplayName = "EquippedOneHandedWeapon"),
-	ECS_EquippedTwoHandedWeapon UMETA(DisplayName = "EquippedTwoHandedWeapon"),
-};
 UCLASS()
 class ACTIONRPG_API ASlashCharacter : public ACharacter
 {
@@ -77,5 +69,6 @@ public:
 	//Function to pickup items
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 
-
+	//Function to get the character state and make it public. Const nie pozwala na zmiane niczego w funkcji poza zmian¹ state
+	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 };
