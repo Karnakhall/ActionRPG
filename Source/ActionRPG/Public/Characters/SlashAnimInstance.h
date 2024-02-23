@@ -30,4 +30,6 @@ public:
 	//Is Our character falling?
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	bool IsFalling;
+
+	ECharacterState CharacterState;
 };
