@@ -61,6 +61,7 @@ private:
 
 	//Variable to keep track of the character state
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;

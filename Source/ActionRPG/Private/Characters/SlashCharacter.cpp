@@ -129,7 +129,14 @@ void ASlashCharacter::EKeyPresed()
 //Funkcja ataku
 void ASlashCharacter::Attack()
 {
-	PlayAttackMontage();
+	//Sprawdzamy action state postaci
+	if (ActionState == EActionState::EAS_Unoccupied)
+	{
+		//Wywo³ujemy funkcjê odtwarzaj¹c¹ animacjê ataku
+		PlayAttackMontage();
+		//Jeœli postaæ jest w stanie unoccupied, to zmieniamy jej stan na occupied
+		ActionState = EActionState::EAS_Attacking;
+	}
 }
 
 void ASlashCharacter::PlayAttackMontage()
