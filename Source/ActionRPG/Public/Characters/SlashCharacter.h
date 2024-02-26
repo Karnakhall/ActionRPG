@@ -70,6 +70,7 @@ private:
 	/**
 	*Animation montages
 	*/
+	//Pokazujemy to w edytorze blueprint pod kategori¹ "Montages"
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* AttackMontage;
 public:
