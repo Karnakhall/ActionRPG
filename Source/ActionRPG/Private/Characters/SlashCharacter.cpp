@@ -129,13 +129,18 @@ void ASlashCharacter::EKeyPresed()
 //Funkcja ataku
 void ASlashCharacter::Attack()
 {
+	PlayAttackMontage();
+}
+
+void ASlashCharacter::PlayAttackMontage()
+{
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	//Sprawdzamy czy to nie jest nullpointer
-	if (AnimInstance && AttackMontage)
+	if (AnimInstance && AttackMontage)	//Jeœli AnimInstance i AttackMontage nie s¹ nullpointerami, to odtwarzamy animacjê ataku
 	{
 		AnimInstance->Montage_Play(AttackMontage);
 		//Mamy dwie sekcje w animacji ataku, wiêc losujemy która z nich zostanie odtworzona, wiêc dodajemy liczbê losow¹ 0 albo 1
-		int32 Selection = FMath::RandRange(0, 1);	//Trochê jak rzut monet¹, generuje nam 0 albo 1
+		const int32 Selection = FMath::RandRange(0, 1);	//Trochê jak rzut monet¹, generuje nam 0 albo 1
 		//Tworzymy zmienn¹, która bêdzie przechowywaæ nazwê sekcji animacji - pozostawiamy j¹ pust¹ poniewa¿ sekcja zostanie wybrana przez switch.
 		FName SectionName = FName();
 		//Wybieramy sekcjê animacji ataku i zmieniamy siê pomiêdzy nimi

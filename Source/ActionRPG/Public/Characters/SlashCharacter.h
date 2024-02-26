@@ -30,6 +30,10 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	/**
+	* Callbacks for input
+	*/
 	//Moving the character forward and backward
 	void MoveForward(float Value);
 	//Moving the character right and left
@@ -42,6 +46,13 @@ protected:
 	void EKeyPresed();
 	//Function to attack
 	void Attack();
+
+	/**
+	* Play Montage functions
+	*/
+
+	//Function to play attack montage
+	void PlayAttackMontage();
 private:
 	/* Rozwi¹zanie dla zwyk³ej wersji c++
 	//Variable to keep track of the character state
