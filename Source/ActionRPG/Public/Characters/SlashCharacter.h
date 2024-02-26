@@ -11,6 +11,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UGroomComponent;
 class AItem;
+class UAnimMontage;
 
 UCLASS()
 class ACTIONRPG_API ASlashCharacter : public ACharacter
@@ -39,7 +40,8 @@ protected:
 	void LookUp(float Value);
 	//Funtcion to equip
 	void EKeyPresed();
-
+	//Function to attack
+	void Attack();
 private:
 	/* Rozwi¹zanie dla zwyk³ej wersji c++
 	//Variable to keep track of the character state
@@ -65,6 +67,11 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
+	/**
+	*Animation montages
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* AttackMontage;
 public:
 	//Function to pickup items
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }

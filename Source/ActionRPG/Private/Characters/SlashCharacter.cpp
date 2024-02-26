@@ -8,6 +8,7 @@
 #include "GroomComponent.h"
 #include "Items/Item.h"		//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ
 #include "Items/Weapons/Weapon.h"	//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ
+#include "Animation/AnimMontage.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ AnimMontage
 
 // Sets default values
 ASlashCharacter::ASlashCharacter()
@@ -66,6 +67,7 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	PlayerInputComponent->BindAction(FName("Jump"), IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(FName("Equip"), IE_Pressed, this, &ASlashCharacter::EKeyPresed);
+	PlayerInputComponent->BindAction(FName("Attack"), IE_Pressed, this, &ASlashCharacter::Attack);
 }
 
 void ASlashCharacter::MoveForward(float Value)
@@ -122,5 +124,34 @@ void ASlashCharacter::EKeyPresed()
 		//Jeœli klikniemy przycisk E, to podnosimy broñ i doczepiamy do socketu w d³oni
 		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
 		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	}
+}
+//Funkcja ataku
+void ASlashCharacter::Attack()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	//Sprawdzamy czy to nie jest nullpointer
+	if (AnimInstance && AttackMontage)
+	{
+		AnimInstance->Montage_Play(AttackMontage);
+		//Mamy dwie sekcje w animacji ataku, wiêc losujemy która z nich zostanie odtworzona, wiêc dodajemy liczbê losow¹ 0 albo 1
+		int32 Selection = FMath::RandRange(0, 1);	//Trochê jak rzut monet¹, generuje nam 0 albo 1
+		//Tworzymy zmienn¹, która bêdzie przechowywaæ nazwê sekcji animacji - pozostawiamy j¹ pust¹ poniewa¿ sekcja zostanie wybrana przez switch.
+		FName SectionName = FName();
+		//Wybieramy sekcjê animacji ataku i zmieniamy siê pomiêdzy nimi
+		switch (Selection)
+		{
+		case 0:
+			SectionName = FName("Attack1");
+			//Break jest potrzebny, ¿eby wyjœæ z pêtli switch
+			break;
+		case 1:
+			SectionName = FName("Attack2");
+			break;
+		default:
+			break;
+		}
+		//Po wyborze sekcji animacji, odtwarzamy j¹
+		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
 	}
 }
