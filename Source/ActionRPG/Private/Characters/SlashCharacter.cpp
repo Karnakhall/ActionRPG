@@ -167,3 +167,9 @@ void ASlashCharacter::PlayAttackMontage()
 		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
 	}
 }
+//Funkcja koñcz¹ca atak
+void ASlashCharacter::AttackEnd()
+{
+	//Jeœli postaæ jest w stanie ataku, to zmieniamy jej stan na unoccupied w momencie gdy animacja ataku siê skoñczy
+	ActionState = EActionState::EAS_Unoccupied;
+}

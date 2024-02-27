@@ -53,6 +53,9 @@ protected:
 
 	//Function to play attack montage
 	void PlayAttackMontage();
+	//Function to stop attack montage
+	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
+	void AttackEnd();
 private:
 	/* Rozwi¹zanie dla zwyk³ej wersji c++
 	//Variable to keep track of the character state
