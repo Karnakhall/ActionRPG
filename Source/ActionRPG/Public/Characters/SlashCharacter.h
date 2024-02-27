@@ -61,6 +61,8 @@ private:
 
 	//Variable to keep track of the character state
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+	//Variable to keep track of the action state
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true")/*Dodajemy AllowPrivateAccess aby mieæ dostêp do statusu z prywatnej sekcji*/)
 	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 	UPROPERTY(VisibleAnywhere)
