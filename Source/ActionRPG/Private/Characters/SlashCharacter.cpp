@@ -72,6 +72,9 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void ASlashCharacter::MoveForward(float Value)
 {
+	//Jeœli postaæ jest w stanie ataku, to nie mo¿e siê poruszaæ
+	if (ActionState == EActionState::EAS_Attacking) return;
+	//Jeœli postaæ nie atakuje, to mo¿e siê poruszaæ
 	if (Controller && (Value != 0.f))
 	{
 		//Moving only in one direction
@@ -89,6 +92,9 @@ void ASlashCharacter::MoveForward(float Value)
 
 void ASlashCharacter::MoveRight(float Value)
 {
+	//Jeœli postaæ jest w stanie ataku, to nie mo¿e siê poruszaæ
+	if (ActionState == EActionState::EAS_Attacking) return;
+	//Jeœli postaæ nie atakuje, to mo¿e siê poruszaæ
 	if (Controller && (Value != 0.f))
 	{
 		//Moving only in the left and right	direction
