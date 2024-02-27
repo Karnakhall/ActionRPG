@@ -128,15 +128,21 @@ void ASlashCharacter::EKeyPresed()
 }
 //Funkcja ataku
 void ASlashCharacter::Attack()
-{
-	//Sprawdzamy action state postaci
-	if (ActionState == EActionState::EAS_Unoccupied)
+{	
+	//Jeœli postaæ ma odpowiednie statusy akcji oraz postaci, to atakujemy
+	if (CanAttack())
 	{
 		//Wywo³ujemy funkcjê odtwarzaj¹c¹ animacjê ataku
 		PlayAttackMontage();
 		//Jeœli postaæ jest w stanie unoccupied, to zmieniamy jej stan na occupied
 		ActionState = EActionState::EAS_Attacking;
 	}
+}
+//Funkcja sprawdzaj¹ca czy postaæ mo¿e zaatakowaæ
+bool ASlashCharacter::CanAttack()
+{
+	//Sprawdzamy czy postaæ ma odpowiednie statusy akcji oraz postaci aby móc zaatakowaæ
+	return ActionState == EActionState::EAS_Unoccupied && CharacterState != ECharacterState::ECS_Unequipped;
 }
 
 void ASlashCharacter::PlayAttackMontage()
@@ -173,3 +179,5 @@ void ASlashCharacter::AttackEnd()
 	//Jeœli postaæ jest w stanie ataku, to zmieniamy jej stan na unoccupied w momencie gdy animacja ataku siê skoñczy
 	ActionState = EActionState::EAS_Unoccupied;
 }
+
+
