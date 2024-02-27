@@ -8,6 +8,13 @@
 
 class USphereComponent;
 
+//Dodanie statusu przedmiotu
+enum class EItemState : uint8
+{
+	EIS_Hovering,
+	EIS_Equipped,
+};
+
 UCLASS()
 class ACTIONRPG_API AItem : public AActor
 {
@@ -53,7 +60,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* ItemMesh;
-
+	//Enum to keep track of the item state
+	EItemState ItemState = EItemState::EIS_Hovering;
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))	// meta = (AllowPrivateAccess = "true") allows to see and change variables in private section

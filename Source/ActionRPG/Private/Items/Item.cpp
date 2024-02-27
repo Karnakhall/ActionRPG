@@ -118,6 +118,15 @@ void AItem::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	RunningTime += DeltaTime;
+	
+	if (ItemState == EItemState::EIS_Hovering)	//Jeœli nasz przedmiot jest w stanie Hovering, to unosimy go i opuszczamy
+	{
+		//Hovering item
+		AddActorWorldOffset(FVector(0.f, 0.f, TransformedSin()));
+	}
+	
 
 	/*Poruszanie aktorem(sfer¹), razem z pokazaniem vektora ruchu // Movement rate in units of cm/s
 	float MovementRate = 50.f;
