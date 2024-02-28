@@ -228,7 +228,7 @@ void ASlashCharacter::PlayAttackMontage()
 		switch (Selection)
 		{
 		case 0:
-			SectionName = FName("Attack2");
+			SectionName = FName("Attack1");
 			//Break jest potrzebny, ¿eby wyjœæ z pêtli switch
 			break;
 		case 1:
