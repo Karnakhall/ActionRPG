@@ -72,6 +72,10 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	//Disarm function for attaching the weapon to the back
 	void Disarm();
+
+	UFUNCTION(BlueprintCallable)
+	//Arm function for attaching the weapon to the hand
+	void Arm();
 private:
 	/* Rozwi¹zanie dla zwyk³ej wersji c++
 	//Variable to keep track of the character state

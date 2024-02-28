@@ -195,6 +195,16 @@ void ASlashCharacter::Disarm()
 	}
 }
 
+void ASlashCharacter::Arm()
+{
+	
+	if (EquippedWeapon)
+	{
+		//Wywo³ujemy funkcjê, która "doczepia" broñ do socketu. W tym przypadku do socketu w prawej d³oni
+		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("RightHandSocket"));
+	}
+}
+
 void ASlashCharacter::PlayAttackMontage()
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
