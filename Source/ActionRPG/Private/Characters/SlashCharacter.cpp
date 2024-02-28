@@ -121,7 +121,7 @@ void ASlashCharacter::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
 }
-
+//Funkcja podnoszenia broni po naciœnieciu przycisku
 void ASlashCharacter::EKeyPresed()
 {
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
@@ -130,6 +130,24 @@ void ASlashCharacter::EKeyPresed()
 		//Jeœli klikniemy przycisk E, to podnosimy broñ i doczepiamy do socketu w d³oni
 		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
 		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+		//I need to set up OverlappingItem to nullptr, because we don't want to still store the address of the weapon we pick up. Otherwise we will try do this whole process again
+		OverlappingItem = nullptr;
+		//I have a variable storing the weapon we have equipped now
+		EquippedWeapon = OverlappingWeapon;
+	}
+	else
+	{
+		//Wrzucamy zwrot z boola aby zobaczyæ czy mo¿emy zdj¹æ/za³o¿yæ broñ 
+		if (CanDisarm())
+		{
+			PlayEquipMontage(FName("Unequip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
+			CharacterState = ECharacterState::ECS_Unequipped;
+		}
+		if (CanArm())
+		{
+			PlayEquipMontage(FName("Equip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
+			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+		}
 	}
 }
 //Funkcja ataku
@@ -149,6 +167,21 @@ bool ASlashCharacter::CanAttack()
 {
 	//Sprawdzamy czy postaæ ma odpowiednie statusy akcji oraz postaci aby móc zaatakowaæ
 	return ActionState == EActionState::EAS_Unoccupied && CharacterState != ECharacterState::ECS_Unequipped;
+}
+
+//Funkcja sprawdzaj¹ca czy postaæ mo¿e zdj¹æ broñ lub j¹ za³o¿yæ
+bool ASlashCharacter::CanDisarm()
+{
+	//Sprawdzamy action state oraz character state, jeœli s¹ odpowiednie, to mo¿emy odpaliæ animacjê EquipMontage 
+	return ActionState == EActionState::EAS_Unoccupied && 
+		CharacterState != ECharacterState::ECS_Unequipped;
+}
+
+bool ASlashCharacter::CanArm()
+{
+	return ActionState == EActionState::EAS_Unoccupied &&
+		CharacterState == ECharacterState::ECS_Unequipped &&
+		EquippedWeapon;
 }
 
 void ASlashCharacter::PlayAttackMontage()
@@ -179,6 +212,18 @@ void ASlashCharacter::PlayAttackMontage()
 		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
 	}
 }
+//Funkcja odtwarzaj¹ca animacjê EquipMontage
+void ASlashCharacter::PlayEquipMontage(FName SectionName)
+{	
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && EquipMontage)
+	{
+		AnimInstance->Montage_Play(EquipMontage);
+		//Po wyborze sekcji animacji, odtwarzamy j¹
+		AnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
+	}
+}
+
 //Funkcja koñcz¹ca atak
 void ASlashCharacter::AttackEnd()
 {

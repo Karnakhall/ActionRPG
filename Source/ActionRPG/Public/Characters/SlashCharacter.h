@@ -12,6 +12,7 @@ class UCameraComponent;
 class UGroomComponent;
 class AItem;
 class UAnimMontage;
+class AWeapon;
 
 UCLASS()
 class ACTIONRPG_API ASlashCharacter : public ACharacter
@@ -53,12 +54,20 @@ protected:
 
 	//Function to play attack montage
 	void PlayAttackMontage();
-	//Function to stop attack montage
-	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
-	void AttackEnd();
 
-	//Sprawdzamy fukcja czy postac mo¿e zaatakowaæ
+	
+	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
+	//Function to stop attack montage
+	void AttackEnd();
+	//Sprawdzamy boolem czy postac mo¿e zaatakowaæ
 	bool CanAttack();
+
+	//Function to play equip montage. We don't need to select a section random. We want to chose whether to play the equip or unequip section
+	void PlayEquipMontage(FName SectionName);
+	//Sprawdzamy boolem czy postaæ mo¿e uzyæ animacji equip lub unequip
+	bool CanDisarm();
+
+	bool CanArm();
 private:
 	/* Rozwi¹zanie dla zwyk³ej wersji c++
 	//Variable to keep track of the character state
@@ -87,12 +96,18 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
+	//Variable to keep track of the attack combo
+	UPROPERTY(VisibleAnywhere, Category = "Weapon")
+	AWeapon* EquippedWeapon;
 	/**
 	*Animation montages
 	*/
 	//Pokazujemy to w edytorze blueprint pod kategori¹ "Montages"
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* AttackMontage;
+	//Montage to equip and unequipped the weapon
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* EquipMontage;
 public:
 	//Function to pickup items
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
