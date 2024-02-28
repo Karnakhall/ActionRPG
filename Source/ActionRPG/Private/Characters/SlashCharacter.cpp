@@ -73,7 +73,7 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 void ASlashCharacter::MoveForward(float Value)
 {
 	//Jeœli postaæ jest w stanie ataku, to nie mo¿e siê poruszaæ
-	if (ActionState == EActionState::EAS_Attacking) return;
+	if (ActionState != EActionState::EAS_Unoccupied) return;
 	//Jeœli postaæ nie atakuje, to mo¿e siê poruszaæ
 	if (Controller && (Value != 0.f))
 	{
@@ -93,7 +93,7 @@ void ASlashCharacter::MoveForward(float Value)
 void ASlashCharacter::MoveRight(float Value)
 {
 	//Jeœli postaæ jest w stanie ataku, to nie mo¿e siê poruszaæ
-	if (ActionState == EActionState::EAS_Attacking) return;
+	if (ActionState != EActionState::EAS_Unoccupied) return;
 	//Jeœli postaæ nie atakuje, to mo¿e siê poruszaæ
 	if (Controller && (Value != 0.f))
 	{
@@ -142,12 +142,13 @@ void ASlashCharacter::EKeyPresed()
 		{
 			PlayEquipMontage(FName("Unequip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
 			CharacterState = ECharacterState::ECS_Unequipped;
-			ActionState = EA
+			ActionState = EActionState::EAS_EquippingWeapon;
 		}
 		else if (CanArm())
 		{
 			PlayEquipMontage(FName("Equip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
 			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+			ActionState = EActionState::EAS_EquippingWeapon;
 		}
 	}
 }
