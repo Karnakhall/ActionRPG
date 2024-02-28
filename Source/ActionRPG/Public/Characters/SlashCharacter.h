@@ -76,6 +76,10 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	//Arm function for attaching the weapon to the hand
 	void Arm();
+
+	UFUNCTION(BlueprintCallable)
+	//Function to know where is the end of equipping
+	void FinishEquipping();
 private:
 	/* Rozwi¹zanie dla zwyk³ej wersji c++
 	//Variable to keep track of the character state

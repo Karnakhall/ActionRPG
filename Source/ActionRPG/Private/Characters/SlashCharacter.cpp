@@ -207,6 +207,12 @@ void ASlashCharacter::Arm()
 	}
 }
 
+void ASlashCharacter::FinishEquipping()
+{
+	//All we neeed to do is to change our action state to unoccupied
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
 void ASlashCharacter::PlayAttackMontage()
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
