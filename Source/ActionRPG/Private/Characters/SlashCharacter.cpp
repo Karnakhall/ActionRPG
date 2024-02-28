@@ -142,6 +142,7 @@ void ASlashCharacter::EKeyPresed()
 		{
 			PlayEquipMontage(FName("Unequip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
 			CharacterState = ECharacterState::ECS_Unequipped;
+			ActionState = EA
 		}
 		else if (CanArm())
 		{
