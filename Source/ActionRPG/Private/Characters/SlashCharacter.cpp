@@ -185,6 +185,16 @@ bool ASlashCharacter::CanArm()
 		EquippedWeapon;
 }
 
+void ASlashCharacter::Disarm()
+{
+	//Sprawdzamy, czy broñ jest wyekwipowana i nie jest nullptr
+	if (EquippedWeapon)
+	{
+		//Wywo³ujemy funkcjê, która "doczepia" broñ do socketu. W tym przypadku do socketu na plecach
+		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("SpineSocket"));
+	}
+}
+
 void ASlashCharacter::PlayAttackMontage()
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();

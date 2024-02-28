@@ -6,11 +6,16 @@
 
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 {
-	//Tworzymy zasady podnoszenia broni
-	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
-	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
+	AttachMeshToSocket(InParent, InSocketName);
 	//Zmieniamy stan broni na EIS_Equipped po podniesieniu
 	ItemState = EItemState::EIS_Equipped;
+}
+//Funkcja do "doczepienia" broni do odpowiedniego socketu lub stworzonego nowego socketu
+void AWeapon::AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName)
+{
+	//Tworzymy zasady "doczepienia" broni do wybranego socketu w rêce
+	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
+	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
 }
 
 void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

@@ -66,8 +66,12 @@ protected:
 	void PlayEquipMontage(FName SectionName);
 	//Sprawdzamy boolem czy postaæ mo¿e uzyæ animacji equip lub unequip
 	bool CanDisarm();
-
+	//Sprawdzamy boolem czy postaæ mo¿e za³o¿yæ broñ
 	bool CanArm();
+
+	UFUNCTION(BlueprintCallable)
+	//Disarm function for attaching the weapon to the back
+	void Disarm();
 private:
 	/* Rozwi¹zanie dla zwyk³ej wersji c++
 	//Variable to keep track of the character state
