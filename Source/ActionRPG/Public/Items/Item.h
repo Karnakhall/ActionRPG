@@ -62,16 +62,15 @@ protected:
 	UStaticMeshComponent* ItemMesh;
 	//Enum to keep track of the item state
 	EItemState ItemState = EItemState::EIS_Hovering;
-private:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))	// meta = (AllowPrivateAccess = "true") allows to see and change variables in private section
-	float RunningTime;
-
-	
-	
 	//Sphere component for overlaping
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* Sphere;
+
+private:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))	// meta = (AllowPrivateAccess = "true") allows to see and change variables in private section
+	float RunningTime;		// Time for sine wave
 };
 
 template<typename T>

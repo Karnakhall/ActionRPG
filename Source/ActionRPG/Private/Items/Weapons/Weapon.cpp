@@ -3,12 +3,27 @@
 
 #include "Items/Weapons/Weapon.h"
 #include "Characters/SlashCharacter.h"	//Musimy dodaæ plik nag³ówkowy z naszym bohaterem aby móc podnieœæ broñ
+#include "Kismet/GameplayStatics.h"
+#include "Components/SphereComponent.h"
 
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 {
 	AttachMeshToSocket(InParent, InSocketName);
 	//Zmieniamy stan broni na EIS_Equipped po podniesieniu
 	ItemState = EItemState::EIS_Equipped;
+	if (EquipSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			EquipSound,
+			GetActorLocation()
+		);
+	}
+	if (Sphere)
+	{	//Teraz bêdziemy chcieli wy³¹czyæ kolizjê naszej broni z naszym bohaterem
+		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	}
 }
 //Funkcja do "doczepienia" broni do odpowiedniego socketu lub stworzonego nowego socketu
 void AWeapon::AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName)

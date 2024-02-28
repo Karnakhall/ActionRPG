@@ -6,6 +6,7 @@
 #include "Items/Item.h"
 #include "Weapon.generated.h"
 
+class USoundBase;
 /**
  * 
  */
@@ -25,4 +26,8 @@ protected:
 	//Delegate funtion for sphere endoverlap
 	//UFUNCTION nie mo¿e byæ w klasie pochodnej. Dostaniemy b³êdy w kompilacji
 	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
+private:
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	//For the sound of the equip weapon
+	USoundBase* EquipSound;
 };
