@@ -143,7 +143,7 @@ void ASlashCharacter::EKeyPresed()
 			PlayEquipMontage(FName("Unequip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
 			CharacterState = ECharacterState::ECS_Unequipped;
 		}
-		if (CanArm())
+		else if (CanArm())
 		{
 			PlayEquipMontage(FName("Equip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
 			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
@@ -166,7 +166,8 @@ void ASlashCharacter::Attack()
 bool ASlashCharacter::CanAttack()
 {
 	//Sprawdzamy czy postaæ ma odpowiednie statusy akcji oraz postaci aby móc zaatakowaæ
-	return ActionState == EActionState::EAS_Unoccupied && CharacterState != ECharacterState::ECS_Unequipped;
+	return ActionState == EActionState::EAS_Unoccupied && 
+		CharacterState != ECharacterState::ECS_Unequipped;
 }
 
 //Funkcja sprawdzaj¹ca czy postaæ mo¿e zdj¹æ broñ lub j¹ za³o¿yæ
