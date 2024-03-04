@@ -7,6 +7,7 @@
 #include "Weapon.generated.h"
 
 class USoundBase;
+class UBoxComponent;	//It's need for create a box collision
 /**
  * 
  */
@@ -15,6 +16,7 @@ class ACTIONRPG_API AWeapon : public AItem
 {
 	GENERATED_BODY()
 public:
+	AWeapon();	//Constructor
 	void Equip(USceneComponent* InParent, FName InSocketName);
 	//Funkcja do "doczepienia" broni do odpowiedniego socketu lub stworzonego nowego socketu
 	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
@@ -30,4 +32,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	//For the sound of the equip weapon
 	USoundBase* EquipSound;
+
+	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
+	UBoxComponent* WeaponBox;
 };
