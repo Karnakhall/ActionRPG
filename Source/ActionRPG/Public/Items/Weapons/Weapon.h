@@ -21,18 +21,33 @@ public:
 	//Funkcja do "doczepienia" broni do odpowiedniego socketu lub stworzonego nowego socketu
 	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
 protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 	//Delegate function for sphere overlap
-	//UFUNCTION nie mo¿e byæ w klasie pochodnej. Dostaniemy b³êdy w kompilacji 
+	//UFUNCTION nie mo¿e byæ w klasie pochodnej. Dostaniemy b³êdy w kompilacji. Mamy UFUNCTION z funkcji z której dziedziczymy
 	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
 	//Delegate funtion for sphere endoverlap
 	//UFUNCTION nie mo¿e byæ w klasie pochodnej. Dostaniemy b³êdy w kompilacji
 	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
+	
+	//Delegate function for box overlap
+	UFUNCTION()
+	void OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 private:
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	//For the sound of the equip weapon
 	USoundBase* EquipSound;
-
+	
+	//Sphere collision for the weapon
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	UBoxComponent* WeaponBox;
+
+	UPROPERTY(VisibleAnywhere)
+	//For the sphere collision
+	USceneComponent* BoxTraceStart;
+
+	UPROPERTY(VisibleAnywhere)
+	//For the sphere collision
+	USceneComponent* BoxTraceEnd;
 };

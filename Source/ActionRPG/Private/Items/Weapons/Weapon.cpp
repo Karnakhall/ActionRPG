@@ -6,13 +6,32 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
-
+ 
 
 AWeapon::AWeapon() 
 {
 	WeaponBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Weapon Box"));	//Tworzymy nowy BoxComponent
 	WeaponBox->SetupAttachment(GetRootComponent());	//Przypisujemy go do naszego g³ównego komponentu
+	WeaponBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);	//Ustawiamy kolizjê na QueryOnly
+	WeaponBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);	//Sprawdza wszysktie checkboxy w collision presets czy overlapuj¹
+	WeaponBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);	//Ignoruje kolizjê z naszym bohaterem
+
+	BoxTraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace Start"));	//Tworzymy nowy komponent
+	BoxTraceStart->SetupAttachment(GetRootComponent());	//Przypisujemy go do naszego g³ównego komponentu
+	
+	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("Box Trace End"));	//Tworzymy nowy komponent
+	BoxTraceEnd->SetupAttachment(GetRootComponent());	//Przypisujemy go do naszego g³ównego komponentu
 }
+
+
+void AWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+	//Dodajemy delegata do naszej funkcji 
+	WeaponBox->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnBoxOverlap);
+}
+
+//Funkcja do podniesienia broni
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 {
 	AttachMeshToSocket(InParent, InSocketName);
@@ -59,4 +78,9 @@ void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	Super::OnSphereEndOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
+}
+
+//Delegate function for box overlap
+void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
 }
