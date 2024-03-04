@@ -13,7 +13,7 @@ AWeapon::AWeapon()
 {
 	WeaponBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Weapon Box"));	//Tworzymy nowy BoxComponent
 	WeaponBox->SetupAttachment(GetRootComponent());	//Przypisujemy go do naszego g³ównego komponentu
-	WeaponBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);	//Ustawiamy kolizjê na QueryOnly
+	WeaponBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);	//Ustawiamy kolizjê na NoCollision
 	WeaponBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);	//Sprawdza wszysktie checkboxy w collision presets czy overlapuj¹
 	WeaponBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);	//Ignoruje kolizjê z naszym bohaterem
 

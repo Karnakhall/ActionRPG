@@ -50,4 +50,7 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	//For the sphere collision
 	USceneComponent* BoxTraceEnd;
+
+public:
+	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }	//Getter for the weapon box
 };

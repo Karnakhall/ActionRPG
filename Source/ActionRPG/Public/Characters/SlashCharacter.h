@@ -28,6 +28,18 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	
+	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
+	void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);	//Funkcja do w³¹czenia i wy³¹czenia kolizji na broni
+	
+	/*Jeden ze sposobów w³¹czenia i wy³¹czenia kolizji na broni
+	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
+	void EnableWeaponCollision();	//Funkcja do w³¹czenia kolizji broni
+
+	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
+	void DisableWeaponCollision();	//Funkcja do wy³¹czenia kolizji broni
+	*/
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
