@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
  
 
 AWeapon::AWeapon() 
@@ -83,4 +84,27 @@ void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 //Delegate function for box overlap
 void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	//Pobieramy lokalizacjê naszego BoxTraceStart. Pamiêtaj, ¿e jest to lokalizacja w przestrzeni œwiata
+	const FVector Start = BoxTraceStart->GetComponentLocation();
+	//Pobieramy lokalizacjê naszego BoxTraceEnd. Pamiêtaj, ¿e jest to lokalizacja w przestrzeni œwiata
+	const FVector End = BoxTraceEnd->GetComponentLocation();
+	
+	//Tworzymy tablicê aktorów do ignorowania
+	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(this);	//Dodajemy nasz obiekt do tablicy aktorów do ignorowania. Dziêki temu nie bêdziemy sprawdzaæ kolizji z nasz¹ postaci¹
+	FHitResult BoxHit;//Tworzymy lokaln¹ zmienn¹, która bêdzie przechowywaæ informacje o FHITResult
+	//funkcja pozwala na sprawdzenie, czy w danej przestrzeni (okreœlonej przez pude³ko) znajduj¹ siê obiekty, oraz zbieranie informacji na temat tych obiektów, takich jak ich lokalizacja czy w³aœciwoœci
+	UKismetSystemLibrary::BoxTraceSingle(
+		this,	//Obiekt wywo³uj¹cy
+		Start,	//Pocz¹tek box trace
+		End,	//Koniec box trace
+		FVector(5.f, 5.f, 5.f),	//Rozmiar box trace
+		BoxTraceStart->GetComponentRotation(),	//Rotacja box trace
+		ETraceTypeQuery::TraceTypeQuery1,	//Typ trace
+		false,	//Ignoruj w³asny obiekt
+		ActorsToIgnore,	//Tablica aktorów do ignorowania
+		EDrawDebugTrace::ForDuration,	//Rysuj debug trace
+		BoxHit,	//Zmienna przechowuj¹ca informacje o trafieniu
+		true	//Ignoruj kolizje
+		);
 }
