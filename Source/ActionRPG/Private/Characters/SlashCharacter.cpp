@@ -250,10 +250,10 @@ void ASlashCharacter::PlayAttackMontage()
 	}
 }
 //Funkcja odtwarzaj¹ca animacjê EquipMontage
-void ASlashCharacter::PlayEquipMontage(FName SectionName)
+void ASlashCharacter::PlayEquipMontage(const FName& SectionName)
 {	
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && EquipMontage)
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); 
+	if (AnimInstance && EquipMontage)	//Jeœli AnimInstance i EquipMontage nie s¹ nullpointerami, to odtwarzamy animacjê equip
 	{
 		AnimInstance->Montage_Play(EquipMontage);
 		//Po wyborze sekcji animacji, odtwarzamy j¹

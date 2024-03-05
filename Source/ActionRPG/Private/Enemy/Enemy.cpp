@@ -27,6 +27,17 @@ void AEnemy::BeginPlay()
 	
 }
 
+void AEnemy::PlayHitReactMontage(const FName& SectionName)	// Deklarujemy funkcjê PlayHitReactMontage z Enemy.h
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && HitReactMontage)	//Jeœli AnimInstance i EquipMontage nie s¹ nullpointerami, to odtwarzamy animacjê equip
+	{
+		AnimInstance->Montage_Play(HitReactMontage);
+		//Po wyborze sekcji animacji, odtwarzamy j¹
+		AnimInstance->Montage_JumpToSection(SectionName, HitReactMontage);
+	}
+}
+
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
@@ -43,6 +54,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z Enemy.h
 {
-	DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym
+	DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
+	PlayHitReactMontage(FName("FromLeft"));	// Odtwarzamy animacjê otrzymania ciosu
 }
 

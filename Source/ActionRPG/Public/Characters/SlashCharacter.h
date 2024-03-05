@@ -75,7 +75,7 @@ protected:
 	bool CanAttack();
 
 	//Function to play equip montage. We don't need to select a section random. We want to chose whether to play the equip or unequip section
-	void PlayEquipMontage(FName SectionName);
+	void PlayEquipMontage(const FName& SectionName);
 	//Sprawdzamy boolem czy postaæ mo¿e uzyæ animacji equip lub unequip
 	bool CanDisarm();
 	//Sprawdzamy boolem czy postaæ mo¿e za³o¿yæ broñ
