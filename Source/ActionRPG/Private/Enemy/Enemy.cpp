@@ -59,7 +59,9 @@ void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z 
 	PlayHitReactMontage(FName("FromLeft"));	// Odtwarzamy animacjê otrzymania ciosu
 
 	const FVector Forward = GetActorForwardVector();	// Pobieramy wektor Forward dla naszego "enemy"
-	const FVector ToHit = (ImpactPoint - GetActorLocation()).GetSafeNormal();	// Pobieramy wektor ToHit dla naszego "enemy". Otrzymujemy wektor (ImpactPoint - GetActorLocation()) i normalizujemy go (obliczamy wektor jednostkowy). GetSafeNormal powoduje, ¿e nie bêdziemy dzieliæ przez 0
+	// Lower Impact Point to the Enemy's Actor Location Z
+	const FVector ImpactLowered(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
+	const FVector ToHit = (ImpactLowered - GetActorLocation()).GetSafeNormal();	// Pobieramy wektor ToHit dla naszego "enemy". Otrzymujemy wektor (ImpactPoint - GetActorLocation()) i normalizujemy go (obliczamy wektor jednostkowy). GetSafeNormal powoduje, ¿e nie bêdziemy dzieliæ przez 0
 
 	//	Forward * ToHit = (magnitude)|Forward| * |ToHit| * cos(theta) // Obliczamy k¹t miêdzy Forward i ToHit
 	// |Forward| = 1, |ToHit| = 1, Forward * ToHit = cos(theta)
