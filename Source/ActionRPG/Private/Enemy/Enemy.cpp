@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h" // for USkeletalMeshComponent
 #include "Components/CapsuleComponent.h" // for UCapsuleComponent"
 #include "ActionRPG/DebugMacros.h"	// Potrzebujemy tego nag³ówka aby móc u¿ywaæ makr debuguj¹cych
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -56,5 +57,25 @@ void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z 
 {
 	DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
 	PlayHitReactMontage(FName("FromLeft"));	// Odtwarzamy animacjê otrzymania ciosu
+
+	const FVector Forward = GetActorForwardVector();	// Pobieramy wektor Forward dla naszego "enemy"
+	const FVector ToHit = (ImpactPoint - GetActorLocation()).GetSafeNormal();	// Pobieramy wektor ToHit dla naszego "enemy". Otrzymujemy wektor (ImpactPoint - GetActorLocation()) i normalizujemy go (obliczamy wektor jednostkowy). GetSafeNormal powoduje, ¿e nie bêdziemy dzieliæ przez 0
+
+	//	Forward * ToHit = (magnitude)|Forward| * |ToHit| * cos(theta) // Obliczamy k¹t miêdzy Forward i ToHit
+	// |Forward| = 1, |ToHit| = 1, Forward * ToHit = cos(theta)
+	const double CosTheta = FVector::DotProduct(Forward, ToHit);	// Obliczamy k¹t miêdzy Forward i ToHit
+	// Take the inverse cosine (arc-cosine) of cos(theta) to get theta
+	double Theta = FMath::Acos(CosTheta);
+	//	convert from radians to degrees
+	Theta = FMath::RadiansToDegrees(Theta); // Zamieniamy radiany na stopnie
+	// Print the angle to the screen
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::Printf(TEXT("Theta: %f"), Theta));
+	}
+	// Draw a debug arrow to show the forward direction
+	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Forward * 60.f, 5.f, FColor::Red, 5.f);
+	// Draw a debug arrow from the enemy's location to the hit location
+	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + ToHit * 60.f, 5.f, FColor::Green, 5.f);
 }
 
