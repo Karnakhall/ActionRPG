@@ -43,6 +43,6 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z Enemy.h
 {
-	DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);
+	DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym
 }
 
