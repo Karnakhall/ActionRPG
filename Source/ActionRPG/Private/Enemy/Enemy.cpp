@@ -4,6 +4,7 @@
 #include "Enemy/Enemy.h"
 #include "Components/SkeletalMeshComponent.h" // for USkeletalMeshComponent
 #include "Components/CapsuleComponent.h" // for UCapsuleComponent"
+#include "ActionRPG/DebugMacros.h"	// Potrzebujemy tego nag³ówka aby móc u¿ywaæ makr debuguj¹cych
 
 // Sets default values
 AEnemy::AEnemy()
@@ -38,5 +39,10 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z Enemy.h
+{
+	DRAW_SPHERE(ImpactPoint);
 }
 

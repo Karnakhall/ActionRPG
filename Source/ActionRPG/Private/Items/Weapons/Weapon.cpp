@@ -7,6 +7,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Interfaces/HitInterface.h"	//Potrzebujemy tego nag³ówka aby móc u¿ywaæ funkcji z interfejsu HitInterface
  
 
 AWeapon::AWeapon() 
@@ -107,4 +108,12 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		BoxHit,	//Zmienna przechowuj¹ca informacje o trafieniu
 		true	//Ignoruj kolizje
 		);
+	if (BoxHit.GetActor())	//Sprawdzamy czy trafiliœmy w "aktora"
+	{
+		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());	//Castujemy trafionego aktora do interfejsu HitInterface
+		if (HitInterface)	//Sprawdzamy czy trafiony aktor ma interfejs HitInterface
+		{
+			HitInterface->GetHit(BoxHit.ImpactPoint);	//Wywo³ujemy funkcjê GetHit z interfejsu HitInterface
+		}
+	}
 }
