@@ -56,8 +56,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z Enemy.h
 {
 	DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
-	PlayHitReactMontage(FName("FromLeft"));	// Odtwarzamy animacjê otrzymania ciosu
-
+	
 	const FVector Forward = GetActorForwardVector();	// Pobieramy wektor Forward dla naszego "enemy"
 	// Lower Impact Point to the Enemy's Actor Location Z
 	const FVector ImpactLowered(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
@@ -78,6 +77,33 @@ void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z 
 	{
 		Theta *= -1;	// Jeœli CrossProduct.Z jest mniejsze od 0, to Theta mno¿ymy przez -1
 	}
+
+	FName Section("FromBack");	// Deklarujemy zmienn¹ Section i przypisujemy jej wartoœæ "FromBack"
+	
+	if (Theta >= -45.f && Theta < 45.f)	// Jeœli Theta jest wiêksze lub równe -45 i mniejsze od 45
+	{
+		Section = FName("FromFront");	// Przypisujemy zmiennej Section wartoœæ "FromFront"
+	}
+	else if (Theta >= -135.f && Theta < -45.f)	// Jeœli Theta jest wiêksze lub równe -135 i mniejsze od -45
+	{
+		Section = FName("FromLeft");	// Przypisujemy zmiennej Section wartoœæ "FromLeft"
+	}
+	else if (Theta >= 45.f && Theta < 135.f)	// Jeœli Theta jest wiêksze lub równe 45 i mniejsze od 135
+	{
+		Section = FName("FromRight");	// Przypisujemy zmiennej Section wartoœæ "FromRight"
+	}
+	/*else if (Theta >= 135.f || Theta < -135.f)	// Jeœli Theta jest wiêksze lub równe 135 lub mniejsze od -135
+	{
+		Section = "FromBack";	// Przypisujemy zmiennej Section wartoœæ "FromBack"
+	}*/
+	
+
+	PlayHitReactMontage(Section);	// Odtwarzamy animacjê otrzymania ciosu z danego kierunku
+
+
+
+
+
 	// Draw a debug arrow to show the cross product
 	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + CrossProduct * 100.f, 5.f, FColor::Blue, 5.f);
 	
