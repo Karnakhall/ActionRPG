@@ -76,7 +76,7 @@ void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z 
 	
 	if (CrossProduct.Z < 0)
 	{
-		Theta *= -1;
+		Theta *= -1;	// Jeœli CrossProduct.Z jest mniejsze od 0, to Theta mno¿ymy przez -1
 	}
 	// Draw a debug arrow to show the cross product
 	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + CrossProduct * 100.f, 5.f, FColor::Blue, 5.f);
