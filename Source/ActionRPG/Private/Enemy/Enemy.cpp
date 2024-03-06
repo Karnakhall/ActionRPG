@@ -70,6 +70,17 @@ void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z 
 	double Theta = FMath::Acos(CosTheta);
 	//	convert from radians to degrees
 	Theta = FMath::RadiansToDegrees(Theta); // Zamieniamy radiany na stopnie
+	
+	//if CrossProduct points down, Theta should be negative
+	const FVector CrossProduct = FVector::CrossProduct(Forward, ToHit);
+	
+	if (CrossProduct.Z < 0)
+	{
+		Theta *= -1;
+	}
+	// Draw a debug arrow to show the cross product
+	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + CrossProduct * 100.f, 5.f, FColor::Blue, 5.f);
+	
 	// Print the angle to the screen
 	if (GEngine)
 	{
