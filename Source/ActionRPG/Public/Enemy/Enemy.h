@@ -35,7 +35,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* HitReactMontage;	//Animacja otrzymania ciosu
 
-
+	UPROPERTY(EditAnywhere, Category = "Sound")
+	USoundBase* HitSound;	//DŸwiêk otrzymania ciosu. Przechowujemy ten asset we wskaŸniku
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
