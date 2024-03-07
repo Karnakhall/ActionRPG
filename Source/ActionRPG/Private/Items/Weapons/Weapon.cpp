@@ -110,7 +110,7 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		ETraceTypeQuery::TraceTypeQuery1,	//Typ trace
 		false,	//Ignoruj w³asny obiekt
 		ActorsToIgnore,	//Tablica aktorów do ignorowania
-		EDrawDebugTrace::ForDuration,	//Rysuj debug trace
+		EDrawDebugTrace::None,	//Rysuj debug trace po zmianie na ForDuration
 		BoxHit,	//Zmienna przechowuj¹ca informacje o trafieniu
 		true	//Ignoruj kolizje
 		);

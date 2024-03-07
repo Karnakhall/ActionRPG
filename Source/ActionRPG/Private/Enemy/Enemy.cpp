@@ -56,7 +56,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z Enemy.h
 {
-	DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
+	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
 	
 	DirectionalHitReact(ImpactPoint);	// Wywo³ujemy funkcjê DirectionalHitReact z argumentem ImpactPoint
 	
@@ -66,6 +66,13 @@ void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z 
 			this,
 			HitSound,
 			ImpactPoint);	// Odtwarzamy dŸwiêk otrzymania ciosu
+	}
+	if (HitParticles && GetWorld())	// Sprawdzamy czy HitParticles nie jest nullpointerem
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			HitParticles,
+			ImpactPoint);	// Odtwarzamy particle system otrzymania ciosu
 	}
 }
 
@@ -114,10 +121,7 @@ void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)	// Deklarujemy funk
 
 	PlayHitReactMontage(Section);	// Odtwarzamy animacjê otrzymania ciosu z danego kierunku
 
-
-
-
-
+	/* Jeœli chcemy zobaczyæ jak dzia³a nasz kod, mo¿emy odkomentowaæ poni¿sze linie
 	// Draw a debug arrow to show the cross product
 	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + CrossProduct * 100.f, 5.f, FColor::Blue, 5.f);
 
@@ -130,5 +134,6 @@ void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)	// Deklarujemy funk
 	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Forward * 60.f, 5.f, FColor::Red, 5.f);
 	// Draw a debug arrow from the enemy's location to the hit location
 	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + ToHit * 60.f, 5.f, FColor::Green, 5.f);
+	*/
 }
 
