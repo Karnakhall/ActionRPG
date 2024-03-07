@@ -25,6 +25,8 @@ public:
 
 	virtual void GetHit(const FVector& ImpactPoint) override;	// Implementujemy funkcjê GetHit z interfejsu HitInterface
 
+	void DirectionalHitReact(const FVector& ImpactPoint);
+
 private:
 	/**
 	*Animation montages

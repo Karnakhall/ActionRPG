@@ -57,6 +57,11 @@ void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z 
 {
 	DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
 	
+	DirectionalHitReact(ImpactPoint);
+}
+
+void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
+{
 	const FVector Forward = GetActorForwardVector();	// Pobieramy wektor Forward dla naszego "enemy"
 	// Lower Impact Point to the Enemy's Actor Location Z
 	const FVector ImpactLowered(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
@@ -69,17 +74,17 @@ void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z 
 	double Theta = FMath::Acos(CosTheta);
 	//	convert from radians to degrees
 	Theta = FMath::RadiansToDegrees(Theta); // Zamieniamy radiany na stopnie
-	
+
 	//if CrossProduct points down, Theta should be negative
 	const FVector CrossProduct = FVector::CrossProduct(Forward, ToHit);
-	
+
 	if (CrossProduct.Z < 0)
 	{
 		Theta *= -1;	// Jeœli CrossProduct.Z jest mniejsze od 0, to Theta mno¿ymy przez -1
 	}
 
 	FName Section("FromBack");	// Deklarujemy zmienn¹ Section i przypisujemy jej wartoœæ "FromBack"
-	
+
 	if (Theta >= -45.f && Theta < 45.f)	// Jeœli Theta jest wiêksze lub równe -45 i mniejsze od 45
 	{
 		Section = FName("FromFront");	// Przypisujemy zmiennej Section wartoœæ "FromFront"
@@ -94,9 +99,9 @@ void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z 
 	}
 	/*else if (Theta >= 135.f || Theta < -135.f)	// Jeœli Theta jest wiêksze lub równe 135 lub mniejsze od -135
 	{
-		Section = "FromBack";	// Przypisujemy zmiennej Section wartoœæ "FromBack"
+	Section = "FromBack";	// Przypisujemy zmiennej Section wartoœæ "FromBack"
 	}*/
-	
+
 
 	PlayHitReactMontage(Section);	// Odtwarzamy animacjê otrzymania ciosu z danego kierunku
 
@@ -106,7 +111,7 @@ void AEnemy::GetHit(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z 
 
 	// Draw a debug arrow to show the cross product
 	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + CrossProduct * 100.f, 5.f, FColor::Blue, 5.f);
-	
+
 	// Print the angle to the screen
 	if (GEngine)
 	{
