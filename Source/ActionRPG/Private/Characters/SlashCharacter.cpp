@@ -75,6 +75,7 @@ void ASlashCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type Collisio
 	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())	//Jeœli broñ jest wyekwipowana i nie jest nullptr, to wtedy mo¿emy w³¹czyæ lub wy³¹czyæ kolizjê
 	{
 		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
+		EquippedWeapon->IgnoreActors.Empty();	//Czyscimy tablicê aktorów, któr¹ mamy w broni
 	}
 }
 
