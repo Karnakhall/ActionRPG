@@ -93,6 +93,12 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 	//Tworzymy tablicê aktorów do ignorowania
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(this);	//Dodajemy nasz obiekt do tablicy aktorów do ignorowania. Dziêki temu nie bêdziemy sprawdzaæ kolizji z nasz¹ postaci¹
+	
+	for (AActor* Actor : IgnoreActors)	//Iterujemy przez tablicê IgnoreActors
+	{
+		ActorsToIgnore.AddUnique(Actor);	//Dodajemy aktorów do tablicy ActorsToIgnore. Dodajemy AddUnique abyœmy nie dodali tego samego "aktora" dwa razy.
+	}
+	
 	FHitResult BoxHit;//Tworzymy lokaln¹ zmienn¹, która bêdzie przechowywaæ informacje o FHITResult
 	//funkcja pozwala na sprawdzenie, czy w danej przestrzeni (okreœlonej przez pude³ko) znajduj¹ siê obiekty, oraz zbieranie informacji na temat tych obiektów, takich jak ich lokalizacja czy w³aœciwoœci
 	UKismetSystemLibrary::BoxTraceSingle(
@@ -115,5 +121,6 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		{
 			HitInterface->GetHit(BoxHit.ImpactPoint);	//Wywo³ujemy funkcjê GetHit z interfejsu HitInterface
 		}
+		IgnoreActors.AddUnique(BoxHit.GetActor());	//Dodajemy trafionego aktora do tablicy IgnoreActors
 	}
 }

@@ -20,6 +20,8 @@ public:
 	void Equip(USceneComponent* InParent, FName InSocketName);
 	//Funkcja do "doczepienia" broni do odpowiedniego socketu lub stworzonego nowego socketu
 	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
+
+	TArray<AActor*> IgnoreActors;	//Array of actors to ignore
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -50,6 +52,7 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	//For the sphere collision
 	USceneComponent* BoxTraceEnd;
+
 
 public:
 	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }	//Getter for the weapon box
