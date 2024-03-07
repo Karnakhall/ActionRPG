@@ -37,6 +37,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundBase* HitSound;	//DüwiÍk otrzymania ciosu. Przechowujemy ten asset we wskaüniku
+
+	UPROPERTY(EditAnywhere, Category = "VisualEffects")
+	UParticleSystem* HitParticles;	//Particle system otrzymania ciosu. Przechowujemy ten asset we wskaüniku
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
