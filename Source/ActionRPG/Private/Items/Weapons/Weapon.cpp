@@ -122,5 +122,7 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 			HitInterface->GetHit(BoxHit.ImpactPoint);	//Wywo³ujemy funkcjê GetHit z interfejsu HitInterface
 		}
 		IgnoreActors.AddUnique(BoxHit.GetActor());	//Dodajemy trafionego aktora do tablicy IgnoreActors
+
+		CreateFields(BoxHit.ImpactPoint);	//Tworzymy pole "zniszczenia" na podstawie punktu trafienia
 	}
 }

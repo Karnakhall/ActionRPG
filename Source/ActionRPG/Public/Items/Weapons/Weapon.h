@@ -36,6 +36,9 @@ protected:
 	//Delegate function for box overlap
 	UFUNCTION()
 	void OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void CreateFields(const FVector& FieldLocation);	//Function to create fields
 private:
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	//For the sound of the equip weapon
