@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interfaces/HitInterface.h"
 #include "BreakableActor.generated.h"
 
 
 class UGeometryCollectionComponent;	// Forward declaration
 UCLASS()
-class ACTIONRPG_API ABreakableActor : public AActor
+class ACTIONRPG_API ABreakableActor : public AActor, public IHitInterface
 {
 	GENERATED_BODY()
 	
@@ -18,6 +19,8 @@ public:
 	ABreakableActor();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void GetHit(const FVector& ImpactPoint) override;	// Implementujemy funkcjê GetHit z interfejsu HitInterface
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -13,6 +13,7 @@ ABreakableActor::ABreakableActor()
 	GeometryCollection = CreateDefaultSubobject<UGeometryCollectionComponent>(TEXT("GeometryCollection"));	// Create the GeometryCollectionComponent
 	SetRootComponent(GeometryCollection);	// Set the GeometryCollectionComponent as the root component
 	GeometryCollection->SetGenerateOverlapEvents(true);	// Enable overlap events
+	GeometryCollection->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);	// Ignore camera
 }
 
 // Called when the game starts or when spawned
@@ -27,5 +28,9 @@ void ABreakableActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ABreakableActor::GetHit(const FVector& ImpactPoint)
+{
 }
 
