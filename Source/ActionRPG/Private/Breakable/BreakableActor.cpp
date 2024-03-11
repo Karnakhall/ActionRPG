@@ -2,13 +2,17 @@
 
 
 #include "Breakable/BreakableActor.h"
+#include "GeometryCollection/GeometryCollectionComponent.h"
 
 // Sets default values
 ABreakableActor::ABreakableActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
+	GeometryCollection = CreateDefaultSubobject<UGeometryCollectionComponent>(TEXT("GeometryCollection"));	// Create the GeometryCollectionComponent
+	SetRootComponent(GeometryCollection);	// Set the GeometryCollectionComponent as the root component
+	GeometryCollection->SetGenerateOverlapEvents(true);	// Enable overlap events
 }
 
 // Called when the game starts or when spawned

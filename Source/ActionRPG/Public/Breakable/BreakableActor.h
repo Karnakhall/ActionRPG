@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "BreakableActor.generated.h"
 
+
+class UGemotryCollectionComponent;	// Forward declaration
 UCLASS()
 class ACTIONRPG_API ABreakableActor : public AActor
 {
@@ -14,13 +16,14 @@ class ACTIONRPG_API ABreakableActor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ABreakableActor();
-
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
+	UPROPERTY(VisibleAnywhere)
+	UGemotryCollectionComponent* GeometryCollection;
 
 };
