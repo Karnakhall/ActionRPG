@@ -7,7 +7,7 @@
 #include "BreakableActor.generated.h"
 
 
-class UGemotryCollectionComponent;	// Forward declaration
+class UGeometryCollectionComponent;	// Forward declaration
 UCLASS()
 class ACTIONRPG_API ABreakableActor : public AActor
 {
@@ -24,6 +24,6 @@ protected:
 
 private:
 	UPROPERTY(VisibleAnywhere)
-	UGemotryCollectionComponent* GeometryCollection;
+	UGeometryCollectionComponent* GeometryCollection;
 
 };
