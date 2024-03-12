@@ -45,7 +45,9 @@ void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)	// Imple
 	{
 		FVector Location = GetActorLocation();	// Get the location of the actor
 		Location.Z += 75.0f;	// Increase the Z value of the location
-		World->SpawnActor<ATreasure>(TreasureClasses[6], Location, GetActorRotation());	// Spawn the treasure at the location
+
+		const int32 Selection = FMath::RandRange(0, TreasureClasses.Num() - 1);	// Select a random treasure class. FMath::RandRange returns a random integer between the two values passed as arguments
+		World->SpawnActor<ATreasure>(TreasureClasses[Selection], Location, GetActorRotation());	// Spawn the treasure at the location
 	}
 }
 
