@@ -41,11 +41,11 @@ void ABreakableActor::Tick(float DeltaTime)
 void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)	// Implement the GetHit function from the HitInterface
 {
 	UWorld* World = GetWorld();
-	if (World && TreasureClass)	// Check if the world and the treasure class are not null
+	if (World && TreasureClasses.Num() > 0)	//
 	{
 		FVector Location = GetActorLocation();	// Get the location of the actor
 		Location.Z += 75.0f;	// Increase the Z value of the location
-		World->SpawnActor<ATreasure>(TreasureClass, Location, GetActorRotation());	// Spawn the treasure at the location
+		World->SpawnActor<ATreasure>(TreasureClasses[0], Location, GetActorRotation());	// Spawn the treasure at the location
 	}
 }
 
