@@ -40,6 +40,12 @@ void ABreakableActor::Tick(float DeltaTime)
 
 void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)	// Implement the GetHit function from the HitInterface
 {
+	if (bBroken)	// If the object is already broken
+	{
+		return;	// Return
+	}
+	bBroken = true;	// Set the broken flag to true
+
 	UWorld* World = GetWorld();
 	if (World && TreasureClasses.Num() > 0)	//
 	{

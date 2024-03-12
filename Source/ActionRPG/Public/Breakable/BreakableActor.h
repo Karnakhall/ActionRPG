@@ -37,5 +37,5 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Breakable Properties")
 	TArray<TSubclassOf<class ATreasure>> TreasureClasses;	// Klasa przedmiotu, który zostanie wygenerowany po zniszczeniu obiektu
 	
-
+	bool bBroken = false;	// Czy obiekt zosta³ zniszczony
 };
