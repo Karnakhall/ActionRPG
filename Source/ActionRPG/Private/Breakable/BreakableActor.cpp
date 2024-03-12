@@ -19,10 +19,9 @@ ABreakableActor::ABreakableActor()
 	GeometryCollection->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);	// Ignore pawn
 
 	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));	// Create the CapsuleComponent
-	Capsule->SetupAttachment(GeometryCollection);	// Attach the CapsuleComponent to the GeometryCollectionComponent
-	Capsule->SetGenerateOverlapEvents(true);	// Enable overlap events
-	Capsule->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);	// Ignore camera
-	Capsule->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);	// Overlap pawn
+	Capsule->SetupAttachment(GetRootComponent());	// Attach the CapsuleComponent to the root component
+	Capsule->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);	// Ignore all channels
+	Capsule->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);	// Block pawn
 }
 
 // Called when the game starts or when spawned
