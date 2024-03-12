@@ -34,7 +34,7 @@ protected:
 private:
 	
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Breakable Properties")
 	TSubclassOf<class ATreasure> TreasureClass;	// Klasa przedmiotu, który ma byæ spawnowany po zniszczeniu
 
 };
