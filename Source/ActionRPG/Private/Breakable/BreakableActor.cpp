@@ -4,6 +4,7 @@
 #include "Breakable/BreakableActor.h"
 #include "GeometryCollection/GeometryCollectionComponent.h"
 #include "Items/Treasure.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ABreakableActor::ABreakableActor()
@@ -16,6 +17,12 @@ ABreakableActor::ABreakableActor()
 	GeometryCollection->SetGenerateOverlapEvents(true);	// Enable overlap events
 	GeometryCollection->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);	// Ignore camera
 	GeometryCollection->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);	// Ignore pawn
+
+	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));	// Create the CapsuleComponent
+	Capsule->SetupAttachment(GeometryCollection);	// Attach the CapsuleComponent to the GeometryCollectionComponent
+	Capsule->SetGenerateOverlapEvents(true);	// Enable overlap events
+	Capsule->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);	// Ignore camera
+	Capsule->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);	// Overlap pawn
 }
 
 // Called when the game starts or when spawned

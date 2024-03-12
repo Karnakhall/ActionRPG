@@ -25,9 +25,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UGeometryCollectionComponent* GeometryCollection;	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class UCapsuleComponent* Capsule;	// Kapsu³a, która bêdzie wykorzystywana do wykrywania kolizji z bohaterem
+
 private:
-	UPROPERTY(VisibleAnywhere)
-	UGeometryCollectionComponent* GeometryCollection;
+	
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ATreasure> TreasureClass;	// Klasa przedmiotu, który ma byæ spawnowany po zniszczeniu
