@@ -3,6 +3,7 @@
 
 #include "Breakable/BreakableActor.h"
 #include "GeometryCollection/GeometryCollectionComponent.h"
+#include "Items/Treasure.h"
 
 // Sets default values
 ABreakableActor::ABreakableActor()
@@ -14,6 +15,7 @@ ABreakableActor::ABreakableActor()
 	SetRootComponent(GeometryCollection);	// Set the GeometryCollectionComponent as the root component
 	GeometryCollection->SetGenerateOverlapEvents(true);	// Enable overlap events
 	GeometryCollection->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);	// Ignore camera
+	GeometryCollection->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);	// Ignore pawn
 }
 
 // Called when the game starts or when spawned
@@ -30,8 +32,14 @@ void ABreakableActor::Tick(float DeltaTime)
 
 }
 
-void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)
+void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)	// Implement the GetHit function from the HitInterface
 {
-	//GetWorld()->SpawnActor();
+	UWorld* World = GetWorld();
+	if (World && TreasureClass)	// Check if the world and the treasure class are not null
+	{
+		FVector Location = GetActorLocation();	// Get the location of the actor
+		Location.Z += 75.0f;	// Increase the Z value of the location
+		World->SpawnActor<ATreasure>(TreasureClass, Location, GetActorRotation());	// Spawn the treasure at the location
+	}
 }
 

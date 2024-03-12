@@ -30,6 +30,6 @@ private:
 	UGeometryCollectionComponent* GeometryCollection;
 
 	UPROPERTY(EditAnywhere)
-	UClass* TreasureClass;	// Klasa przedmiotu, który ma byæ spawnowany po zniszczeniu
+	TSubclassOf<class ATreasure> TreasureClass;	// Klasa przedmiotu, który ma byæ spawnowany po zniszczeniu
 
 };
