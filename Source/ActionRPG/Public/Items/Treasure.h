@@ -21,4 +21,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundBase* PickupSound;	//DŸwiêk podnoszenia z³ota. Przechowujemy ten asset we wskaŸniku
+
+	UPROPERTY(EditAnywhere, Category = "Treasure Properties")
+	int32 Gold;	//Iloœæ z³ota, jak¹ otrzymamy po podniesieniu przedmiotu
 };
