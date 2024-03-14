@@ -28,6 +28,8 @@ ABreakableActor::ABreakableActor()
 void ABreakableActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// example how doing this in c++ = GeometryCollection->OnChaosBreakEvent.AddDynamic(this, &ABreakableActor::GetHit);	// Bind the GetHit function to the OnChaosBreakEvent
 	
 }
 
