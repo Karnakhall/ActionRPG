@@ -8,6 +8,9 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji AttributeComponent
+#include "Components/WidgetComponent.h"
+
+
 
 // Sets default values
 AEnemy::AEnemy()
