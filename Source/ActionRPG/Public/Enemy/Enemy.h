@@ -24,10 +24,10 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;	// Implementujemy funkcjê GetHit z interfejsu HitInterface
+	void DirectionalHitReact(const FVector& ImpactPoint);	//Funkcja do reakcji na cios w zale¿noœci od kierunku
 
-	void DirectionalHitReact(const FVector& ImpactPoint);
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obra¿eñ
 
 private:
 
