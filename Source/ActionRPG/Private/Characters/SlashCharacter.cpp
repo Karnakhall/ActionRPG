@@ -137,7 +137,7 @@ void ASlashCharacter::EKeyPresed()
 	if (OverlappingWeapon)
 	{
 		//Jeœli klikniemy przycisk E, to podnosimy broñ i doczepiamy do socketu w d³oni
-		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
 		
 		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 		//I need to set up OverlappingItem to nullptr, because we don't want to still store the address of the weapon we pick up. Otherwise we will try do this whole process again
