@@ -9,7 +9,7 @@
 
 class UAnimMontage;	// Zadeklarowany w SlashCharacter.h
 class UAttributeComponent;	//Zadeklarowany w AttributeComponent.h
-class UWidgetComponent;	//Zadeklarowany w HealthBarComponent.h
+class UHealthBarComponent;	//Zadeklarowany w HealthBarComponent.h
 
 UCLASS()
 class ACTIONRPG_API AEnemy : public ACharacter, public IHitInterface	// Dziedziczymy z IHitInterface
@@ -35,7 +35,7 @@ private:
 	UAttributeComponent* Attributes;	// Wskaünik do komponentu atrybutÛw
 
 	UPROPERTY(VisibleAnywhere)
-	UWidgetComponent* HealthBarWidget;	// Wskaünik do komponentu widgetu paska øycia
+	UHealthBarComponent* HealthBarWidget;	// Wskaünik do komponentu widgetu paska øycia
 	/**
 	*Animation montages
 	*/

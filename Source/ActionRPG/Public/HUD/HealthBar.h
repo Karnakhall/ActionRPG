@@ -14,7 +14,7 @@ class ACTIONRPG_API UHealthBar : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(meta = (BindWidget))
-	class UProgressBar* HealthBar;
+	UPROPERTY(meta = (BindWidget))	//Deklarujemy, ¿e chcemy zwi¹zaæ ten wskaŸnik z widgetem w edytorze
+	class UProgressBar* HealthBar;	
 	
 };
