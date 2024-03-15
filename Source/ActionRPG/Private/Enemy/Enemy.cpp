@@ -34,11 +34,6 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (HealthBarWidget)
-	{
-		HealthBarWidget->SetHealthPercent(1.f);	// Ustawiamy procent ¿ycia na 10%
-	}
 }
 
 void AEnemy::PlayHitReactMontage(const FName& SectionName)	// Deklarujemy funkcjê PlayHitReactMontage z Enemy.h
@@ -151,6 +146,13 @@ void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)	// Deklarujemy funk
 
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	return 0.0f;
+	if (Attributes && HealthBarWidget)
+	{
+		Attributes->ReceiveDamage(DamageAmount);	// Wywo³ujemy funkcjê ReceiveDamage z klasy UAttributeComponent
+
+		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());	
+		
+	}
+	return DamageAmount;	
 }
 

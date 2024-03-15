@@ -35,9 +35,12 @@ void AWeapon::BeginPlay()
 }
 
 //Funkcja do podniesienia broni
-void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
+void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator)
 {
-	AttachMeshToSocket(InParent, InSocketName);
+	SetOwner(NewOwner);	//Ustawiamy nowego w³aœciciela
+	SetInstigator(NewInstigator);	//Ustawiamy nowego instigatora
+
+	AttachMeshToSocket(InParent, InSocketName);	//Doczepiamy broñ do socketu
 	//Zmieniamy stan broni na EIS_Equipped po podniesieniu
 	ItemState = EItemState::EIS_Equipped;
 	if (EquipSound)
@@ -129,5 +132,13 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		IgnoreActors.AddUnique(BoxHit.GetActor());	//Dodajemy trafionego aktora do tablicy IgnoreActors
 
 		CreateFields(BoxHit.ImpactPoint);	//Tworzymy pole "zniszczenia" na podstawie punktu trafienia
+		
+		UGameplayStatics::ApplyDamage(
+			BoxHit.GetActor(),	//Zadajmy obra¿enia trafionemu aktorowi
+			Damage,	//Obra¿enia
+			GetInstigator()->GetController(),	//Instigator
+			this,		//Obiekt, który zadaje obra¿enia
+			UDamageType::StaticClass()	//Typ obra¿eñ
+		);	//Zadajemy obra¿enia trafionemu aktorowi
 	}
 }

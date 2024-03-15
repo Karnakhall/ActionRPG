@@ -17,7 +17,7 @@ class ACTIONRPG_API AWeapon : public AItem
 	GENERATED_BODY()
 public:
 	AWeapon();	//Constructor
-	void Equip(USceneComponent* InParent, FName InSocketName);
+	void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
 	//Funkcja do "doczepienia" broni do odpowiedniego socketu lub stworzonego nowego socketu
 	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
 
@@ -56,6 +56,8 @@ private:
 	//For the sphere collision
 	USceneComponent* BoxTraceEnd;
 
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	float Damage = 20.f;	//Damage of the weapon
 
 public:
 	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox; }	//Getter for the weapon box

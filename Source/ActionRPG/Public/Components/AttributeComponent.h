@@ -29,5 +29,8 @@ private:
 	// Maximum health of the actor
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
 	float MaxHealth;	
-		
+	
+public:	// Getters and setters
+	void ReceiveDamage(float Damage);	//Funkcja do otrzymywania obra¿eñ
+	float GetHealthPercent();	//Funkcja do pobierania ¿ycia
 };

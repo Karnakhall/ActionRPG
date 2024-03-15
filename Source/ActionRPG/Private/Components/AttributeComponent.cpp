@@ -23,6 +23,16 @@ void UAttributeComponent::BeginPlay()
 	
 }
 
+void UAttributeComponent::ReceiveDamage(float Damage)	//Funkcja do otrzymywania obra¿eñ
+{
+	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);	//Odejmujemy obra¿enia od ¿ycia, ale nie jest mniejsze ni¿ 0 albo wiêksze ni¿ maks. ¿ycie
+}
+
+float UAttributeComponent::GetHealthPercent()
+{
+	return Health/MaxHealth;	//Zwracamy wartoœæ ¿ycia w procentach
+}
+
 
 // Called every frame
 void UAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
