@@ -8,6 +8,7 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Interfaces/HitInterface.h"	//Potrzebujemy tego nag³ówka aby móc u¿ywaæ funkcji z interfejsu HitInterface
+#include "NiagaraComponent.h"	//Potrzebujemy tego nag³ówka aby móc u¿ywaæ efektów Niagara
  
 
 AWeapon::AWeapon() 
@@ -51,6 +52,10 @@ void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 	{	//Teraz bêdziemy chcieli wy³¹czyæ kolizjê naszej broni z naszym bohaterem
 		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+	}
+	if (EmbersEffect)	//Sprawdzamy czy emberseffect is not nullptr
+	{
+		EmbersEffect->Deactivate();	//Deaktywujemy efekt
 	}
 }
 //Funkcja do "doczepienia" broni do odpowiedniego socketu lub stworzonego nowego socketu

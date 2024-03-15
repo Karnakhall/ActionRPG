@@ -5,7 +5,7 @@
 #include "ActionRPG/DebugMacros.h"
 #include "Components/SphereComponent.h"
 #include "Characters/SlashCharacter.h"	//Musimy dodaæ plik nag³ówkowy z naszym bohaterem aby móc podnieœæ broñ
-
+#include "NiagaraComponent.h"
 
 
 
@@ -26,6 +26,9 @@ AItem::AItem() // I can asigned here Amplitude(0.25f)
 	//Added sphere component
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	Sphere->SetupAttachment(GetRootComponent());
+
+	EmbersEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("EmbersEffect"));	// Create the NiagaraComponent
+	EmbersEffect->SetupAttachment(GetRootComponent());	// Attach the NiagaraComponent to the root component
 }
 
 // Called when the game starts or when spawned
