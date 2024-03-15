@@ -25,6 +25,9 @@ AEnemy::AEnemy()
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore); // Set the collision response to Camera
 	
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));	// Tworzymy domyœlny subobiekt "Attributes" z klasy UAttributeComponent
+	
+	HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));	// Tworzymy domyœlny subobiekt "HealthBarWidget" z klasy UWidgetComponent
+	HealthBarWidget->SetupAttachment(GetRootComponent());	// Ustawiamy HealthBarWidget jako podobiekt do naszego "enemy"
 }
 
 // Called when the game starts or when spawned
