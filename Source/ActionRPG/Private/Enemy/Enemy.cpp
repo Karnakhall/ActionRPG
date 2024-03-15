@@ -7,6 +7,7 @@
 #include "ActionRPG/DebugMacros.h"	// Potrzebujemy tego nag³ówka aby móc u¿ywaæ makr debuguj¹cych
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji AttributeComponent
 
 // Sets default values
 AEnemy::AEnemy()
@@ -20,6 +21,7 @@ AEnemy::AEnemy()
 	GetMesh()->SetGenerateOverlapEvents(true);	// Set the mesh to generate overlap events
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore); // Set the collision response to Camera
 	
+	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));	// Tworzymy domyœlny subobiekt "Attributes" z klasy UAttributeComponent
 }
 
 // Called when the game starts or when spawned

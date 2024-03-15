@@ -8,6 +8,7 @@
 #include "Enemy.generated.h"
 
 class UAnimMontage;	// Zadeklarowany w SlashCharacter.h
+class UAttributeComponent;	//Zadeklarowany w AttributeComponent.h
 
 UCLASS()
 class ACTIONRPG_API AEnemy : public ACharacter, public IHitInterface	// Dziedziczymy z IHitInterface
@@ -28,6 +29,10 @@ public:
 	void DirectionalHitReact(const FVector& ImpactPoint);
 
 private:
+
+	UPROPERTY(VisibleAnywhere)
+	UAttributeComponent* Attributes;	// WskaŸnik do komponentu atrybutów
+
 	/**
 	*Animation montages
 	*/
