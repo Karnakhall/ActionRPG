@@ -37,7 +37,7 @@ void AEnemy::BeginPlay()
 	
 	if (HealthBarWidget)
 	{
-		HealthBarWidget->SetHealthPercent(.1f);	// Ustawiamy procent ¿ycia na 10%
+		HealthBarWidget->SetHealthPercent(1.f);	// Ustawiamy procent ¿ycia na 10%
 	}
 }
 
