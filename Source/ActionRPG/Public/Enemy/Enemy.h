@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/HitInterface.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji HitInterface 
+#include "Characters/CharacterTypes.h"
 #include "Enemy.generated.h"
 
 class UAnimMontage;	// Zadeklarowany w SlashCharacter.h
@@ -51,6 +52,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "VisualEffects")
 	UParticleSystem* HitParticles;	//Particle system otrzymania ciosu. Przechowujemy ten asset we wskaŸniku
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -60,6 +62,9 @@ protected:
 	* Play Montage functions
 	*/
 	void PlayHitReactMontage(const FName& SectionName);	//Funkcja do odtwarzania animacji otrzymania ciosu
+
+	UPROPERTY(BlueprintReadOnly)
+	EDeathPose DeathPose = EDeathPose::EDP_Alive;	//Zmienna do œledzenia pozycji œmierci
 
 public:	
 	
