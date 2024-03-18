@@ -33,4 +33,5 @@ private:
 public:	// Getters and setters
 	void ReceiveDamage(float Damage);	//Funkcja do otrzymywania obra¿eñ
 	float GetHealthPercent();	//Funkcja do pobierania ¿ycia
+	bool IsAlive();	//Funkcja do sprawdzania czy aktor ¿yje
 };

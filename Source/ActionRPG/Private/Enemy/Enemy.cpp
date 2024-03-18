@@ -36,6 +36,47 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 }
 
+void AEnemy::Die()
+{
+	//	TODO: play death montage
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && DeathMontage)	//Jeœli AnimInstance i EquipMontage nie s¹ nullpointerami, to odtwarzamy animacjê equip
+	{
+		AnimInstance->Montage_Play(DeathMontage);
+		//Mamy dwie sekcje w animacji ataku, wiêc losujemy która z nich zostanie odtworzona, wiêc dodajemy liczbê losow¹ 0 albo 1
+		const int32 Selection = FMath::RandRange(0, 5);	//Trochê jak rzut monet¹, generuje nam 0 albo 1
+		//Tworzymy zmienn¹, która bêdzie przechowywaæ nazwê sekcji animacji - pozostawiamy j¹ pust¹ poniewa¿ sekcja zostanie wybrana przez switch.
+		FName SectionName = FName();
+		//Wybieramy sekcjê animacji ataku i zmieniamy siê pomiêdzy nimi
+		switch (Selection)
+		{
+		case 0:
+			SectionName = FName("Death1");
+			//Break jest potrzebny, ¿eby wyjœæ z pêtli switch
+			break;
+		case 1:
+			SectionName = FName("Death2");
+			break;
+		case 2:
+			SectionName = FName("Death3");
+			break;
+		case 3:
+			SectionName = FName("Death4");
+			break;
+		case 4:
+			SectionName = FName("Death5");
+			break;
+		case 5:
+			SectionName = FName("Death6");
+			break;
+		default:
+			break;
+		}
+		//Po wyborze sekcji animacji, odtwarzamy j¹
+		AnimInstance->Montage_JumpToSection(SectionName, DeathMontage);
+	}
+}
+
 void AEnemy::PlayHitReactMontage(const FName& SectionName)	// Deklarujemy funkcjê PlayHitReactMontage z Enemy.h
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -65,7 +106,14 @@ void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)	// Deklarujemy fu
 {
 	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
 	
-	DirectionalHitReact(ImpactPoint);	// Wywo³ujemy funkcjê DirectionalHitReact z argumentem ImpactPoint
+	if (Attributes && Attributes->IsAlive())	// Sprawdzamy czy Attributes nie jest nullpointerem i czy "enemy" ¿yje
+	{
+		DirectionalHitReact(ImpactPoint);	// Wywo³ujemy funkcjê DirectionalHitReact z argumentem ImpactPoint
+	}
+	else
+	{
+		Die();	// Wywo³ujemy funkcjê Die
+	}
 	
 	if (HitSound)	// Sprawdzamy czy HitSound nie jest nullpointerem
 	{

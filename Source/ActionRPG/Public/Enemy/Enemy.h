@@ -43,6 +43,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* HitReactMontage;	//Animacja otrzymania ciosu
 
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* DeathMontage;	//Animacja œmierci
+
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundBase* HitSound;	//DŸwiêk otrzymania ciosu. Przechowujemy ten asset we wskaŸniku
 
@@ -51,6 +54,8 @@ private:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void Die();	//Funkcja do œmierci
 	/**
 	* Play Montage functions
 	*/

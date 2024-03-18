@@ -124,6 +124,14 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		);
 	if (BoxHit.GetActor())	//Sprawdzamy czy trafiliœmy w "aktora"
 	{
+		UGameplayStatics::ApplyDamage(
+			BoxHit.GetActor(),	//Zadajmy obra¿enia trafionemu aktorowi
+			Damage,	//Obra¿enia
+			GetInstigator()->GetController(),	//Instigator
+			this,		//Obiekt, który zadaje obra¿enia
+			UDamageType::StaticClass()	//Typ obra¿eñ
+		);	//Zadajemy obra¿enia trafionemu aktorowi
+
 		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());	//Castujemy trafionego aktora do interfejsu HitInterface
 		if (HitInterface)	//Sprawdzamy czy trafiony aktor ma interfejs HitInterface
 		{
@@ -133,12 +141,5 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 
 		CreateFields(BoxHit.ImpactPoint);	//Tworzymy pole "zniszczenia" na podstawie punktu trafienia
 		
-		UGameplayStatics::ApplyDamage(
-			BoxHit.GetActor(),	//Zadajmy obra¿enia trafionemu aktorowi
-			Damage,	//Obra¿enia
-			GetInstigator()->GetController(),	//Instigator
-			this,		//Obiekt, który zadaje obra¿enia
-			UDamageType::StaticClass()	//Typ obra¿eñ
-		);	//Zadajemy obra¿enia trafionemu aktorowi
 	}
 }
