@@ -62,7 +62,8 @@ private:
 	/*
 	* Navigation
 	*/
-
+	UPROPERTY()
+	class AAIController* EnemyController;	//Wskaünik do kontrolera AI
 	// Current patrol target
 	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
 	AActor* PatrolTarget;	//Wskaünik do celu patrolu

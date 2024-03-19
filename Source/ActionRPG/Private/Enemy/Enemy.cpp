@@ -10,6 +10,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji AttributeComponent
 #include "HUD/HealthBarComponent.h"
+#include "AIController.h"
+#include "Navigation/PathFollowingComponent.h"
 
 
 
@@ -46,7 +48,23 @@ void AEnemy::BeginPlay()
 		HealthBarWidget->SetVisibility(false);	// Ustawiamy widocznoœæ paska ¿ycia na false
 	}
 	
-	//Cast<AIController>(GetController());
+	//	Przypisujemy wskaŸnik do kontrolera przeciwnika
+	EnemyController = Cast<AAIController>(GetController());
+	if (EnemyController && PatrolTarget)
+	{
+		FAIMoveRequest MoveRequest;	// Tworzymy strukturê FAIMoveRequest
+		MoveRequest.SetGoalActor(PatrolTarget);	// Ustawiamy cel ruchu na PatrolTarget
+		MoveRequest.SetAcceptanceRadius(15.f);	// Ustawiamy promieñ akceptacji na 15
+		FNavPathSharedPtr NavPath;	// Tworzymy wskaŸnik do œcie¿ki nawigacji
+		EnemyController->MoveTo(MoveRequest, &NavPath);	// Wywo³ujemy funkcjê MoveTo z kontrolera przeciwnika
+		TArray<FNavPathPoint>& PathPoints = NavPath->GetPathPoints();	// Tworzymy tablicê PathPoints i przypisujemy jej wartoœæ œcie¿ki nawigacji
+		//Pêtla for, która rysuje kule debugowania na œcie¿ce nawigacji
+		for (auto& Point : PathPoints)
+		{
+			const FVector Location = Point.Location;	// Pobieramy lokalizacjê punktu
+			DrawDebugSphere(GetWorld(), Location, 12.f, 12, FColor::Emerald, false, 10.f);	// Rysujemy sferê debugowania
+		}
+	}
 }
 
 void AEnemy::Die()
