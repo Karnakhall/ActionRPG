@@ -53,6 +53,11 @@ private:
 	UPROPERTY(EditAnywhere, Category = "VisualEffects")
 	UParticleSystem* HitParticles;	//Particle system otrzymania ciosu. Przechowujemy ten asset we wskaŸniku
 
+	UPROPERTY()
+	AActor* CombatTarget;	//WskaŸnik do celu walki
+
+	UPROPERTY(EditAnywhere)
+	double CombatRadius = 500.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

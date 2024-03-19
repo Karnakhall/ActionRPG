@@ -34,6 +34,10 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	if (HealthBarWidget)	// Sprawdzamy czy HealthBarWidget nie jest nullpointerem
+	{
+		HealthBarWidget->SetVisibility(false);	// Ustawiamy widocznoœæ paska ¿ycia na false
+	}
 }
 
 void AEnemy::Die()
@@ -81,8 +85,14 @@ void AEnemy::Die()
 		//Po wyborze sekcji animacji, odtwarzamy j¹
 		AnimInstance->Montage_JumpToSection(SectionName, DeathMontage);
 	}
+	//Jeœli przeciwnik ma HealthBarWidget, to ustawiamy jego widocznoœæ na false w momencie œmierci
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(false);	//Ustawiamy widocznoœæ paska ¿ycia na false
+	}
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);	// Wy³¹czamy kolizjê kapsu³y po œmierci przeciwnika
+	SetLifeSpan(5.f);	// Ustawiamy czas po którym, cia³o przeciwnika znika po 3 sekundach od jego œmierci
 }
 
 void AEnemy::PlayHitReactMontage(const FName& SectionName)	// Deklarujemy funkcjê PlayHitReactMontage z Enemy.h
@@ -101,6 +111,19 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (CombatTarget)
+	{
+		const double DistanceToTarget = (CombatTarget->GetActorLocation() - GetActorLocation()).Size();	//Obliczamy odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget)
+		if (DistanceToTarget > CombatRadius)	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ CombatRadius to:
+		{
+			CombatTarget = nullptr;	//Ustawiamy CombatTarget na nullptr
+			if (HealthBarWidget)
+			{
+				HealthBarWidget->SetVisibility(false);	//I ustawiamy widocznoœæ paska ¿ycia na false
+			}
+		}
+	}
+
 }
 
 // Called to bind functionality to input
@@ -113,7 +136,11 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z Enemy.h
 {
 	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
-	
+	if (HealthBarWidget)	// Sprawdzamy czy HealthBarWidget nie jest nullpointerem
+	{
+		HealthBarWidget->SetVisibility(true);	// Ustawiamy widocznoœæ paska ¿ycia na true w momencie gdy przeciwnik otrzyma cios
+	}
+
 	if (Attributes && Attributes->IsAlive())	// Sprawdzamy czy Attributes nie jest nullpointerem i czy "enemy" ¿yje
 	{
 		DirectionalHitReact(ImpactPoint);	// Wywo³ujemy funkcjê DirectionalHitReact z argumentem ImpactPoint
@@ -209,6 +236,7 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());	
 		
 	}
+	CombatTarget = EventInstigator->GetPawn();	// Przypisujemy CombatTarget wartoœæ EventInstigator->GetPawn()
 	return DamageAmount;	
 }
 
