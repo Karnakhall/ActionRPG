@@ -58,6 +58,17 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 500.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
+
+	/*
+	* Navigation
+	*/
+
+	// Current patrol target
+	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
+	AActor* PatrolTarget;	//WskaŸnik do celu patrolu
+
+	// Array of patrol points
+	TArray<AActor*> PatrolTargets;	//Tablica celów patrolu
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

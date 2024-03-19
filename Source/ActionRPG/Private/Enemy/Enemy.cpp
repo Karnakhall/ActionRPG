@@ -45,6 +45,8 @@ void AEnemy::BeginPlay()
 	{
 		HealthBarWidget->SetVisibility(false);	// Ustawiamy widocznoœæ paska ¿ycia na false
 	}
+	
+	//Cast<AIController>(GetController());
 }
 
 void AEnemy::Die()
