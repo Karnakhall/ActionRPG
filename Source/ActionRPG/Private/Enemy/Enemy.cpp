@@ -4,6 +4,7 @@
 #include "Enemy/Enemy.h"
 #include "Components/SkeletalMeshComponent.h" // for USkeletalMeshComponent
 #include "Components/CapsuleComponent.h" // for UCapsuleComponent"
+#include "GameFramework/CharacterMovementComponent.h" // for UCharacterMovementComponent
 #include "ActionRPG/DebugMacros.h"	// Potrzebujemy tego nag³ówka aby móc u¿ywaæ makr debuguj¹cych
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -28,6 +29,12 @@ AEnemy::AEnemy()
 	
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));	// Tworzymy domyœlny subobiekt "HealthBarWidget" z klasy UHealthBarComponent
 	HealthBarWidget->SetupAttachment(GetRootComponent());	// Ustawiamy HealthBarWidget jako podobiekt do naszego "enemy"
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;	// Obracamy naszego "enemy" w kierunku ruchu
+	
+	bUseControllerRotationPitch = false;	// Nie u¿ywamy kontrolera do obracania siê w osi X
+	bUseControllerRotationYaw = false;	// Nie u¿ywamy kontrolera do obracania siê w osi Y
+	bUseControllerRotationRoll = false;	// Nie u¿ywamy kontrolera do obracania siê w osi Z
 }
 
 // Called when the game starts or when spawned
