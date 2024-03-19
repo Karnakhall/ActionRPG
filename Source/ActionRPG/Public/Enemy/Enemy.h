@@ -69,6 +69,7 @@ private:
 	AActor* PatrolTarget;	//WskaŸnik do celu patrolu
 
 	// Array of patrol points
+	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
 	TArray<AActor*> PatrolTargets;	//Tablica celów patrolu
 protected:
 	// Called when the game starts or when spawned
