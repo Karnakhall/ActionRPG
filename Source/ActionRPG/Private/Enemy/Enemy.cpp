@@ -10,8 +10,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji AttributeComponent
 #include "HUD/HealthBarComponent.h"
-#include "AIController.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "AIController.h"
 
 
 
