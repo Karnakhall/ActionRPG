@@ -81,6 +81,8 @@ void AEnemy::Die()
 		//Po wyborze sekcji animacji, odtwarzamy j¹
 		AnimInstance->Montage_JumpToSection(SectionName, DeathMontage);
 	}
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);	// Wy³¹czamy kolizjê kapsu³y po œmierci przeciwnika
 }
 
 void AEnemy::PlayHitReactMontage(const FName& SectionName)	// Deklarujemy funkcjê PlayHitReactMontage z Enemy.h
