@@ -61,7 +61,7 @@ void AEnemy::BeginPlay()
 		//Pêtla for, która rysuje kule debugowania na œcie¿ce nawigacji
 		for (auto& Point : PathPoints)
 		{
-			const FVector Location = Point.Location;	// Pobieramy lokalizacjê punktu
+			const FVector& Location = Point.Location;	// Pobieramy lokalizacjê punktu
 			DrawDebugSphere(GetWorld(), Location, 12.f, 12, FColor::Emerald, false, 10.f);	// Rysujemy sferê debugowania
 		}
 	}
