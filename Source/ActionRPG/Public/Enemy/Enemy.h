@@ -11,6 +11,7 @@
 class UAnimMontage;	// Zadeklarowany w SlashCharacter.h
 class UAttributeComponent;	//Zadeklarowany w AttributeComponent.h
 class UHealthBarComponent;	//Zadeklarowany w HealthBarComponent.h
+class UPawnSensingComponent;	//Zadeklarowany w PawnSensingComponent.h
 
 UCLASS()
 class ACTIONRPG_API AEnemy : public ACharacter, public IHitInterface	// Dziedziczymy z IHitInterface
@@ -23,6 +24,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void CheckPatrolTarget();
+
+	void CheckCombatTarget();
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;	// Implementujemy funkcjê GetHit z interfejsu HitInterface
@@ -32,11 +37,17 @@ public:
 
 private:
 
+	/*
+	* Components
+	*/
+
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* Attributes;	// WskaŸnik do komponentu atrybutów
 
 	UPROPERTY(VisibleAnywhere)
 	UHealthBarComponent* HealthBarWidget;	// WskaŸnik do komponentu widgetu paska ¿ycia
+
+	UPawnSensingComponent* PawnSensing;	// WskaŸnik do komponentu PawnSensing
 	/**
 	*Animation montages
 	*/
@@ -65,7 +76,7 @@ private:
 	UPROPERTY()
 	class AAIController* EnemyController;	//WskaŸnik do kontrolera AI
 	// Current patrol target
-	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
+	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")//, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	AActor* PatrolTarget;	//WskaŸnik do celu patrolu
 
 	// Array of patrol points
@@ -75,12 +86,25 @@ private:
 	UPROPERTY(EditAnywhere)
 	double PatrolRadius = 200.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
 
+	FTimerHandle PatrolTimer;	//Timer do patrolu
+	void PatrolTimerFinished();	//Funkcja do zakoñczenia patrolu
+
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float WaitMin = 5.f;	//Minimalny czas oczekiwania
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float WaitMax = 10.f;	//Maksymalny czas oczekiwania
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void Die();	//Funkcja do œmierci
 	bool InTargetRange(AActor* Target, double Radius);	//Funkcja do sprawdzania czy przeciwnik jest w zasiêgu
+	void MoveToTarget(AActor* Target);	//Funkcja do poruszania siê do oznaczonych celów
+	AActor* ChoosePatrolTarget();	//Funkcja do wyboru celu patrolu
+	
+	UFUNCTION()
+	void PawnSeen(APawn* Pawn);	//Funkcja do widzenia pionka. Callback
 	/**
 	* Play Montage functions
 	*/
