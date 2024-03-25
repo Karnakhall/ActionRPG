@@ -94,6 +94,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "AI Navigation")
 	float WaitMax = 10.f;	//Maksymalny czas oczekiwania
 
+	EEnemyState EnemyState = EEnemyState::EES_Patrolling;	//Stan przeciwnika
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

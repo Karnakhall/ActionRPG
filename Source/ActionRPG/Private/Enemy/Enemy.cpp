@@ -182,9 +182,19 @@ AActor* AEnemy::ChoosePatrolTarget()	// Deklarujemy funkcjê ChoosePatrolTarget z
 	return nullptr;
 }
 
-void AEnemy::PawnSeen(APawn* Pawn)
+void AEnemy::PawnSeen(APawn* SeenPawn)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Pawn Seen!"))
+	if (EnemyState == EEnemyState::EES_Chasing) return;	// Sprawdzamy czy EnemyState jest równy EES_Chasing, sprawdzamy to tutaj poniewa¿ chcemy aby poni¿szy statement wykona³ siê tylko raz a nie ci¹gle
+	if (SeenPawn->ActorHasTag(FName("SlashCharacter")))	// Sprawdzamy czy Actor ma tag
+	{
+		EnemyState = EEnemyState::EES_Chasing;	// Ustawiamy EnemyState na EES_Chasing
+		GetWorldTimerManager().ClearTimer(PatrolTimer);	// Czyœcimy timer
+		GetCharacterMovement()->MaxWalkSpeed = 300.f;	// Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 300
+		CombatTarget = SeenPawn;	// Przypisujemy CombatTarget wartoœæ SeenPawn
+		MoveToTarget(CombatTarget);	// Wywo³ujemy funkcjê MoveToTarget z argumentem CombatTarget i powinien zacz¹æ nas goniæ
+		UE_LOG(LogTemp, Warning, TEXT("Pawn Seen! and chasing"))
+	}
+	
 }
 
 void AEnemy::PlayHitReactMontage(const FName& SectionName)	// Deklarujemy funkcjê PlayHitReactMontage z Enemy.h
@@ -203,9 +213,14 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	CheckCombatTarget();	// Wywo³ujemy funkcjê CheckCombatTarget
-	
-	CheckPatrolTarget();	// Wywo³ujemy funkcjê CheckPatrolTarget
+	if(EnemyState > EEnemyState::EES_Patrolling)	//Jeœli EnemyState jest wiêkszy od EES_Patrolling to:
+	{
+		CheckCombatTarget();	// Wywo³ujemy funkcjê CheckCombatTarget
+	}
+	else
+	{
+		CheckPatrolTarget();	// Wywo³ujemy funkcjê CheckPatrolTarget
+	}
 
 	/*if (PatrolTarget && EnemyController) ca³y kod poni¿ej mam powy¿szym if statementem
 	{
