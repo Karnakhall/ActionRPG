@@ -280,6 +280,22 @@ void AEnemy::CheckCombatTarget()
 		EnemyState = EEnemyState::EES_Patrolling;	//Ustawiamy EnemyState na EES_Patrolling
 		GetCharacterMovement()->MaxWalkSpeed = 125.f;	//Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 150
 		MoveToTarget(PatrolTarget);	//Wywo³ujemy funkcjê MoveToTarget z argumentem PatrolTarget
+		UE_LOG(LogTemp, Warning, TEXT("Lose interest"))
+	}
+	else if (!InTargetRange(CombatTarget, AttackRadius) && EnemyState != EEnemyState::EES_Chasing)	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ AttackRadius i EnemyState nie jest równy EES_Chasing to:
+	{
+		// Outside attack range, chase character
+		EnemyState = EEnemyState::EES_Chasing;	//Ustawiamy EnemyState na EES_Chasing
+		GetCharacterMovement()->MaxWalkSpeed = 300.f;	//Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 300
+		MoveToTarget(CombatTarget);	//Wywo³ujemy funkcjê MoveToTarget z argumentem CombatTarget
+		UE_LOG(LogTemp, Warning, TEXT("Chasing"))
+	}
+	else if (InTargetRange(CombatTarget, AttackRadius) && EnemyState != EEnemyState::EES_Attacking)	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest mniejsza ni¿ AttackRadius i EnemyState nie jest równy EES_Attacking to:
+	{
+		// Inside attack range, attack character
+		EnemyState = EEnemyState::EES_Attacking;	//Ustawiamy EnemyState na EES_Attacking
+		// TODO: Attack montage
+		UE_LOG(LogTemp, Warning, TEXT("Attacking"))
 	}
 }
 

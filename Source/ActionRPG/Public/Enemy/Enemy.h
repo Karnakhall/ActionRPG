@@ -70,6 +70,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 500.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
 
+	UPROPERTY(EditAnywhere)
+	double AttackRadius = 150.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
+
 	/*
 	* Navigation
 	*/
