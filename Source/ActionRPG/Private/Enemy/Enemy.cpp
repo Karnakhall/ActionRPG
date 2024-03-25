@@ -414,6 +414,9 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 		
 	}
 	CombatTarget = EventInstigator->GetPawn();	// Przypisujemy CombatTarget wartoœæ EventInstigator->GetPawn()
+	EnemyState = EEnemyState::EES_Chasing;	// Ustawiamy EnemyState na EES_Chasing
+	GetCharacterMovement()->MaxWalkSpeed = 300.f;	// Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 300
+	MoveToTarget(CombatTarget);	// Wywo³ujemy funkcjê MoveToTarget z argumentem CombatTarget
 	return DamageAmount;	
 }
 
