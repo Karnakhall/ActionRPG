@@ -187,12 +187,16 @@ void AEnemy::PawnSeen(APawn* SeenPawn)
 	if (EnemyState == EEnemyState::EES_Chasing) return;	// Sprawdzamy czy EnemyState jest równy EES_Chasing, sprawdzamy to tutaj poniewa¿ chcemy aby poni¿szy statement wykona³ siê tylko raz a nie ci¹gle
 	if (SeenPawn->ActorHasTag(FName("SlashCharacter")))	// Sprawdzamy czy Actor ma tag
 	{
-		EnemyState = EEnemyState::EES_Chasing;	// Ustawiamy EnemyState na EES_Chasing
 		GetWorldTimerManager().ClearTimer(PatrolTimer);	// Czyœcimy timer
 		GetCharacterMovement()->MaxWalkSpeed = 300.f;	// Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 300
 		CombatTarget = SeenPawn;	// Przypisujemy CombatTarget wartoœæ SeenPawn
-		MoveToTarget(CombatTarget);	// Wywo³ujemy funkcjê MoveToTarget z argumentem CombatTarget i powinien zacz¹æ nas goniæ
-		UE_LOG(LogTemp, Warning, TEXT("Pawn Seen! and chasing"))
+
+		if (EnemyState != EEnemyState::EES_Attacking)
+		{
+			EnemyState = EEnemyState::EES_Chasing;	// Ustawiamy EnemyState na EES_Chasing
+			MoveToTarget(CombatTarget);	// Wywo³ujemy funkcjê MoveToTarget z argumentem CombatTarget i powinien zacz¹æ nas goniæ
+			UE_LOG(LogTemp, Warning, TEXT("Pawn Seen! and chasing"))
+		}
 	}
 	
 }
