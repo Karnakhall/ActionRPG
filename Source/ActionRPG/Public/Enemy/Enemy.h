@@ -71,11 +71,16 @@ private:
 	// Array of patrol points
 	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
 	TArray<AActor*> PatrolTargets;	//Tablica celów patrolu
+
+	UPROPERTY(EditAnywhere)
+	double PatrolRadius = 200.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void Die();	//Funkcja do œmierci
+	bool InTargetRange(AActor* Target, double Radius);	//Funkcja do sprawdzania czy przeciwnik jest w zasiêgu
 	/**
 	* Play Montage functions
 	*/

@@ -122,6 +122,14 @@ void AEnemy::Die()
 	SetLifeSpan(5.f);	// Ustawiamy czas po którym, cia³o przeciwnika znika po 3 sekundach od jego œmierci
 }
 
+bool AEnemy::InTargetRange(AActor* Target, double Radius)	// Deklarujemy funkcjê InTargetRange z Enemy.h
+{
+	const double DistanceToTarget = (Target->GetActorLocation() - GetActorLocation()).Size();	//Obliczamy odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget)
+	DRAW_SPHERE_SingleFrame(GetActorLocation());
+	DRAW_SPHERE_SingleFrame(Target->GetActorLocation());
+	return DistanceToTarget <= Radius;
+}
+
 void AEnemy::PlayHitReactMontage(const FName& SectionName)	// Deklarujemy funkcjê PlayHitReactMontage z Enemy.h
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -140,14 +148,43 @@ void AEnemy::Tick(float DeltaTime)
 
 	if (CombatTarget)
 	{
-		const double DistanceToTarget = (CombatTarget->GetActorLocation() - GetActorLocation()).Size();	//Obliczamy odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget)
-		if (DistanceToTarget > CombatRadius)	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ CombatRadius to:
+		// const double DistanceToTarget = (CombatTarget->GetActorLocation() - GetActorLocation()).Size();	//Mamy to w InTargetRange. Obliczamy odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget)
+		if (!InTargetRange (CombatTarget, CombatRadius))	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ CombatRadius to:
 		{
 			CombatTarget = nullptr;	//Ustawiamy CombatTarget na nullptr
 			if (HealthBarWidget)
 			{
 				HealthBarWidget->SetVisibility(false);	//I ustawiamy widocznoœæ paska ¿ycia na false
 			}
+		}
+	}
+	if (PatrolTarget && EnemyController)
+	{
+		if (InTargetRange(PatrolTarget, PatrolRadius))
+		{
+			TArray<AActor*> ValidTargets;	// Tworzymy tablicê ValidTargets
+			for (AActor* Target : PatrolTargets)	// Pêtla for, która sprawdza czy Target jest ró¿ny od PatrolTarget
+			{
+				if (Target != PatrolTarget)	// Jeœli Target jest ró¿ny od PatrolTarget, to dodajemy go do tablicy ValidTargets
+				{
+					ValidTargets.AddUnique(Target);		// Dodajemy Target do tablicy ValidTargets
+				}
+			}
+
+
+			const int32 NumPatrolTargets = PatrolTargets.Num();	//Pobieramy iloœæ PatrolTargets
+			if (NumPatrolTargets > 0)
+			{
+				const int32 TargetSelection = FMath::RandRange(0, NumPatrolTargets);	//Losujemy numer z tablicy PatrolTargets
+				AActor* Target = PatrolTargets[TargetSelection];	//Przypisujemy Target wartoœæ PatrolTargets[TargetSelection]
+				PatrolTarget = Target;	//Przypisujemy PatrolTarget wartoœæ Target
+
+				FAIMoveRequest MoveRequest;	// Tworzymy strukturê FAIMoveRequest
+				MoveRequest.SetGoalActor(PatrolTarget);	// Ustawiamy cel ruchu na PatrolTarget
+				MoveRequest.SetAcceptanceRadius(15.f);	// Ustawiamy promieñ akceptacji na 15
+				EnemyController->MoveTo(MoveRequest);	// Wywo³ujemy funkcjê MoveTo z kontrolera przeciwnika
+			}
+						
 		}
 	}
 
