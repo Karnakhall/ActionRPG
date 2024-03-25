@@ -271,11 +271,15 @@ void AEnemy::CheckCombatTarget()
 	// const double DistanceToTarget = (CombatTarget->GetActorLocation() - GetActorLocation()).Size();	//Mamy to w InTargetRange. Obliczamy odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget)
 	if (!InTargetRange(CombatTarget, CombatRadius))	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ CombatRadius to:
 	{
+		// Outside combat radius, lose interest
 		CombatTarget = nullptr;	//Ustawiamy CombatTarget na nullptr
 		if (HealthBarWidget)
 		{
 			HealthBarWidget->SetVisibility(false);	//I ustawiamy widocznoœæ paska ¿ycia na false
 		}
+		EnemyState = EEnemyState::EES_Patrolling;	//Ustawiamy EnemyState na EES_Patrolling
+		GetCharacterMovement()->MaxWalkSpeed = 125.f;	//Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 150
+		MoveToTarget(PatrolTarget);	//Wywo³ujemy funkcjê MoveToTarget z argumentem PatrolTarget
 	}
 }
 
