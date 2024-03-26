@@ -5,4 +5,4 @@ Content/AncientContent/** filter=lfs diff=lfs merge=lfs -text
 Content/ParagonMinions/** filter=lfs diff=lfs merge=lfs -text
 Content/MedievalDungeon/** filter=lfs diff=lfs merge=lfs -text
 Content/AncientTreasures/** filter=lfs diff=lfs merge=lfs -text
-Content/InfinityBladeWeapons/** filter=lfs diff=lfs merge=lfs -text
+Content/Megascans/** filter=lfs diff=lfs merge=lfs -text
