@@ -9,6 +9,7 @@
 #include "Perception/PawnSensingComponent.h"	// for UPawnSensingComponent
 #include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji AttributeComponent
 #include "HUD/HealthBarComponent.h"
+#include "Items/Weapons/Weapon.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji Weapon
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -67,6 +68,14 @@ void AEnemy::BeginPlay()
 	if (PawnSensing)
 	{
 		PawnSensing->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);	// Dodajemy dynamicznie funkcjê PawnSeen do delegata OnSeePawn
+	}
+
+	UWorld* World = GetWorld();	// Pobieramy œwiat
+	if(World && WeaponClass)	// 
+	{
+		AWeapon* DefaultWeapon = World->SpawnActor<AWeapon>(WeaponClass);	// Tworzymy domyœln¹ broñ
+		DefaultWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);	// Wyposa¿amy broñ
+		EquippedWeapon = DefaultWeapon;	// Przypisujemy EquippedWeapon wartoœæ DefaultWeapon
 	}
 }
 

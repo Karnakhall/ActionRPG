@@ -36,9 +36,9 @@ private:
 	UHealthBarComponent* HealthBarWidget;	// Wskaünik do komponentu widgetu paska øycia
 
 	UPawnSensingComponent* PawnSensing;	// Wskaünik do komponentu PawnSensing
-	/**
-	*Animation montages
-	*/
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AWeapon> WeaponClass;	//pos≥uøy do spawnowania broni
 
 	UPROPERTY()
 	AActor* CombatTarget;	//Wskaünik do celu walki
