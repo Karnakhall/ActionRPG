@@ -355,3 +355,12 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	return DamageAmount;	
 }
 
+void AEnemy::Destroyed()
+{
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->Destroy();	// Usuwamy broñ jesli bêdziemy chcieli aby przeciwnik upuszcza³ broñ, mo¿emy to zrobic w³aœnie w tym miejscu
+	}
+	Super::Destroyed();
+}
+
