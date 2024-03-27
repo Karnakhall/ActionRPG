@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "BaseCharacter.h"	//Potrzebujemy tego nag³ówka aby SlachCharacter móg³ dziedziczyæ funkcje z BaseCharacter
 #include "CharacterTypes.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ enuma
 #include "SlashCharacter.generated.h"
 
@@ -12,10 +12,9 @@ class UCameraComponent;
 class UGroomComponent;
 class AItem;
 class UAnimMontage;
-class AWeapon;
 
 UCLASS()
-class ACTIONRPG_API ASlashCharacter : public ACharacter
+class ACTIONRPG_API ASlashCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -29,9 +28,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	
-	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
-	void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);	//Funkcja do w³¹czenia i wy³¹czenia kolizji na broni
 	
 	/*Jeden ze sposobów w³¹czenia i wy³¹czenia kolizji na broni
 	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
@@ -58,21 +54,21 @@ protected:
 	//Funtcion to equip
 	void EKeyPresed();
 	//Function to attack
-	void Attack();
+	virtual void Attack() override;
 
 	/**
 	* Play Montage functions
 	*/
 
 	//Function to play attack montage
-	void PlayAttackMontage();
+	virtual void PlayAttackMontage() override;
 
 	
-	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
+	//UFUNCTION(BlueprintCallable) nie potrzebujemy tego tutaj, poniewa¿ dziedziczymy ca³oœæ z Base Character
 	//Function to stop attack montage
-	void AttackEnd();
+	virtual void AttackEnd() override;
 	//Sprawdzamy boolem czy postac mo¿e zaatakowaæ
-	bool CanAttack();
+	virtual bool CanAttack() override;
 
 	//Function to play equip montage. We don't need to select a section random. We want to chose whether to play the equip or unequip section
 	void PlayEquipMontage(const FName& SectionName);
@@ -120,15 +116,7 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
-	//Variable to keep track of the attack combo
-	UPROPERTY(VisibleAnywhere, Category = "Weapon")
-	AWeapon* EquippedWeapon;
-	/**
-	*Animation montages
-	*/
-	//Pokazujemy to w edytorze blueprint pod kategori¹ "Montages"
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* AttackMontage;
+	
 	//Montage to equip and unequipped the weapon
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* EquipMontage;

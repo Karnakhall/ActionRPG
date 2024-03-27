@@ -3,18 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "Interfaces/HitInterface.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji HitInterface 
+#include "Characters/BaseCharacter.h"	// Potrzebujemy tego nag³ówka aby Enemy móg³ dziedziczyæ funkcje z BaseCharacter
 #include "Characters/CharacterTypes.h"
 #include "Enemy.generated.h"
 
-class UAnimMontage;	// Zadeklarowany w SlashCharacter.h
-class UAttributeComponent;	//Zadeklarowany w AttributeComponent.h
 class UHealthBarComponent;	//Zadeklarowany w HealthBarComponent.h
 class UPawnSensingComponent;	//Zadeklarowany w PawnSensingComponent.h
 
 UCLASS()
-class ACTIONRPG_API AEnemy : public ACharacter, public IHitInterface	// Dziedziczymy z IHitInterface
+class ACTIONRPG_API AEnemy : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -31,18 +28,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;	// Implementujemy funkcjê GetHit z interfejsu HitInterface
-	void DirectionalHitReact(const FVector& ImpactPoint);	//Funkcja do reakcji na cios w zale¿noœci od kierunku
-
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obra¿eñ
 
 private:
-
-	/*
-	* Components
-	*/
-
-	UPROPERTY(VisibleAnywhere)
-	UAttributeComponent* Attributes;	// WskaŸnik do komponentu atrybutów
 
 	UPROPERTY(VisibleAnywhere)
 	UHealthBarComponent* HealthBarWidget;	// WskaŸnik do komponentu widgetu paska ¿ycia
@@ -51,18 +39,6 @@ private:
 	/**
 	*Animation montages
 	*/
-	//Pokazujemy to w edytorze blueprint pod kategori¹ "Montages"
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* HitReactMontage;	//Animacja otrzymania ciosu
-
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
-	UAnimMontage* DeathMontage;	//Animacja œmierci
-
-	UPROPERTY(EditAnywhere, Category = "Sound")
-	USoundBase* HitSound;	//DŸwiêk otrzymania ciosu. Przechowujemy ten asset we wskaŸniku
-
-	UPROPERTY(EditAnywhere, Category = "VisualEffects")
-	UParticleSystem* HitParticles;	//Particle system otrzymania ciosu. Przechowujemy ten asset we wskaŸniku
 
 	UPROPERTY()
 	AActor* CombatTarget;	//WskaŸnik do celu walki
@@ -102,17 +78,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void Die();	//Funkcja do œmierci
+	virtual void Die() override;	//Funkcja do œmierci
 	bool InTargetRange(AActor* Target, double Radius);	//Funkcja do sprawdzania czy przeciwnik jest w zasiêgu
 	void MoveToTarget(AActor* Target);	//Funkcja do poruszania siê do oznaczonych celów
 	AActor* ChoosePatrolTarget();	//Funkcja do wyboru celu patrolu
 	
 	UFUNCTION()
 	void PawnSeen(APawn* Pawn);	//Funkcja do widzenia pionka. Callback
-	/**
-	* Play Montage functions
-	*/
-	void PlayHitReactMontage(const FName& SectionName);	//Funkcja do odtwarzania animacji otrzymania ciosu
+
 
 	UPROPERTY(BlueprintReadOnly)
 	EDeathPose DeathPose = EDeathPose::EDP_Alive;	//Zmienna do œledzenia pozycji œmierci
