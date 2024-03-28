@@ -72,8 +72,35 @@ private:
 	float WaitMin = 5.f;	//Minimalny czas oczekiwania
 	UPROPERTY(EditAnywhere, Category = "AI Navigation")
 	float WaitMax = 10.f;	//Maksymalny czas oczekiwania
+	
+	/** AI behavior */
+	void HideHealthBar();	//Funkcja do ukrycia paska ¿ycia
+	void ShowHealthBar();	//Funkcja do pokazania paska ¿ycia
+	void LoseInterest();	//Funkcja do utraty zainteresowania
+	void StartPatrolling();	//Funkcja do rozpoczêcia patrolowania
+	void ChaseTarget();	//Funkcja do goniennia celu
+	bool IsOutsideCombatRadius();	//Sprawdzenie czy przeciwnik jest poza zasiêgiem walki
+	bool IsOutsideAttackRadius();	//Sprawdzenie czy przeciwnik jest poza zasiêgiem ataku
+	bool IsInsideAttackRadius();	//Sprawdzenie czy przeciwnik jest w zasiêgu ataku
+	bool IsChasing();	//Sprawdzenie czy przeciwnik goni
+	bool IsAttacking();	//Sprawdzenie czy przeciwnik atakuje
 
-	EEnemyState EnemyState = EEnemyState::EES_Patrolling;	//Stan przeciwnika
+	/** Combat */
+	void StartAttackTimer();	//Funkcja do rozpoczêcia timera ataku
+	FTimerHandle AttackTimer;	//Timer do ataku
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float AttackMin = 0.5f;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float AttackMax = 1.f;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float PatrollingSpeed = 125.f;	//Prêdkoœæ patrolowania
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float ChasingSpeed = 300.f;	//Prêdkoœæ goniennia
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -90,7 +117,10 @@ protected:
 
 
 	UPROPERTY(BlueprintReadOnly)
-	EDeathPose DeathPose = EDeathPose::EDP_Alive;	//Zmienna do œledzenia pozycji œmierci
+	EDeathPose DeathPose;	//Zmienna do œledzenia pozycji œmierci
+
+	UPROPERTY(BlueprintReadOnly)
+	EEnemyState EnemyState = EEnemyState::EES_Patrolling;	//Stan przeciwnika
 
 public:	
 	

@@ -52,6 +52,75 @@ void AEnemy::PatrolTimerFinished()
 	MoveToTarget(PatrolTarget);	// Wywo³ujemy funkcjê MoveToTarget z argumentem PatrolTarget
 }
 
+void AEnemy::HideHealthBar()
+{
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(false);	//I ustawiamy widocznoœæ paska ¿ycia na false
+	}
+}
+
+void AEnemy::ShowHealthBar()
+{
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(true);	//I ustawiamy widocznoœæ paska ¿ycia na true
+	}
+}
+
+// Outside combat radius, lose interest
+void AEnemy::LoseInterest()
+{
+	CombatTarget = nullptr;	//Ustawiamy CombatTarget na nullptr
+	HideHealthBar();	//Wywo³ujemy funkcjê HideHealthBar
+}
+
+void AEnemy::StartPatrolling()
+{
+	EnemyState = EEnemyState::EES_Patrolling;	//Ustawiamy EnemyState na EES_Patrolling
+	GetCharacterMovement()->MaxWalkSpeed = PatrollingSpeed;	//Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 150
+	MoveToTarget(PatrolTarget);	//Wywo³ujemy funkcjê MoveToTarget z argumentem PatrolTarget
+}
+
+void AEnemy::ChaseTarget()	// Outside attack range, chase character
+{
+	EnemyState = EEnemyState::EES_Chasing;	//Ustawiamy EnemyState na EES_Chasing
+	GetCharacterMovement()->MaxWalkSpeed = ChasingSpeed;	//Ustawiamy maksymaln¹ prêdkoœæ pogoni
+	MoveToTarget(CombatTarget);	//Wywo³ujemy funkcjê MoveToTarget z argumentem CombatTarget
+}
+
+bool AEnemy::IsOutsideCombatRadius()
+{
+	return !InTargetRange(CombatTarget, CombatRadius);
+}
+
+bool AEnemy::IsOutsideAttackRadius()
+{
+	return !InTargetRange(CombatTarget, AttackRadius);
+}
+
+bool AEnemy::IsInsideAttackRadius()
+{
+	return InTargetRange(CombatTarget, AttackRadius);
+}
+
+bool AEnemy::IsChasing()
+{
+	return EnemyState == EEnemyState::EES_Chasing;
+}
+
+bool AEnemy::IsAttacking()
+{
+	return EnemyState == EEnemyState::EES_Attacking;
+}
+
+void AEnemy::StartAttackTimer()	//Funkcja do rozpoczêcia timera ataku
+{
+	EnemyState = EEnemyState::EES_Attacking;	//Ustawiamy EnemyState na EES_Attacking
+	const float AttackTime = FMath::RandRange(AttackMin, AttackMax);		//Losujemy czas ataku
+	GetWorldTimerManager().SetTimer(AttackTimer, this, &AEnemy::Attack, AttackTime); 	//Ustawiamy timer na czas ataku
+}
+
 // Called when the game starts or when spawned
 void AEnemy::BeginPlay()
 {
@@ -310,33 +379,25 @@ void AEnemy::CheckPatrolTarget()
 void AEnemy::CheckCombatTarget()
 {
 	// const double DistanceToTarget = (CombatTarget->GetActorLocation() - GetActorLocation()).Size();	//Mamy to w InTargetRange. Obliczamy odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget)
-	if (!InTargetRange(CombatTarget, CombatRadius))	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ CombatRadius to:
+	if (IsOutsideCombatRadius)	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ CombatRadius to:
 	{
-		// Outside combat radius, lose interest
-		CombatTarget = nullptr;	//Ustawiamy CombatTarget na nullptr
-		if (HealthBarWidget)
-		{
-			HealthBarWidget->SetVisibility(false);	//I ustawiamy widocznoœæ paska ¿ycia na false
-		}
-		EnemyState = EEnemyState::EES_Patrolling;	//Ustawiamy EnemyState na EES_Patrolling
-		GetCharacterMovement()->MaxWalkSpeed = 125.f;	//Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 150
-		MoveToTarget(PatrolTarget);	//Wywo³ujemy funkcjê MoveToTarget z argumentem PatrolTarget
+		LoseInterest();	//Wywo³ujemy funkcjê LoseInterest
+		StartPatrolling();	//Wywo³ujemy funkcjê StartPatrolling
 		UE_LOG(LogTemp, Warning, TEXT("Lose interest"))
 	}
-	else if (!InTargetRange(CombatTarget, AttackRadius) && EnemyState != EEnemyState::EES_Chasing)	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ AttackRadius i EnemyState nie jest równy EES_Chasing to:
+	else if (IsOutsideAttackRadius() && !IsChasing())	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ AttackRadius i EnemyState nie jest równy EES_Chasing to:
 	{
-		// Outside attack range, chase character
-		EnemyState = EEnemyState::EES_Chasing;	//Ustawiamy EnemyState na EES_Chasing
-		GetCharacterMovement()->MaxWalkSpeed = 300.f;	//Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 300
-		MoveToTarget(CombatTarget);	//Wywo³ujemy funkcjê MoveToTarget z argumentem CombatTarget
+		ChaseTarget();	//Wywo³ujemy funkcjê ChaseTarget
 		UE_LOG(LogTemp, Warning, TEXT("Chasing"))
 	}
-	else if (InTargetRange(CombatTarget, AttackRadius) && EnemyState != EEnemyState::EES_Attacking)	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest mniejsza ni¿ AttackRadius i EnemyState nie jest równy EES_Attacking to:
+	else if (IsInsideAttackRadius() && !IsAttacking())	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest mniejsza ni¿ AttackRadius i EnemyState nie jest równy EES_Attacking to:
 	{
-		// Inside attack range, attack character
+		/*// Inside attack range, attack character
 		EnemyState = EEnemyState::EES_Attacking;	//Ustawiamy EnemyState na EES_Attacking
 		// TODO: Attack montage
 		Attack();	//Wywo³ujemy funkcjê Attack
+		*/
+		StartAttackTimer();	//Funkcja do rozpoczêcia timera ataku
 		UE_LOG(LogTemp, Warning, TEXT("Attacking"))
 	}
 }
