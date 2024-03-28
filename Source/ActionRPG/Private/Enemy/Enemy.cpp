@@ -148,7 +148,7 @@ void AEnemy::MoveToTarget(AActor* Target)
 	if (EnemyController == nullptr || Target == nullptr) return;	// Sprawdzamy czy EnemyController i Target nie s¹ nullpointerami
 	FAIMoveRequest MoveRequest;	// Tworzymy strukturê FAIMoveRequest
 	MoveRequest.SetGoalActor(Target);	// Ustawiamy cel ruchu na PatrolTarget
-	MoveRequest.SetAcceptanceRadius(15.f);	// Ustawiamy promieñ akceptacji na 15
+	MoveRequest.SetAcceptanceRadius(50.f);	// Ustawiamy promieñ akceptacji na 50
 	//FNavPathSharedPtr NavPath;	// Tworzymy wskaŸnik do œcie¿ki nawigacji
 	EnemyController->MoveTo(MoveRequest/*, &NavPath*/);	// Wywo³ujemy funkcjê MoveTo z kontrolera przeciwnika. &NavPath w³¹æzamy, gdy chcemy zobaczyc œciê¿kê poruszania siê
 	/*
@@ -187,6 +187,47 @@ AActor* AEnemy::ChoosePatrolTarget()	// Deklarujemy funkcjê ChoosePatrolTarget z
 		EnemyController->MoveTo(MoveRequest);	// Wywo³ujemy funkcjê MoveTo z kontrolera przeciwnika*/
 	}
 	return nullptr;
+}
+
+void AEnemy::Attack()
+{
+	Super::Attack();
+	PlayAttackMontage();
+}
+
+void AEnemy::PlayAttackMontage()
+{
+	Super::PlayAttackMontage();
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	//Sprawdzamy czy to nie jest nullpointer
+	if (AnimInstance && AttackMontage)	//Jeœli AnimInstance i AttackMontage nie s¹ nullpointerami, to odtwarzamy animacjê ataku
+	{
+		AnimInstance->Montage_Play(AttackMontage);
+		//Mamy 3 sekcje w animacji ataku, wiêc losujemy która z nich zostanie odtworzona, wiêc dodajemy liczbê losow¹ 0, 1 albo 2
+		const int32 Selection = FMath::RandRange(0, 2);	//Trochê jak rzut monet¹, generuje nam 0, 1 albo 2
+		//Tworzymy zmienn¹, która bêdzie przechowywaæ nazwê sekcji animacji - pozostawiamy j¹ pust¹ poniewa¿ sekcja zostanie wybrana przez switch.
+		FName SectionName = FName();
+		//Wybieramy sekcjê animacji ataku i zmieniamy siê pomiêdzy nimi
+		switch (Selection)
+		{
+		case 0:
+			SectionName = FName("Attack1");
+			//Break jest potrzebny, ¿eby wyjœæ z pêtli switch
+			break;
+		case 1:
+			SectionName = FName("Attack2");
+			break;
+		case 2:
+			SectionName = FName("Attack3");
+			break;
+		default:
+			break;
+
+		}
+		//Po wyborze sekcji animacji, odtwarzamy j¹
+		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+	}
 }
 
 void AEnemy::PawnSeen(APawn* SeenPawn)
@@ -295,6 +336,7 @@ void AEnemy::CheckCombatTarget()
 		// Inside attack range, attack character
 		EnemyState = EEnemyState::EES_Attacking;	//Ustawiamy EnemyState na EES_Attacking
 		// TODO: Attack montage
+		Attack();	//Wywo³ujemy funkcjê Attack
 		UE_LOG(LogTemp, Warning, TEXT("Attacking"))
 	}
 }

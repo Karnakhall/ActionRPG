@@ -47,7 +47,7 @@ private:
 	double CombatRadius = 500.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
 
 	UPROPERTY(EditAnywhere)
-	double AttackRadius = 150.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
+	double AttackRadius = 150.f;	//Promieñ walki w którym bêdziemy mogli zaatakowac przeciwnika i na odwró
 
 	/*
 	* Navigation
@@ -82,6 +82,8 @@ protected:
 	bool InTargetRange(AActor* Target, double Radius);	//Funkcja do sprawdzania czy przeciwnik jest w zasiêgu
 	void MoveToTarget(AActor* Target);	//Funkcja do poruszania siê do oznaczonych celów
 	AActor* ChoosePatrolTarget();	//Funkcja do wyboru celu patrolu
+	virtual void Attack() override;	//Funkcja do ataku
+	virtual void PlayAttackMontage() override;	//Funkcja do odtwarzania animacji ataku
 	
 	UFUNCTION()
 	void PawnSeen(APawn* Pawn);	//Funkcja do widzenia pionka. Callback

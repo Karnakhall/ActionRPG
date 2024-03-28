@@ -160,6 +160,7 @@ void ASlashCharacter::EKeyPresed()
 //Funkcja ataku
 void ASlashCharacter::Attack()
 {	
+	Super::Attack();
 	//Jeœli postaæ ma odpowiednie statusy akcji oraz postaci, to atakujemy
 	if (CanAttack())
 	{
@@ -220,6 +221,7 @@ void ASlashCharacter::FinishEquipping()
 
 void ASlashCharacter::PlayAttackMontage()
 {
+	Super::PlayAttackMontage();
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	//Sprawdzamy czy to nie jest nullpointer
 	if (AnimInstance && AttackMontage)	//Jeœli AnimInstance i AttackMontage nie s¹ nullpointerami, to odtwarzamy animacjê ataku
