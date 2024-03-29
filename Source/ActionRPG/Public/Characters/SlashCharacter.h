@@ -60,10 +60,6 @@ protected:
 	* Play Montage functions
 	*/
 
-	//Function to play attack montage
-	virtual void PlayAttackMontage() override;
-
-	
 	//UFUNCTION(BlueprintCallable) nie potrzebujemy tego tutaj, poniewa¿ dziedziczymy ca³oœæ z Base Character
 	//Function to stop attack montage
 	virtual void AttackEnd() override;

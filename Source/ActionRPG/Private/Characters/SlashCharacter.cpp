@@ -219,35 +219,7 @@ void ASlashCharacter::FinishEquipping()
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
-void ASlashCharacter::PlayAttackMontage()
-{
-	Super::PlayAttackMontage();
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	//Sprawdzamy czy to nie jest nullpointer
-	if (AnimInstance && AttackMontage)	//Jeœli AnimInstance i AttackMontage nie s¹ nullpointerami, to odtwarzamy animacjê ataku
-	{
-		AnimInstance->Montage_Play(AttackMontage);
-		//Mamy dwie sekcje w animacji ataku, wiêc losujemy która z nich zostanie odtworzona, wiêc dodajemy liczbê losow¹ 0 albo 1
-		const int32 Selection = FMath::RandRange(0, 1);	//Trochê jak rzut monet¹, generuje nam 0 albo 1
-		//Tworzymy zmienn¹, która bêdzie przechowywaæ nazwê sekcji animacji - pozostawiamy j¹ pust¹ poniewa¿ sekcja zostanie wybrana przez switch.
-		FName SectionName = FName();
-		//Wybieramy sekcjê animacji ataku i zmieniamy siê pomiêdzy nimi
-		switch (Selection)
-		{
-		case 0:
-			SectionName = FName("Attack1");
-			//Break jest potrzebny, ¿eby wyjœæ z pêtli switch
-			break;
-		case 1:
-			SectionName = FName("Attack2");
-			break;
-		default:
-			break;
-		}
-		//Po wyborze sekcji animacji, odtwarzamy j¹
-		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
-	}
-}
+
 //Funkcja odtwarzaj¹ca animacjê EquipMontage
 void ASlashCharacter::PlayEquipMontage(const FName& SectionName)
 {	

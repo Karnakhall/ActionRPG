@@ -283,41 +283,6 @@ void AEnemy::Attack()
 	PlayAttackMontage();
 }
 
-void AEnemy::PlayAttackMontage()
-{
-	Super::PlayAttackMontage();
-
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	//Sprawdzamy czy to nie jest nullpointer
-	if (AnimInstance && AttackMontage)	//Jeœli AnimInstance i AttackMontage nie s¹ nullpointerami, to odtwarzamy animacjê ataku
-	{
-		AnimInstance->Montage_Play(AttackMontage);
-		//Mamy 3 sekcje w animacji ataku, wiêc losujemy która z nich zostanie odtworzona, wiêc dodajemy liczbê losow¹ 0, 1 albo 2
-		const int32 Selection = FMath::RandRange(0, 2);	//Trochê jak rzut monet¹, generuje nam 0, 1 albo 2
-		//Tworzymy zmienn¹, która bêdzie przechowywaæ nazwê sekcji animacji - pozostawiamy j¹ pust¹ poniewa¿ sekcja zostanie wybrana przez switch.
-		FName SectionName = FName();
-		//Wybieramy sekcjê animacji ataku i zmieniamy siê pomiêdzy nimi
-		switch (Selection)
-		{
-		case 0:
-			SectionName = FName("Attack1");
-			//Break jest potrzebny, ¿eby wyjœæ z pêtli switch
-			break;
-		case 1:
-			SectionName = FName("Attack2");
-			break;
-		case 2:
-			SectionName = FName("Attack3");
-			break;
-		default:
-			break;
-
-		}
-		//Po wyborze sekcji animacji, odtwarzamy j¹
-		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
-	}
-}
-
 bool AEnemy::CanAttack()
 {
 	bool bCanAttack = IsInsideAttackRadius() && !IsAttacking() && !IsDead();
@@ -430,7 +395,7 @@ void AEnemy::CheckPatrolTarget()
 void AEnemy::CheckCombatTarget()
 {
 	// const double DistanceToTarget = (CombatTarget->GetActorLocation() - GetActorLocation()).Size();	//Mamy to w InTargetRange. Obliczamy odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget)
-	if (IsOutsideCombatRadius)	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ CombatRadius to:
+	if (IsOutsideCombatRadius())	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ CombatRadius to:
 	{
 		ClearAttackTimer();	//Wywo³ujemy funkcjê ClearAttackTimer
 		LoseInterest();	//Wywo³ujemy funkcjê LoseInterest

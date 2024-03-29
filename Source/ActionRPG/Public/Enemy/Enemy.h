@@ -115,7 +115,6 @@ protected:
 	void MoveToTarget(AActor* Target);	//Funkcja do poruszania siê do oznaczonych celów
 	AActor* ChoosePatrolTarget();	//Funkcja do wyboru celu patrolu
 	virtual void Attack() override;	//Funkcja do ataku
-	virtual void PlayAttackMontage() override;	//Funkcja do odtwarzania animacji ataku
 	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik mo¿e zaatakowaæ
 	virtual void HandleDamage(float DamageAmount) override;	//Funkcja do obs³ugi obra¿eñ
 	

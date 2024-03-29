@@ -133,8 +133,59 @@ void ABaseCharacter::HandleDamage(float DamageAmount)
 	}
 }
 
+void ABaseCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();	//Pobieramy AnimInstance
+	//Sprawdzamy czy to nie jest nullpointer
+	if (AnimInstance && Montage)	//Jeœli AnimInstance i AttackMontage nie s¹ nullpointerami, to odtwarzamy animacjê ataku
+	{
+		AnimInstance->Montage_Play(Montage);
+		//Po wyborze sekcji animacji, odtwarzamy j¹
+		AnimInstance->Montage_JumpToSection(SectionName, Montage);
+	}
+}
+
 void ABaseCharacter::PlayAttackMontage()
 {
+	//Dziêki sposobowi poni¿ej mo¿emy dodawac i usuwaæ nielimitowan¹ iloœæ sekcji animacji ataku, bez potrzeby ich rêcznego dodawania do kodu
+	if (AttackMontageSections.Num() <= 0) return;	// Sprawdzamy czy AttackMontageSections nie jest mniejsze lub równe 0
+	const int32 MaxSectionIndex = AttackMontageSections.Num() - 1;	// Pobieramy maksymalny indeks sekcji. Musimy ustawiæ -1 aby nie wyjœæ poza zakres sekcji i nieywo³aæ b³êdu
+	const int32 Selection = FMath::RandRange(0, MaxSectionIndex);	//Losujemy numer sekcji
+	PlayMontageSection(AttackMontage, AttackMontageSections[Selection]);	//Wywo³ujemy funkcjê PlayMontageSection z AttackMontage i AttackMontageSections[Selection]
+	
+	/*Stary sposób odtwarzania animacji, powy¿ej zmieniony na wydajnieszy
+	Super::PlayAttackMontage();
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();	//Pobieramy AnimInstance
+	//Sprawdzamy czy to nie jest nullpointer
+	if (AnimInstance && AttackMontage)	//Jeœli AnimInstance i AttackMontage nie s¹ nullpointerami, to odtwarzamy animacjê ataku
+	{
+		AnimInstance->Montage_Play(AttackMontage);
+		//Mamy 3 sekcje w animacji ataku, wiêc losujemy która z nich zostanie odtworzona, wiêc dodajemy liczbê losow¹ 0, 1 albo 2
+		const int32 Selection = FMath::RandRange(0, 2);	//Trochê jak rzut monet¹, generuje nam 0, 1 albo 2
+		//Tworzymy zmienn¹, która bêdzie przechowywaæ nazwê sekcji animacji - pozostawiamy j¹ pust¹ poniewa¿ sekcja zostanie wybrana przez switch.
+		FName SectionName = FName();
+		//Wybieramy sekcjê animacji ataku i zmieniamy siê pomiêdzy nimi
+		switch (Selection)
+		{
+		case 0:
+			SectionName = FName("Attack1");
+			//Break jest potrzebny, ¿eby wyjœæ z pêtli switch
+			break;
+		case 1:
+			SectionName = FName("Attack2");
+			break;
+		case 2:
+			SectionName = FName("Attack3");
+			break;
+		default:
+			break;
+
+		}
+		//Po wyborze sekcji animacji, odtwarzamy j¹
+		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+	}
+	*/
 }
 
 bool ABaseCharacter::CanAttack()
