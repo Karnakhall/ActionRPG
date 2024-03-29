@@ -4,8 +4,8 @@
 #include "Enemy/Enemy.h"
 #include "AIController.h"
 #include "Components/SkeletalMeshComponent.h" // for USkeletalMeshComponent
-#include "Components/CapsuleComponent.h" // for UCapsuleComponent"
 #include "GameFramework/CharacterMovementComponent.h" // for UCharacterMovementComponent
+#include "Components/CapsuleComponent.h"
 #include "Perception/PawnSensingComponent.h"	// for UPawnSensingComponent
 #include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji AttributeComponent
 #include "HUD/HealthBarComponent.h"
@@ -169,57 +169,14 @@ void AEnemy::BeginPlay()
 
 void AEnemy::Die()
 {
-	//	TODO: play death montage
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && DeathMontage)	//Jeœli AnimInstance i EquipMontage nie s¹ nullpointerami, to odtwarzamy animacjê equip
-	{
-		AnimInstance->Montage_Play(DeathMontage);
-		//Mamy dwie sekcje w animacji ataku, wiêc losujemy która z nich zostanie odtworzona, wiêc dodajemy liczbê losow¹ 0 albo 1
-		const int32 Selection = FMath::RandRange(0, 5);	//Trochê jak rzut monet¹, generuje nam 0 albo 1
-		//Tworzymy zmienn¹, która bêdzie przechowywaæ nazwê sekcji animacji - pozostawiamy j¹ pust¹ poniewa¿ sekcja zostanie wybrana przez switch.
-		FName SectionName = FName();
-		//Wybieramy sekcjê animacji ataku i zmieniamy siê pomiêdzy nimi
-		switch (Selection)
-		{
-		case 0:
-			SectionName = FName("Death1");
-			DeathPose = EDeathPose::EDP_Death1;	// Przypisujemy zmiennej DeathPose wartoœæ EDP_Death1
-			//Break jest potrzebny, ¿eby wyjœæ z pêtli switch
-			break;
-		case 1:
-			SectionName = FName("Death2");
-			DeathPose = EDeathPose::EDP_Death2;
-			break;
-		case 2:
-			SectionName = FName("Death3");
-			DeathPose = EDeathPose::EDP_Death3;
-			break;
-		case 3:
-			SectionName = FName("Death4");
-			DeathPose = EDeathPose::EDP_Death4;
-			break;
-		case 4:
-			SectionName = FName("Death5");
-			DeathPose = EDeathPose::EDP_Death5;
-			break;
-		case 5:
-			SectionName = FName("Death6");
-			DeathPose = EDeathPose::EDP_Death6;
-			break;
-		default:
-			break;
-		}
-		//Po wyborze sekcji animacji, odtwarzamy j¹
-		AnimInstance->Montage_JumpToSection(SectionName, DeathMontage);
-	}
+	EnemyState = EEnemyState::EES_Dead;	// Ustawiamy EnemyState na EES_Dead
+	PlayDeathMontage();	// Odtwarzamy animacjê œmierci
+	ClearAttackTimer();	// Czyœcimy timer ataku
 	//Jeœli przeciwnik ma HealthBarWidget, to ustawiamy jego widocznoœæ na false w momencie œmierci
-	if (HealthBarWidget)
-	{
-		HealthBarWidget->SetVisibility(false);	//Ustawiamy widocznoœæ paska ¿ycia na false
-	}
+	HideHealthBar();
 
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);	// Wy³¹czamy kolizjê kapsu³y po œmierci przeciwnika
-	SetLifeSpan(5.f);	// Ustawiamy czas po którym, cia³o przeciwnika znika po 3 sekundach od jego œmierci
+	DisableCapsule();	// Wywo³ujemy funkcjê DisableCapsule, która wy³¹æza kolizjê kapsu³y po smierci
+	SetLifeSpan(DeathLifeSpan);	// Ustawiamy czas po którym, cia³o przeciwnika znika po 3 sekundach od jego œmierci
 }
 
 bool AEnemy::InTargetRange(AActor* Target, double Radius)	// Deklarujemy funkcjê InTargetRange z Enemy.h
@@ -297,6 +254,18 @@ void AEnemy::HandleDamage(float DamageAmount)
 	{
 		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
 	}
+}
+
+int32 AEnemy::PlayDeathMontage()
+{
+	const int32 Selection = Super::PlayDeathMontage();
+	TEnumAsByte<EDeathPose> Pose(Selection);
+	if (Pose < EDeathPose::EDP_MAX)
+	{
+		DeathPose = Pose;
+	}
+
+	return Selection;
 }
 
 void AEnemy::PawnSeen(APawn* SeenPawn)

@@ -117,13 +117,17 @@ protected:
 	virtual void Attack() override;	//Funkcja do ataku
 	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik mo¿e zaatakowaæ
 	virtual void HandleDamage(float DamageAmount) override;	//Funkcja do obs³ugi obra¿eñ
+	virtual int32 PlayDeathMontage() override;	//Funkcja do odtwarzania animacji œmierci
 	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float DeathLifeSpan = 8.f;
+
 	UFUNCTION()
 	void PawnSeen(APawn* Pawn);	//Funkcja do widzenia pionka. Callback
 
 
 	UPROPERTY(BlueprintReadOnly)
-	EDeathPose DeathPose;	//Zmienna do œledzenia pozycji œmierci
+	TEnumAsByte<EDeathPose> DeathPose;	//Zmienna do œledzenia pozycji œmierci
 
 	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;	//Stan przeciwnika

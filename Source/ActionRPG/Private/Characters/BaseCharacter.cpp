@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ BoxComponent
 #include "Items/Weapons/Weapon.h"	//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ ora u¿yæ AWeapon
 #include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "BaseCharacter" móg³ dziedziczyæ z funkcji AttributeComponent
+#include "Components/CapsuleComponent.h" // for UCapsuleComponent"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -145,14 +146,28 @@ void ABaseCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& Sect
 	}
 }
 
-void ABaseCharacter::PlayAttackMontage()
+int32 ABaseCharacter::PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames)
 {
 	//Dziêki sposobowi poni¿ej mo¿emy dodawac i usuwaæ nielimitowan¹ iloœæ sekcji animacji ataku, bez potrzeby ich rêcznego dodawania do kodu
+	if (SectionNames.Num() <= 0) return -1;	// Sprawdzamy czy SectionNames nie jest mniejsze lub równe 0
+	const int32 MaxSectionIndex = SectionNames.Num() - 1;	// Pobieramy maksymalny indeks sekcji. Musimy ustawiæ -1 aby nie wyjœæ poza zakres sekcji i nieywo³aæ b³êdu
+	const int32 Selection = FMath::RandRange(0, MaxSectionIndex);	//Losujemy numer sekcji
+	PlayMontageSection(Montage, SectionNames[Selection]);	//Wywo³ujemy funkcjê PlayMontageSection z AttackMontage i SectionNames[Selection]
+
+	return Selection;
+}
+
+int32 ABaseCharacter::PlayAttackMontage()
+{
+
+	return PlayRandomMontageSection(AttackMontage, AttackMontageSections);
+
+	/*Dziêki sposobowi poni¿ej mo¿emy dodawac i usuwaæ nielimitowan¹ iloœæ sekcji animacji ataku, bez potrzeby ich rêcznego dodawania do kodu
 	if (AttackMontageSections.Num() <= 0) return;	// Sprawdzamy czy AttackMontageSections nie jest mniejsze lub równe 0
 	const int32 MaxSectionIndex = AttackMontageSections.Num() - 1;	// Pobieramy maksymalny indeks sekcji. Musimy ustawiæ -1 aby nie wyjœæ poza zakres sekcji i nieywo³aæ b³êdu
 	const int32 Selection = FMath::RandRange(0, MaxSectionIndex);	//Losujemy numer sekcji
 	PlayMontageSection(AttackMontage, AttackMontageSections[Selection]);	//Wywo³ujemy funkcjê PlayMontageSection z AttackMontage i AttackMontageSections[Selection]
-	
+	*/
 	/*Stary sposób odtwarzania animacji, powy¿ej zmieniony na wydajnieszy
 	Super::PlayAttackMontage();
 
@@ -186,6 +201,16 @@ void ABaseCharacter::PlayAttackMontage()
 		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
 	}
 	*/
+}
+
+int32 ABaseCharacter::PlayDeathMontage()
+{
+	return PlayRandomMontageSection(DeathMontage, DeathMontageSections);
+}
+
+void ABaseCharacter::DisableCapsule() // Wy³¹czamy kolizjê kapsu³y po œmierci przeciwnika
+{
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);	// Wy³¹czamy kolizjê kapsu³y po œmierci przeciwnika
 }
 
 bool ABaseCharacter::CanAttack()

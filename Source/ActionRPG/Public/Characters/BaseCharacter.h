@@ -37,7 +37,7 @@ protected:
 	*/
 	
 	//Function to play attack montage
-	void PlayAttackMontage();
+	
 	//Funkcja do odtwarzania animacji otrzymania ciosu
 	void PlayHitReactMontage(const FName& SectionName);	
 	//Funkcja do reakcji na cios w zale¿noœci od kierunku
@@ -46,6 +46,11 @@ protected:
 	void SpawnHitParticles(const FVector& ImpactPoint);	//Funkcja do spawnowania particle systemu otrzymania ciosu
 	virtual void HandleDamage(float DamageAmount);	//Funkcja do obs³ugi obra¿eñ
 	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);	//Funkcja do wywo³ania losowej sekcji animacji i odtwarzania
+	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames);	//Funkcja do wywo³ania losowej sekcji animacji i odtwarzania
+	virtual int32 PlayAttackMontage();
+	virtual int32 PlayDeathMontage();
+
+	void DisableCapsule();	//Funkcja do wy³¹czenia kapsu³y kolizji
 
 	//Sprawdzamy boolem czy postac mo¿e zaatakowaæ
 	virtual bool CanAttack();
@@ -77,6 +82,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TArray<FName> AttackMontageSections;	//Tablica nazw animacji ataku
 
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TArray<FName> DeathMontageSections;	//Tablica nazw animacji œmierci
 	/*
 	* Components
 	*/
