@@ -42,9 +42,14 @@ protected:
 	void PlayHitReactMontage(const FName& SectionName);	
 	//Funkcja do reakcji na cios w zale¿noœci od kierunku
 	void DirectionalHitReact(const FVector& ImpactPoint);	
+	void PlayHitSound(const FVector& ImpactPoint);	//Funkcja do odtwarzania dŸwiêku otrzymania ciosu
+	void SpawnHitParticles(const FVector& ImpactPoint);	//Funkcja do spawnowania particle systemu otrzymania ciosu
+	virtual void HandleDamage(float DamageAmount);	//Funkcja do obs³ugi obra¿eñ
 
 	//Sprawdzamy boolem czy postac mo¿e zaatakowaæ
 	virtual bool CanAttack();
+	bool IsAlive();	//Sprawdzamy czy postaæ ¿yje
+	
 
 	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
 	//Function to stop attack montage
@@ -73,6 +78,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* Attributes;	// WskaŸnik do komponentu atrybutów
+
+private:
 
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundBase* HitSound;	//DŸwiêk otrzymania ciosu. Przechowujemy ten asset we wskaŸniku

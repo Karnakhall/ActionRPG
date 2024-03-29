@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ BoxComponent
 #include "Items/Weapons/Weapon.h"	//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ ora u¿yæ AWeapon
 #include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "BaseCharacter" móg³ dziedziczyæ z funkcji AttributeComponent
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -102,6 +103,36 @@ void ABaseCharacter::DirectionalHitReact(const FVector& ImpactPoint)
 	*/
 }
 
+void ABaseCharacter::PlayHitSound(const FVector& ImpactPoint)
+{
+	if (HitSound)	// Sprawdzamy czy HitSound nie jest nullpointerem
+	{
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			HitSound,
+			ImpactPoint);	// Odtwarzamy dŸwiêk otrzymania ciosu
+	}
+}
+
+void ABaseCharacter::SpawnHitParticles(const FVector& ImpactPoint)
+{
+	if (HitParticles && GetWorld())	// Sprawdzamy czy HitParticles nie jest nullpointerem
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			HitParticles,
+			ImpactPoint);	// Odtwarzamy particle system otrzymania ciosu
+	}
+}
+
+void ABaseCharacter::HandleDamage(float DamageAmount)
+{
+	if (Attributes)
+	{
+		Attributes->ReceiveDamage(DamageAmount);	// Wywo³ujemy funkcjê ReceiveDamage z klasy UAttributeComponent
+	}
+}
+
 void ABaseCharacter::PlayAttackMontage()
 {
 }
@@ -109,6 +140,11 @@ void ABaseCharacter::PlayAttackMontage()
 bool ABaseCharacter::CanAttack()
 {
 	return false;
+}
+
+bool ABaseCharacter::IsAlive()
+{
+	return Attributes && Attributes->IsAlive();
 }
 
 void ABaseCharacter::AttackEnd()

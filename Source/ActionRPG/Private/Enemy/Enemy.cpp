@@ -11,7 +11,6 @@
 #include "HUD/HealthBarComponent.h"
 #include "Items/Weapons/Weapon.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji Weapon
 #include "Kismet/KismetSystemLibrary.h"
-#include "Kismet/GameplayStatics.h"
 
 
 #include "Navigation/PathFollowingComponent.h"
@@ -114,11 +113,31 @@ bool AEnemy::IsAttacking()
 	return EnemyState == EEnemyState::EES_Attacking;
 }
 
+bool AEnemy::IsDead()
+{
+	return EnemyState == EEnemyState::EES_Dead; // Sprawdzamy czy EnemyState jest równy EES_Dead, jeœli tak to zwracamy
+}
+
+bool AEnemy::IsEngaged()
+{
+	return EnemyState == EEnemyState::EES_Engaged;
+}
+
+void AEnemy::ClearPatrolTimer()
+{
+	GetWorldTimerManager().ClearTimer(PatrolTimer);	//Czyœcimy timer
+}
+
 void AEnemy::StartAttackTimer()	//Funkcja do rozpoczêcia timera ataku
 {
 	EnemyState = EEnemyState::EES_Attacking;	//Ustawiamy EnemyState na EES_Attacking
 	const float AttackTime = FMath::RandRange(AttackMin, AttackMax);		//Losujemy czas ataku
 	GetWorldTimerManager().SetTimer(AttackTimer, this, &AEnemy::Attack, AttackTime); 	//Ustawiamy timer na czas ataku
+}
+
+void AEnemy::ClearAttackTimer()
+{
+	GetWorldTimerManager().ClearTimer(AttackTimer);	//Czyœcimy timer ataku
 }
 
 // Called when the game starts or when spawned
@@ -299,12 +318,44 @@ void AEnemy::PlayAttackMontage()
 	}
 }
 
+bool AEnemy::CanAttack()
+{
+	bool bCanAttack = IsInsideAttackRadius() && !IsAttacking() && !IsDead();
+	return bCanAttack;
+}
+
+void AEnemy::HandleDamage(float DamageAmount)
+{
+	Super::HandleDamage(DamageAmount);
+
+	if (Attributes && HealthBarWidget)
+	{
+		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+	}
+}
+
 void AEnemy::PawnSeen(APawn* SeenPawn)
 {
+	const bool bShouldChaseTarget =
+		EnemyState != EEnemyState::EES_Dead &&	// Sprawdzamy czy EnemyState nie jest równy EES_Dead
+		EnemyState != EEnemyState::EES_Chasing &&	// Sprawdzamy czy EnemyState nie jest równy EES_Chasing
+		EnemyState < EEnemyState::EES_Attacking &&	// Sprawdzamy czy EnemyState jest mniejszy od EES_Attacking
+		SeenPawn->ActorHasTag(FName("SlashCharacter"));	// Sprawdzamy czy Actor ma tag
+
+	if (bShouldChaseTarget)	//Jeœli bShouldChaseTarget jest true to:
+	{
+		CombatTarget = SeenPawn;	// Przypisujemy CombatTarget wartoœæ SeenPawn
+		ClearPatrolTimer();	// Wywo³ujemy funkcjê ClearPatrolTimer
+		ChaseTarget();	// Wywo³ujemy funkcjê ChaseTarget
+	}
+	
+	/*Powy¿ej jest skrócona wersja poni¿szych warunków
+	
+	kiedy ma byc goniony bohater warunki poni¿ej
 	if (EnemyState == EEnemyState::EES_Chasing) return;	// Sprawdzamy czy EnemyState jest równy EES_Chasing, sprawdzamy to tutaj poniewa¿ chcemy aby poni¿szy statement wykona³ siê tylko raz a nie ci¹gle
 	if (SeenPawn->ActorHasTag(FName("SlashCharacter")))	// Sprawdzamy czy Actor ma tag
 	{
-		GetWorldTimerManager().ClearTimer(PatrolTimer);	// Czyœcimy timer
+		ClearPatrolTimer();	// Wywo³ujemy funkcjê ClearPatrolTimer
 		GetCharacterMovement()->MaxWalkSpeed = 300.f;	// Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 300
 		CombatTarget = SeenPawn;	// Przypisujemy CombatTarget wartoœæ SeenPawn
 
@@ -315,14 +366,14 @@ void AEnemy::PawnSeen(APawn* SeenPawn)
 			UE_LOG(LogTemp, Warning, TEXT("Pawn Seen! and chasing"))
 		}
 	}
-	
+	*/
 }
 
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	if(IsDead()) return;	// Wywo³ujemy funkcjê IsDed która sprawdza czy EnemyState jest równy EES_Dead, jeœli tak to zwracamy
 	if(EnemyState > EEnemyState::EES_Patrolling)	//Jeœli EnemyState jest wiêkszy od EES_Patrolling to:
 	{
 		CheckCombatTarget();	// Wywo³ujemy funkcjê CheckCombatTarget
@@ -381,16 +432,25 @@ void AEnemy::CheckCombatTarget()
 	// const double DistanceToTarget = (CombatTarget->GetActorLocation() - GetActorLocation()).Size();	//Mamy to w InTargetRange. Obliczamy odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget)
 	if (IsOutsideCombatRadius)	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ CombatRadius to:
 	{
+		ClearAttackTimer();	//Wywo³ujemy funkcjê ClearAttackTimer
 		LoseInterest();	//Wywo³ujemy funkcjê LoseInterest
-		StartPatrolling();	//Wywo³ujemy funkcjê StartPatrolling
+		if (!IsEngaged())
+		{
+			StartPatrolling();	//Wywo³ujemy funkcjê StartPatrolling
+		}
+		
 		UE_LOG(LogTemp, Warning, TEXT("Lose interest"))
 	}
 	else if (IsOutsideAttackRadius() && !IsChasing())	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ AttackRadius i EnemyState nie jest równy EES_Chasing to:
 	{
-		ChaseTarget();	//Wywo³ujemy funkcjê ChaseTarget
+		ClearAttackTimer();
+		if (!IsEngaged()) 
+		{
+			ChaseTarget();	//Wywo³ujemy funkcjê ChaseTarget
+		}	
 		UE_LOG(LogTemp, Warning, TEXT("Chasing"))
 	}
-	else if (IsInsideAttackRadius() && !IsAttacking())	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest mniejsza ni¿ AttackRadius i EnemyState nie jest równy EES_Attacking to:
+	else if (CanAttack())	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest mniejsza ni¿ AttackRadius i EnemyState nie jest równy EES_Attacking to:
 	{
 		/*// Inside attack range, attack character
 		EnemyState = EEnemyState::EES_Attacking;	//Ustawiamy EnemyState na EES_Attacking
@@ -402,22 +462,13 @@ void AEnemy::CheckCombatTarget()
 	}
 }
 
-// Called to bind functionality to input
-void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
 
 void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z Enemy.h
 {
 	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
-	if (HealthBarWidget)	// Sprawdzamy czy HealthBarWidget nie jest nullpointerem
-	{
-		HealthBarWidget->SetVisibility(true);	// Ustawiamy widocznoœæ paska ¿ycia na true w momencie gdy przeciwnik otrzyma cios
-	}
+	ShowHealthBar();	//Wywo³ujemy funkcjê ShowHealthBar
 
-	if (Attributes && Attributes->IsAlive())	// Sprawdzamy czy Attributes nie jest nullpointerem i czy "enemy" ¿yje
+	if (IsAlive())	// Sprawdzamy czy Attributes nie jest nullpointerem i czy "enemy" ¿yje
 	{
 		DirectionalHitReact(ImpactPoint);	// Wywo³ujemy funkcjê DirectionalHitReact z argumentem ImpactPoint
 	}
@@ -426,35 +477,16 @@ void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)	// Deklarujemy fu
 		Die();	// Wywo³ujemy funkcjê Die
 	}
 	
-	if (HitSound)	// Sprawdzamy czy HitSound nie jest nullpointerem
-	{
-		UGameplayStatics::PlaySoundAtLocation(
-			this,
-			HitSound,
-			ImpactPoint);	// Odtwarzamy dŸwiêk otrzymania ciosu
-	}
-	if (HitParticles && GetWorld())	// Sprawdzamy czy HitParticles nie jest nullpointerem
-	{
-		UGameplayStatics::SpawnEmitterAtLocation(
-			GetWorld(),
-			HitParticles,
-			ImpactPoint);	// Odtwarzamy particle system otrzymania ciosu
-	}
+	PlayHitSound(ImpactPoint);	// Wywo³ujemy funkcjê PlayHitSound z argumentem ImpactPoint. // Odtwarzamy dŸwiêk otrzymania ciosu
+	
+	SpawnHitParticles(ImpactPoint);	// Wywo³ujemy funkcjê SpawnHitParticles z argumentem ImpactPoint. // Odtwarzamy system particle  otrzymania ciosu
 }
 
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	if (Attributes && HealthBarWidget)
-	{
-		Attributes->ReceiveDamage(DamageAmount);	// Wywo³ujemy funkcjê ReceiveDamage z klasy UAttributeComponent
-
-		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());	
-		
-	}
+	HandleDamage(DamageAmount);	// Wywo³ujemy funkcjê HandleDamage z argumentem DamageAmount
 	CombatTarget = EventInstigator->GetPawn();	// Przypisujemy CombatTarget wartoœæ EventInstigator->GetPawn()
-	EnemyState = EEnemyState::EES_Chasing;	// Ustawiamy EnemyState na EES_Chasing
-	GetCharacterMovement()->MaxWalkSpeed = 300.f;	// Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 300
-	MoveToTarget(CombatTarget);	// Wywo³ujemy funkcjê MoveToTarget z argumentem CombatTarget
+	ChaseTarget();	// Wywo³ujemy funkcjê ChaseTarget
 	return DamageAmount;	
 }
 

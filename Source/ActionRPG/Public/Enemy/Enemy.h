@@ -26,7 +26,6 @@ public:
 	void CheckCombatTarget();
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;	// Implementujemy funkcjê GetHit z interfejsu HitInterface
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obra¿eñ
 	virtual void Destroyed() override;
@@ -84,9 +83,15 @@ private:
 	bool IsInsideAttackRadius();	//Sprawdzenie czy przeciwnik jest w zasiêgu ataku
 	bool IsChasing();	//Sprawdzenie czy przeciwnik goni
 	bool IsAttacking();	//Sprawdzenie czy przeciwnik atakuje
+	bool IsDead();	//Sprawdzenie czy przeciwnik jest martwy
+	bool IsEngaged();	//Sprawdzenie czy przeciwnik jest zaanga¿owany w walkê
+	void ClearPatrolTimer();	//Funkcja do wyczyszczenia timera patrolu
 
 	/** Combat */
 	void StartAttackTimer();	//Funkcja do rozpoczêcia timera ataku
+	void ClearAttackTimer();	//Funkcja do wyczyszczenia timera ataku
+
+
 	FTimerHandle AttackTimer;	//Timer do ataku
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
@@ -111,6 +116,8 @@ protected:
 	AActor* ChoosePatrolTarget();	//Funkcja do wyboru celu patrolu
 	virtual void Attack() override;	//Funkcja do ataku
 	virtual void PlayAttackMontage() override;	//Funkcja do odtwarzania animacji ataku
+	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik mo¿e zaatakowaæ
+	virtual void HandleDamage(float DamageAmount) override;	//Funkcja do obs³ugi obra¿eñ
 	
 	UFUNCTION()
 	void PawnSeen(APawn* Pawn);	//Funkcja do widzenia pionka. Callback
