@@ -177,6 +177,7 @@ void AEnemy::Die()
 
 	DisableCapsule();	// Wywo³ujemy funkcjê DisableCapsule, która wy³¹æza kolizjê kapsu³y po smierci
 	SetLifeSpan(DeathLifeSpan);	// Ustawiamy czas po którym, cia³o przeciwnika znika po 3 sekundach od jego œmierci
+	GetCharacterMovement()->bOrientRotationToMovement = false;	// Wy³¹czamy obracanie siê w kierunku ruchu
 }
 
 bool AEnemy::InTargetRange(AActor* Target, double Radius)	// Deklarujemy funkcjê InTargetRange z Enemy.h
