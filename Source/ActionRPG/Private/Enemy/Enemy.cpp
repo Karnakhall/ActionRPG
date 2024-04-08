@@ -246,7 +246,8 @@ bool AEnemy::CanAttack()
 {
 	bool bCanAttack = 
 		IsInsideAttackRadius() && 
-		!IsAttacking() && 
+		!IsAttacking() &&
+		!IsEngaged() &&
 		!IsDead();
 	return bCanAttack;
 }
@@ -271,6 +272,12 @@ int32 AEnemy::PlayDeathMontage()
 	}
 
 	return Selection;
+}
+
+void AEnemy::AttackEnd()
+{
+	EnemyState = EEnemyState::EES_NoState;	//Ustawiamy EnemyState na EES_NoState
+	CheckCombatTarget();	//Wywo³ujemy funkcjê CheckCombatTarget
 }
 
 void AEnemy::PawnSeen(APawn* SeenPawn)

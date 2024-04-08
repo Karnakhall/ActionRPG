@@ -43,7 +43,7 @@ private:
 	AActor* CombatTarget;	//WskaŸnik do celu walki
 
 	UPROPERTY(EditAnywhere)
-	double CombatRadius = 500.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
+	double CombatRadius = 1000.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
 
 	UPROPERTY(EditAnywhere)
 	double AttackRadius = 150.f;	//Promieñ walki w którym bêdziemy mogli zaatakowac przeciwnika i na odwró
@@ -118,6 +118,7 @@ protected:
 	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik mo¿e zaatakowaæ
 	virtual void HandleDamage(float DamageAmount) override;	//Funkcja do obs³ugi obra¿eñ
 	virtual int32 PlayDeathMontage() override;	//Funkcja do odtwarzania animacji œmierci
+	virtual void AttackEnd() override;	//Funkcja do zakoñczenia ataku
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float DeathLifeSpan = 8.f;
