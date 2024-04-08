@@ -43,7 +43,7 @@ private:
 	AActor* CombatTarget;	//WskaŸnik do celu walki
 
 	UPROPERTY(EditAnywhere)
-	double CombatRadius = 1000.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
+	double CombatRadius = 500.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
 
 	UPROPERTY(EditAnywhere)
 	double AttackRadius = 150.f;	//Promieñ walki w którym bêdziemy mogli zaatakowac przeciwnika i na odwró
