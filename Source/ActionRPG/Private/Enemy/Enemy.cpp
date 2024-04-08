@@ -237,6 +237,7 @@ AActor* AEnemy::ChoosePatrolTarget()	// Deklarujemy funkcjê ChoosePatrolTarget z
 
 void AEnemy::Attack()
 {
+	EnemyState = EEnemyState::EES_Engaged;	//Ustawiamy EnemyState na EES_Engaged
 	Super::Attack();
 	PlayAttackMontage();
 }
@@ -372,20 +373,16 @@ void AEnemy::CheckCombatTarget()
 	{
 		ClearAttackTimer();	//Wywo³ujemy funkcjê ClearAttackTimer
 		LoseInterest();	//Wywo³ujemy funkcjê LoseInterest
-		if (!IsEngaged())
-		{
-			StartPatrolling();	//Wywo³ujemy funkcjê StartPatrolling
-		}
+		if (!IsEngaged()) StartPatrolling();	//Wywo³ujemy funkcjê StartPatrolling
+		
 		
 		UE_LOG(LogTemp, Warning, TEXT("Lose interest"))
 	}
 	else if (IsOutsideAttackRadius() && !IsChasing())	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ AttackRadius i EnemyState nie jest równy EES_Chasing to:
 	{
 		ClearAttackTimer();
-		if (!IsEngaged()) 
-		{
-			ChaseTarget();	//Wywo³ujemy funkcjê ChaseTarget
-		}	
+		if (!IsEngaged()) ChaseTarget();	//Wywo³ujemy funkcjê ChaseTarget
+			
 		UE_LOG(LogTemp, Warning, TEXT("Chasing"))
 	}
 	else if (CanAttack())	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest mniejsza ni¿ AttackRadius i EnemyState nie jest równy EES_Attacking to:
