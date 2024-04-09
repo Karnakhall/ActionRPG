@@ -5,7 +5,6 @@
 #include "AIController.h"
 #include "Components/SkeletalMeshComponent.h" // for USkeletalMeshComponent
 #include "GameFramework/CharacterMovementComponent.h" // for UCharacterMovementComponent
-#include "Components/CapsuleComponent.h"
 #include "Perception/PawnSensingComponent.h"	// for UPawnSensingComponent
 #include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji AttributeComponent
 #include "HUD/HealthBarComponent.h"
@@ -28,7 +27,6 @@ AEnemy::AEnemy()
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);	// Set the collision response to Visibility)
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);	// Set the collision response to Camera
 	GetMesh()->SetGenerateOverlapEvents(true);	// Set the mesh to generate overlap events
-	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore); // Set the collision response to Camera
 	
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));	// Tworzymy domyœlny subobiekt "HealthBarWidget" z klasy UHealthBarComponent
 	HealthBarWidget->SetupAttachment(GetRootComponent());	// Ustawiamy HealthBarWidget jako podobiekt do naszego "enemy"
@@ -366,7 +364,7 @@ void AEnemy::CheckPatrolTarget()
 	if (InTargetRange(PatrolTarget, PatrolRadius))
 	{
 		PatrolTarget = ChoosePatrolTarget();	// Wywo³ujemy funkcjê ChoosePatrolTarget
-		const float WaitTime = FMath::RandRange(WaitMin, WaitMax);	// Losujemy czas oczekiwania
+		const float WaitTime = FMath::RandRange(PatrolWaitMin, PatrolWaitMax);	// Losujemy czas oczekiwania
 		GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, WaitTime);	// Ustawiamy timer na 5 sekund
 		//MoveToTarget(PatrolTarget);	// Wywo³ujemy funkcjê MoveToTarget z argumentem PatrolTarget
 

@@ -16,20 +16,74 @@ class ACTIONRPG_API AEnemy : public ABaseCharacter
 	GENERATED_BODY()
 
 public:
+
 	// Sets default values for this character's properties
 	AEnemy();
+
 	// Called every frame
+	/** <AActor> */
 	virtual void Tick(float DeltaTime) override;
-
-	void CheckPatrolTarget();
-
-	void CheckCombatTarget();
-
-	// Called to bind functionality to input
-	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;	// Implementujemy funkcjê GetHit z interfejsu HitInterface
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obra¿eñ
 	virtual void Destroyed() override;
+	/** </AActor> */
+
+	/** <IHitInterface> */
+	// Called to bind functionality to input
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;	// Implementujemy funkcjê GetHit z interfejsu HitInterface
+	/** </IHitInterface> */
+
+protected:
+
+	// Called when the game starts or when spawned
+	/** <AActor> */
+	virtual void BeginPlay() override;
+	/** </AActor> */
+
+	/** <ABaseCharacter> */
+	virtual void Die() override;	//Funkcja do œmierci
+	virtual void Attack() override;	//Funkcja do ataku
+	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik mo¿e zaatakowaæ
+	virtual void HandleDamage(float DamageAmount) override;	//Funkcja do obs³ugi obra¿eñ
+	virtual int32 PlayDeathMontage() override;	//Funkcja do odtwarzania animacji œmierci
+	virtual void AttackEnd() override;	//Funkcja do zakoñczenia ataku
+	/** </ABaseCharacter> */
+	
+
+	UPROPERTY(BlueprintReadOnly)
+	TEnumAsByte<EDeathPose> DeathPose;	//Zmienna do œledzenia pozycji œmierci
+
+	UPROPERTY(BlueprintReadOnly)
+	EEnemyState EnemyState = EEnemyState::EES_Patrolling;	//Stan przeciwnika
+
 private:
+
+	/** AI Behavior */
+	void CheckPatrolTarget();	//Funkcja do sprawdzania celu patrolu
+	void CheckCombatTarget();	//Funkcja do sprawdzania celu walki
+	void PatrolTimerFinished();	//Funkcja do zakoñczenia patrolu
+	void HideHealthBar();	//Funkcja do ukrycia paska ¿ycia
+	void ShowHealthBar();	//Funkcja do pokazania paska ¿ycia
+	void LoseInterest();	//Funkcja do utraty zainteresowania
+	void StartPatrolling();	//Funkcja do rozpoczêcia patrolowania
+	void ChaseTarget();	//Funkcja do goniennia celu
+	bool IsOutsideCombatRadius();	//Sprawdzenie czy przeciwnik jest poza zasiêgiem walki
+	bool IsOutsideAttackRadius();	//Sprawdzenie czy przeciwnik jest poza zasiêgiem ataku
+	bool IsInsideAttackRadius();	//Sprawdzenie czy przeciwnik jest w zasiêgu ataku
+	bool IsChasing();	//Sprawdzenie czy przeciwnik goni
+	bool IsAttacking();	//Sprawdzenie czy przeciwnik atakuje
+	bool IsDead();	//Sprawdzenie czy przeciwnik jest martwy
+	bool IsEngaged();	//Sprawdzenie czy przeciwnik jest zaanga¿owany w walkê
+	void ClearPatrolTimer();	//Funkcja do wyczyszczenia timera patrolu
+	
+	/** Combat */
+	void StartAttackTimer();	//Funkcja do rozpoczêcia timera ataku
+	void ClearAttackTimer();	//Funkcja do wyczyszczenia timera ataku
+	bool InTargetRange(AActor* Target, double Radius);	//Funkcja do sprawdzania czy przeciwnik jest w zasiêgu
+	void MoveToTarget(AActor* Target);	//Funkcja do poruszania siê do oznaczonych celów
+	AActor* ChoosePatrolTarget();	//Funkcja do wyboru celu patrolu
+
+	UFUNCTION()
+	void PawnSeen(APawn* Pawn);	//Funkcja widzenia dla pionka. Callback for OnSeePawn in UPawnSensingComponent
 
 	UPROPERTY(VisibleAnywhere)
 	UHealthBarComponent* HealthBarWidget;	// WskaŸnik do komponentu widgetu paska ¿ycia
@@ -48,9 +102,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	double AttackRadius = 150.f;	//Promieñ walki w którym bêdziemy mogli zaatakowac przeciwnika i na odwró
 
-	/*
-	* Navigation
-	*/
 	UPROPERTY()
 	class AAIController* EnemyController;	//WskaŸnik do kontrolera AI
 	// Current patrol target
@@ -65,32 +116,15 @@ private:
 	double PatrolRadius = 200.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
 
 	FTimerHandle PatrolTimer;	//Timer do patrolu
-	void PatrolTimerFinished();	//Funkcja do zakoñczenia patrolu
 
 	UPROPERTY(EditAnywhere, Category = "AI Navigation")
-	float WaitMin = 5.f;	//Minimalny czas oczekiwania
+	float PatrolWaitMin = 5.f;	//Minimalny czas oczekiwania
+
 	UPROPERTY(EditAnywhere, Category = "AI Navigation")
-	float WaitMax = 10.f;	//Maksymalny czas oczekiwania
-	
-	/** AI behavior */
-	void HideHealthBar();	//Funkcja do ukrycia paska ¿ycia
-	void ShowHealthBar();	//Funkcja do pokazania paska ¿ycia
-	void LoseInterest();	//Funkcja do utraty zainteresowania
-	void StartPatrolling();	//Funkcja do rozpoczêcia patrolowania
-	void ChaseTarget();	//Funkcja do goniennia celu
-	bool IsOutsideCombatRadius();	//Sprawdzenie czy przeciwnik jest poza zasiêgiem walki
-	bool IsOutsideAttackRadius();	//Sprawdzenie czy przeciwnik jest poza zasiêgiem ataku
-	bool IsInsideAttackRadius();	//Sprawdzenie czy przeciwnik jest w zasiêgu ataku
-	bool IsChasing();	//Sprawdzenie czy przeciwnik goni
-	bool IsAttacking();	//Sprawdzenie czy przeciwnik atakuje
-	bool IsDead();	//Sprawdzenie czy przeciwnik jest martwy
-	bool IsEngaged();	//Sprawdzenie czy przeciwnik jest zaanga¿owany w walkê
-	void ClearPatrolTimer();	//Funkcja do wyczyszczenia timera patrolu
+	float PatrolWaitMax = 10.f;	//Maksymalny czas oczekiwania
 
-	/** Combat */
-	void StartAttackTimer();	//Funkcja do rozpoczêcia timera ataku
-	void ClearAttackTimer();	//Funkcja do wyczyszczenia timera ataku
-
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float PatrollingSpeed = 125.f;	//Prêdkoœæ patrolowania
 
 	FTimerHandle AttackTimer;	//Timer do ataku
 
@@ -101,38 +135,8 @@ private:
 	float AttackMax = 1.f;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	float PatrollingSpeed = 125.f;	//Prêdkoœæ patrolowania
-
-	UPROPERTY(EditAnywhere, Category = "Combat")
 	float ChasingSpeed = 300.f;	//Prêdkoœæ goniennia
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	virtual void Die() override;	//Funkcja do œmierci
-	bool InTargetRange(AActor* Target, double Radius);	//Funkcja do sprawdzania czy przeciwnik jest w zasiêgu
-	void MoveToTarget(AActor* Target);	//Funkcja do poruszania siê do oznaczonych celów
-	AActor* ChoosePatrolTarget();	//Funkcja do wyboru celu patrolu
-	virtual void Attack() override;	//Funkcja do ataku
-	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik mo¿e zaatakowaæ
-	virtual void HandleDamage(float DamageAmount) override;	//Funkcja do obs³ugi obra¿eñ
-	virtual int32 PlayDeathMontage() override;	//Funkcja do odtwarzania animacji œmierci
-	virtual void AttackEnd() override;	//Funkcja do zakoñczenia ataku
-	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float DeathLifeSpan = 8.f;
-
-	UFUNCTION()
-	void PawnSeen(APawn* Pawn);	//Funkcja do widzenia pionka. Callback
-
-
-	UPROPERTY(BlueprintReadOnly)
-	TEnumAsByte<EDeathPose> DeathPose;	//Zmienna do œledzenia pozycji œmierci
-
-	UPROPERTY(BlueprintReadOnly)
-	EEnemyState EnemyState = EEnemyState::EES_Patrolling;	//Stan przeciwnika
-
-public:	
-	
 };

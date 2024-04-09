@@ -65,9 +65,21 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	AWeapon* EquippedWeapon;	//Wskaünik do broni
 
-	/**
-	*Animation montages
+	/*
+	* Components
 	*/
+
+	UPROPERTY(VisibleAnywhere)
+	UAttributeComponent* Attributes;	// Wskaünik do komponentu atrybutÛw
+
+private:
+
+	UPROPERTY(EditAnywhere, Category = "Sound")
+	USoundBase* HitSound;	//DüwiÍk otrzymania ciosu. Przechowujemy ten asset we wskaüniku
+
+	UPROPERTY(EditAnywhere, Category = "VisualEffects")
+	UParticleSystem* HitParticles;	//Particle system otrzymania ciosu. Przechowujemy ten asset we wskaüniku
+
 	//Pokazujemy to w edytorze blueprint pod kategoriπ "Montages"
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* AttackMontage;
@@ -85,18 +97,4 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TArray<FName> DeathMontageSections;	//Tablica nazw animacji úmierci
-	/*
-	* Components
-	*/
-
-	UPROPERTY(VisibleAnywhere)
-	UAttributeComponent* Attributes;	// Wskaünik do komponentu atrybutÛw
-
-private:
-
-	UPROPERTY(EditAnywhere, Category = "Sound")
-	USoundBase* HitSound;	//DüwiÍk otrzymania ciosu. Przechowujemy ten asset we wskaüniku
-
-	UPROPERTY(EditAnywhere, Category = "VisualEffects")
-	UParticleSystem* HitParticles;	//Particle system otrzymania ciosu. Przechowujemy ten asset we wskaüniku
 };

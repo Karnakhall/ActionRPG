@@ -15,6 +15,7 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	// Tworzymy domyœlny subobiekt "Attributes" z klasy UAttributeComponent
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));	
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore); // Set the collision response to Camera
 }
 
 // Called when the game starts or when spawned
