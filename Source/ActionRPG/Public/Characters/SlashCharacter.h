@@ -25,6 +25,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 	
 	/*Jeden ze sposobów w³¹czenia i wy³¹czenia kolizji na broni
 	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu

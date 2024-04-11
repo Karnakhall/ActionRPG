@@ -37,12 +37,31 @@ void AWeapon::BeginPlay()
 //Funkcja do podniesienia broni
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator)
 {
-	SetOwner(NewOwner);	//Ustawiamy nowego w³aœciciela
-	SetInstigator(NewInstigator);	//Ustawiamy nowego instigatora
-
-	AttachMeshToSocket(InParent, InSocketName);	//Doczepiamy broñ do socketu
 	//Zmieniamy stan broni na EIS_Equipped po podniesieniu
 	ItemState = EItemState::EIS_Equipped;
+	SetOwner(NewOwner);	//Ustawiamy nowego w³aœciciela
+	SetInstigator(NewInstigator);	//Ustawiamy nowego instigatora
+	AttachMeshToSocket(InParent, InSocketName);	//Doczepiamy broñ do socketu
+	DisableSphereCollision();
+	PlayEquipSound();
+	DeactivateEmbers();
+}
+void AWeapon::DeactivateEmbers()
+{
+	if (EmbersEffect)	//Sprawdzamy czy emberseffect is not nullptr
+	{
+		EmbersEffect->Deactivate();	//Deaktywujemy efekt
+	}
+}
+void AWeapon::DisableSphereCollision()
+{
+	if (Sphere)
+	{	//Teraz bêdziemy chcieli wy³¹czyæ kolizjê naszej broni z naszym bohaterem
+		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+void AWeapon::PlayEquipSound()
+{
 	if (EquipSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(
@@ -50,15 +69,6 @@ void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOw
 			EquipSound,
 			GetActorLocation()
 		);
-	}
-	if (Sphere)
-	{	//Teraz bêdziemy chcieli wy³¹czyæ kolizjê naszej broni z naszym bohaterem
-		Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	}
-	if (EmbersEffect)	//Sprawdzamy czy emberseffect is not nullptr
-	{
-		EmbersEffect->Deactivate();	//Deaktywujemy efekt
 	}
 }
 //Funkcja do "doczepienia" broni do odpowiedniego socketu lub stworzonego nowego socketu
@@ -69,7 +79,7 @@ void AWeapon::AttachMeshToSocket(USceneComponent* InParent, const FName& InSocke
 	ItemMesh->AttachToComponent(InParent, TransformRules, InSocketName);
 }
 
-void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+/*void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnSphereOverlap(OverlappedComponent, OtherActor, OtherComponent, OtherBodyIndex, bFromSweep, SweepResult);
 	
@@ -82,46 +92,21 @@ void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget, true);
 		ItemMesh->AttachToComponent(SlashCharacter->GetMesh(), TransformRules, FName("RightHandSocket"//Podajemy nazwê socketu do któego ma zostac doczepiona broñ));
 	}
-	*/
+	
 }
 
 void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	Super::OnSphereEndOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
 }
+*/
 
 //Delegate function for box overlap
 void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//Pobieramy lokalizacjê naszego BoxTraceStart. Pamiêtaj, ¿e jest to lokalizacja w przestrzeni œwiata
-	const FVector Start = BoxTraceStart->GetComponentLocation();
-	//Pobieramy lokalizacjê naszego BoxTraceEnd. Pamiêtaj, ¿e jest to lokalizacja w przestrzeni œwiata
-	const FVector End = BoxTraceEnd->GetComponentLocation();
-	
-	//Tworzymy tablicê aktorów do ignorowania
-	TArray<AActor*> ActorsToIgnore;
-	ActorsToIgnore.Add(this);	//Dodajemy nasz obiekt do tablicy aktorów do ignorowania. Dziêki temu nie bêdziemy sprawdzaæ kolizji z nasz¹ postaci¹
-	
-	for (AActor* Actor : IgnoreActors)	//Iterujemy przez tablicê IgnoreActors
-	{
-		ActorsToIgnore.AddUnique(Actor);	//Dodajemy aktorów do tablicy ActorsToIgnore. Dodajemy AddUnique abyœmy nie dodali tego samego "aktora" dwa razy.
-	}
-	
-	FHitResult BoxHit;//Tworzymy lokaln¹ zmienn¹, która bêdzie przechowywaæ informacje o FHITResult
-	//funkcja pozwala na sprawdzenie, czy w danej przestrzeni (okreœlonej przez pude³ko) znajduj¹ siê obiekty, oraz zbieranie informacji na temat tych obiektów, takich jak ich lokalizacja czy w³aœciwoœci
-	UKismetSystemLibrary::BoxTraceSingle(
-		this,	//Obiekt wywo³uj¹cy
-		Start,	//Pocz¹tek box trace
-		End,	//Koniec box trace
-		FVector(5.f, 5.f, 5.f),	//Rozmiar box trace
-		BoxTraceStart->GetComponentRotation(),	//Rotacja box trace
-		ETraceTypeQuery::TraceTypeQuery1,	//Typ trace
-		false,	//Ignoruj w³asny obiekt
-		ActorsToIgnore,	//Tablica aktorów do ignorowania
-		EDrawDebugTrace::None,	//Rysuj debug trace po zmianie na ForDuration
-		BoxHit,	//Zmienna przechowuj¹ca informacje o trafieniu
-		true	//Ignoruj kolizje
-		);
+	FHitResult BoxHit;	//Tworzymy zmienn¹ przechowuj¹c¹ informacje o trafieniu
+	BoxTrace(BoxHit);
+
 	if (BoxHit.GetActor())	//Sprawdzamy czy trafiliœmy w "aktora"
 	{
 		UGameplayStatics::ApplyDamage(
@@ -132,14 +117,49 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 			UDamageType::StaticClass()	//Typ obra¿eñ
 		);	//Zadajemy obra¿enia trafionemu aktorowi
 
-		IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());	//Castujemy trafionego aktora do interfejsu HitInterface
-		if (HitInterface)	//Sprawdzamy czy trafiony aktor ma interfejs HitInterface
-		{
-			HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint);	//Wywo³ujemy funkcjê GetHit z interfejsu HitInterface native
-		}
-		IgnoreActors.AddUnique(BoxHit.GetActor());	//Dodajemy trafionego aktora do tablicy IgnoreActors
-
+		ExecuteGetHit(BoxHit);	//Wywo³ujemy funkcjê GetHit z interfejsu HitInterface
 		CreateFields(BoxHit.ImpactPoint);	//Tworzymy pole "zniszczenia" na podstawie punktu trafienia
-		
 	}
+}
+
+void AWeapon::ExecuteGetHit(FHitResult& BoxHit)
+{
+	IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());	//Castujemy trafionego aktora do interfejsu HitInterface
+	if (HitInterface)	//Sprawdzamy czy trafiony aktor ma interfejs HitInterface
+	{
+		HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint);	//Wywo³ujemy funkcjê GetHit z interfejsu HitInterface native
+	}
+}
+
+void AWeapon::BoxTrace(FHitResult& BoxHit)
+{
+	//Pobieramy lokalizacjê naszego BoxTraceStart. Pamiêtaj, ¿e jest to lokalizacja w przestrzeni œwiata
+	const FVector Start = BoxTraceStart->GetComponentLocation();
+	//Pobieramy lokalizacjê naszego BoxTraceEnd. Pamiêtaj, ¿e jest to lokalizacja w przestrzeni œwiata
+	const FVector End = BoxTraceEnd->GetComponentLocation();
+
+	//Tworzymy tablicê aktorów do ignorowania
+	TArray<AActor*> ActorsToIgnore;
+	ActorsToIgnore.Add(this);	//Dodajemy nasz obiekt do tablicy aktorów do ignorowania. Dziêki temu nie bêdziemy sprawdzaæ kolizji z nasz¹ postaci¹
+
+	for (AActor* Actor : IgnoreActors)	//Iterujemy przez tablicê IgnoreActors
+	{
+		ActorsToIgnore.AddUnique(Actor);	//Dodajemy aktorów do tablicy ActorsToIgnore. Dodajemy AddUnique abyœmy nie dodali tego samego "aktora" dwa razy.
+	}
+
+	//funkcja pozwala na sprawdzenie, czy w danej przestrzeni (okreœlonej przez pude³ko) znajduj¹ siê obiekty, oraz zbieranie informacji na temat tych obiektów, takich jak ich lokalizacja czy w³aœciwoœci
+	UKismetSystemLibrary::BoxTraceSingle(
+		this,	//Obiekt wywo³uj¹cy
+		Start,	//Pocz¹tek box trace
+		End,	//Koniec box trace
+		BoxTraceExtent,	//Rozmiar box trace
+		BoxTraceStart->GetComponentRotation(),	//Rotacja box trace
+		ETraceTypeQuery::TraceTypeQuery1,	//Typ trace
+		false,	//Ignoruj w³asny obiekt
+		ActorsToIgnore,	//Tablica aktorów do ignorowania
+		bShowBoxDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None,	//Rysuj debug trace po zmianie na ForDuration
+		BoxHit,	//Zmienna przechowuj¹ca informacje o trafieniu
+		true	//Ignoruj kolizje
+	);
+	IgnoreActors.AddUnique(BoxHit.GetActor());	//Dodajemy trafionego aktora do tablicy IgnoreActors
 }

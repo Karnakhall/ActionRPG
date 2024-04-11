@@ -58,6 +58,12 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction(FName("Attack"), IE_Pressed, this, &ASlashCharacter::Attack);
 }
 
+void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint)
+{
+	PlayHitSound(ImpactPoint);
+	SpawnHitParticles(ImpactPoint);
+}
+
 // Called when the game starts or when spawned
 void ASlashCharacter::BeginPlay()
 {
@@ -66,10 +72,6 @@ void ASlashCharacter::BeginPlay()
 	Tags.Add(FName("SlashCharacter"));	//Dodajemy tag do postaci, ¿eby móc j¹ zidentyfikowaæ albo ¿eby nasi przeciwnicy mogli ja zidentyfikowaæ
 	
 }
-
-
-
-
 
 void ASlashCharacter::MoveForward(float Value)
 {
