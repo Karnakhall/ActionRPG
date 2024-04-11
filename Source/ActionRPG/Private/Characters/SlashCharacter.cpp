@@ -9,12 +9,14 @@
 #include "Items/Item.h"		//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ
 #include "Items/Weapons/Weapon.h"	//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ
 #include "Animation/AnimMontage.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ AnimMontage
-#include "Components/BoxComponent.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ BoxComponent
+//#include "Components/BoxComponent.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ BoxComponent
+
+
 // Sets default values
 ASlashCharacter::ASlashCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 //Set this character to be controlled by the lowest-numbered player
 	bUseControllerRotationPitch = false;
@@ -41,22 +43,6 @@ ASlashCharacter::ASlashCharacter()
 	Eyebrows->AttachmentName = FString("head");
 }
 
-// Called when the game starts or when spawned
-void ASlashCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-
-	Tags.Add(FName("SlashCharacter"));	//Dodajemy tag do postaci, ¿eby móc j¹ zidentyfikowaæ albo ¿eby nasi przeciwnicy mogli ja zidentyfikowaæ
-	
-}
-
-// Called every frame
-void ASlashCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 // Called to bind functionality to input
 void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -71,6 +57,17 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction(FName("Equip"), IE_Pressed, this, &ASlashCharacter::EKeyPresed);
 	PlayerInputComponent->BindAction(FName("Attack"), IE_Pressed, this, &ASlashCharacter::Attack);
 }
+
+// Called when the game starts or when spawned
+void ASlashCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	Tags.Add(FName("SlashCharacter"));	//Dodajemy tag do postaci, ¿eby móc j¹ zidentyfikowaæ albo ¿eby nasi przeciwnicy mogli ja zidentyfikowaæ
+	
+}
+
+
 
 
 
@@ -125,38 +122,29 @@ void ASlashCharacter::LookUp(float Value)
 {
 	AddControllerPitchInput(Value);
 }
+
 //Funkcja podnoszenia broni po naciœnieciu przycisku
 void ASlashCharacter::EKeyPresed()
 {
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
 	if (OverlappingWeapon)
 	{
-		//Jeœli klikniemy przycisk E, to podnosimy broñ i doczepiamy do socketu w d³oni
-		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-		
-		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
-		//I need to set up OverlappingItem to nullptr, because we don't want to still store the address of the weapon we pick up. Otherwise we will try do this whole process again
-		OverlappingItem = nullptr;
-		//I have a variable storing the weapon we have equipped now
-		EquippedWeapon = OverlappingWeapon;
+		EquipWeapon(OverlappingWeapon);
 	}
 	else
 	{
 		//Wrzucamy zwrot z boola aby zobaczyæ czy mo¿emy zdj¹æ/za³o¿yæ broñ 
 		if (CanDisarm())
 		{
-			PlayEquipMontage(FName("Unequip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
-			CharacterState = ECharacterState::ECS_Unequipped;
-			ActionState = EActionState::EAS_EquippingWeapon;
+			Disarm();
 		}
 		else if (CanArm())
 		{
-			PlayEquipMontage(FName("Equip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
-			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
-			ActionState = EActionState::EAS_EquippingWeapon;
+			Arm();
 		}
 	}
 }
+
 //Funkcja ataku
 void ASlashCharacter::Attack()
 {	
@@ -170,6 +158,26 @@ void ASlashCharacter::Attack()
 		ActionState = EActionState::EAS_Attacking;
 	}
 }
+
+void ASlashCharacter::EquipWeapon(AWeapon* Weapon)
+{
+	//Jeœli klikniemy przycisk E, to podnosimy broñ i doczepiamy do socketu w d³oni
+	Weapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+
+	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	//I need to set up OverlappingItem to nullptr, because we don't want to still store the address of the weapon we pick up. Otherwise we will try do this whole process again
+	OverlappingItem = nullptr;
+	//I have a variable storing the weapon we have equipped now
+	EquippedWeapon = Weapon;
+}
+
+//Funkcja koñcz¹ca atak
+void ASlashCharacter::AttackEnd()
+{
+	//Jeœli postaæ jest w stanie ataku, to zmieniamy jej stan na unoccupied w momencie gdy animacja ataku siê skoñczy
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
 //Funkcja sprawdzaj¹ca czy postaæ mo¿e zaatakowaæ
 bool ASlashCharacter::CanAttack()
 {
@@ -195,6 +203,20 @@ bool ASlashCharacter::CanArm()
 
 void ASlashCharacter::Disarm()
 {
+	PlayEquipMontage(FName("Unequip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
+	CharacterState = ECharacterState::ECS_Unequipped;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
+void ASlashCharacter::Arm()
+{
+	PlayEquipMontage(FName("Equip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
+	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
+void ASlashCharacter::AttachWeaponToBack()
+{
 	//Sprawdzamy, czy broñ jest wyekwipowana i nie jest nullptr
 	if (EquippedWeapon)
 	{
@@ -203,13 +225,25 @@ void ASlashCharacter::Disarm()
 	}
 }
 
-void ASlashCharacter::Arm()
+void ASlashCharacter::AttachWeaponToHand()
 {
 	
 	if (EquippedWeapon)
 	{
 		//Wywo³ujemy funkcjê, która "doczepia" broñ do socketu. W tym przypadku do socketu w prawej d³oni
 		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("RightHandSocket"));
+	}
+}
+
+//Funkcja odtwarzaj¹ca animacjê EquipMontage
+void ASlashCharacter::PlayEquipMontage(const FName& SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && EquipMontage)	//Jeœli AnimInstance i EquipMontage nie s¹ nullpointerami, to odtwarzamy animacjê equip
+	{
+		AnimInstance->Montage_Play(EquipMontage);
+		//Po wyborze sekcji animacji, odtwarzamy j¹
+		AnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
 	}
 }
 
@@ -220,23 +254,7 @@ void ASlashCharacter::FinishEquipping()
 }
 
 
-//Funkcja odtwarzaj¹ca animacjê EquipMontage
-void ASlashCharacter::PlayEquipMontage(const FName& SectionName)
-{	
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance(); 
-	if (AnimInstance && EquipMontage)	//Jeœli AnimInstance i EquipMontage nie s¹ nullpointerami, to odtwarzamy animacjê equip
-	{
-		AnimInstance->Montage_Play(EquipMontage);
-		//Po wyborze sekcji animacji, odtwarzamy j¹
-		AnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
-	}
-}
 
-//Funkcja koñcz¹ca atak
-void ASlashCharacter::AttackEnd()
-{
-	//Jeœli postaæ jest w stanie ataku, to zmieniamy jej stan na unoccupied w momencie gdy animacja ataku siê skoñczy
-	ActionState = EActionState::EAS_Unoccupied;
-}
+
 
 

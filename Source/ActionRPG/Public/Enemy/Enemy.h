@@ -20,8 +20,8 @@ public:
 	// Sets default values for this character's properties
 	AEnemy();
 
-	// Called every frame
 	/** <AActor> */
+	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obra¿eñ
 	virtual void Destroyed() override;
@@ -43,9 +43,9 @@ protected:
 	virtual void Die() override;	//Funkcja do œmierci
 	virtual void Attack() override;	//Funkcja do ataku
 	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik mo¿e zaatakowaæ
+	virtual void AttackEnd() override;	//Funkcja do zakoñczenia ataku
 	virtual void HandleDamage(float DamageAmount) override;	//Funkcja do obs³ugi obra¿eñ
 	virtual int32 PlayDeathMontage() override;	//Funkcja do odtwarzania animacji œmierci
-	virtual void AttackEnd() override;	//Funkcja do zakoñczenia ataku
 	/** </ABaseCharacter> */
 	
 
@@ -58,6 +58,7 @@ protected:
 private:
 
 	/** AI Behavior */
+	void InitializeEnemy();		//Funkcja do inicjalizacji przeciwnika. Ustawa stan pocz¹tkowy, ustawia kontroler AI, ustawia cel patrolu, ustawia pasek ¿ycia
 	void CheckPatrolTarget();	//Funkcja do sprawdzania celu patrolu
 	void CheckCombatTarget();	//Funkcja do sprawdzania celu walki
 	void PatrolTimerFinished();	//Funkcja do zakoñczenia patrolu
@@ -81,7 +82,7 @@ private:
 	bool InTargetRange(AActor* Target, double Radius);	//Funkcja do sprawdzania czy przeciwnik jest w zasiêgu
 	void MoveToTarget(AActor* Target);	//Funkcja do poruszania siê do oznaczonych celów
 	AActor* ChoosePatrolTarget();	//Funkcja do wyboru celu patrolu
-
+	void SpawnDefaultWeapon();	//Funkcja do spawnowania broni
 	UFUNCTION()
 	void PawnSeen(APawn* Pawn);	//Funkcja widzenia dla pionka. Callback for OnSeePawn in UPawnSensingComponent
 

@@ -22,44 +22,48 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
-	void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);	//Funkcja do w³¹czenia i wy³¹czenia kolizji na broni
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+
 	//Function to attack
 	virtual void Attack();
 	//Funkcja do œmierci
 	virtual void Die();
+	//Funkcja do reakcji na cios w zale¿noœci od kierunku
+	void DirectionalHitReact(const FVector& ImpactPoint);
+	//Funkcja do odtwarzania dŸwiêku otrzymania ciosu
+	void PlayHitSound(const FVector& ImpactPoint);	
+	//Funkcja do spawnowania particle systemu otrzymania ciosu
+	void SpawnHitParticles(const FVector& ImpactPoint);	
+	//Funkcja do obs³ugi obra¿eñ
+	virtual void HandleDamage(float DamageAmount);	
+	//Funkcja do wy³¹czenia kapsu³y kolizji
+	void DisableCapsule();	
+	//Sprawdzamy boolem czy postac mo¿e zaatakowaæ
+	virtual bool CanAttack();
+	//Sprawdzamy czy postaæ ¿yje
+	bool IsAlive();	
+
+
+	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
+	//Function to stop attack montage
+	virtual void AttackEnd();
+
+	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
+	void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);	//Funkcja do w³¹czenia i wy³¹czenia kolizji na broni
 
 	/**
 	* Play Montage functions
 	*/
 	
-	//Function to play attack montage
-	
 	//Funkcja do odtwarzania animacji otrzymania ciosu
-	void PlayHitReactMontage(const FName& SectionName);	
-	//Funkcja do reakcji na cios w zale¿noœci od kierunku
-	void DirectionalHitReact(const FVector& ImpactPoint);	
-	void PlayHitSound(const FVector& ImpactPoint);	//Funkcja do odtwarzania dŸwiêku otrzymania ciosu
-	void SpawnHitParticles(const FVector& ImpactPoint);	//Funkcja do spawnowania particle systemu otrzymania ciosu
-	virtual void HandleDamage(float DamageAmount);	//Funkcja do obs³ugi obra¿eñ
-	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);	//Funkcja do wywo³ania losowej sekcji animacji i odtwarzania
-	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames);	//Funkcja do wywo³ania losowej sekcji animacji i odtwarzania
+	void PlayHitReactMontage(const FName& SectionName);
 	virtual int32 PlayAttackMontage();
 	virtual int32 PlayDeathMontage();
-
-	void DisableCapsule();	//Funkcja do wy³¹czenia kapsu³y kolizji
-
-	//Sprawdzamy boolem czy postac mo¿e zaatakowaæ
-	virtual bool CanAttack();
-	bool IsAlive();	//Sprawdzamy czy postaæ ¿yje
+		
 	
-
-	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
-	//Function to stop attack montage
-	virtual void AttackEnd();
 
 	//Variable to keep track of the attack combo
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
@@ -73,6 +77,9 @@ protected:
 	UAttributeComponent* Attributes;	// WskaŸnik do komponentu atrybutów
 
 private:
+//Variable to keep track of the attack combo
+	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);	//Funkcja do wywo³ania losowej sekcji animacji i odtwarzania
+	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames);	//Funkcja do wywo³ania losowej sekcji animacji i odtwarzania
 
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundBase* HitSound;	//DŸwiêk otrzymania ciosu. Przechowujemy ten asset we wskaŸniku

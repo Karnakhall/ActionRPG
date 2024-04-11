@@ -22,9 +22,6 @@ public:
 	// Sets default values for this character's properties
 	ASlashCharacter();
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
@@ -40,9 +37,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	/**
-	* Callbacks for input
-	*/
+	/** Callbacks for input	*/
 	//Moving the character forward and backward
 	void MoveForward(float Value);
 	//Moving the character right and left
@@ -56,35 +51,38 @@ protected:
 	//Function to attack
 	virtual void Attack() override;
 
-	/**
-	* Play Montage functions
-	*/
-
+	/** Combat */
 	//UFUNCTION(BlueprintCallable) nie potrzebujemy tego tutaj, poniewa¿ dziedziczymy ca³oœæ z Base Character
+	
+	void EquipWeapon(AWeapon* Weapon);
 	//Function to stop attack montage
 	virtual void AttackEnd() override;
 	//Sprawdzamy boolem czy postac mo¿e zaatakowaæ
 	virtual bool CanAttack() override;
 
-	//Function to play equip montage. We don't need to select a section random. We want to chose whether to play the equip or unequip section
-	void PlayEquipMontage(const FName& SectionName);
 	//Sprawdzamy boolem czy postaæ mo¿e uzyæ animacji equip lub unequip
 	bool CanDisarm();
 	//Sprawdzamy boolem czy postaæ mo¿e za³o¿yæ broñ
 	bool CanArm();
+	void Disarm();
+	void Arm();
 
 	UFUNCTION(BlueprintCallable)
 	//Disarm function for attaching the weapon to the back
-	void Disarm();
+	void AttachWeaponToBack();
 
 	UFUNCTION(BlueprintCallable)
 	//Arm function for attaching the weapon to the hand
-	void Arm();
+	void AttachWeaponToHand();
+
+	//Function to play equip montage. We don't need to select a section random. We want to chose whether to play the equip or unequip section
+	void PlayEquipMontage(const FName& SectionName);
 
 	UFUNCTION(BlueprintCallable)
 	//Function to know where is the end of equipping
 	void FinishEquipping();
 private:
+
 	/* Rozwi¹zanie dla zwyk³ej wersji c++
 	//Variable to keep track of the character state
 	CharacterState State = Unequipped;
@@ -96,6 +94,7 @@ private:
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true")/*Dodajemy AllowPrivateAccess aby mieæ dostêp do statusu z prywatnej sekcji*/)
 	EActionState ActionState = EActionState::EAS_Unoccupied;
 
+	/** Character components */
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
 
