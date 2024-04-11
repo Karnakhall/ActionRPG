@@ -76,7 +76,7 @@ void ASlashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Tags.Add(FName("SlashCharacter"));	//Dodajemy tag do postaci, ¿eby móc j¹ zidentyfikowaæ albo ¿eby nasi przeciwnicy mogli ja zidentyfikowaæ
+	Tags.Add(FName("EngageableTarget"));	//Dodajemy tag do postaci, ¿eby móc j¹ zidentyfikowaæ albo ¿eby nasi przeciwnicy mogli ja zidentyfikowaæ
 	
 }
 

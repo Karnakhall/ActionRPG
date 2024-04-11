@@ -40,6 +40,8 @@ protected:
 	UFUNCTION()
 	void OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	bool ActorIsSameType(AActor* OtherActor);
+
 	void ExecuteGetHit(FHitResult& BoxHit);
 
 	UFUNCTION(BlueprintImplementableEvent)
