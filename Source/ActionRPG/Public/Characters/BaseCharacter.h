@@ -81,21 +81,21 @@ private:
 	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);	//Funkcja do wywo≥ania losowej sekcji animacji i odtwarzania
 	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames);	//Funkcja do wywo≥ania losowej sekcji animacji i odtwarzania
 
-	UPROPERTY(EditAnywhere, Category = "Sound")
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	USoundBase* HitSound;	//DüwiÍk otrzymania ciosu. Przechowujemy ten asset we wskaüniku
 
-	UPROPERTY(EditAnywhere, Category = "VisualEffects")
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	UParticleSystem* HitParticles;	//Particle system otrzymania ciosu. Przechowujemy ten asset we wskaüniku
 
 	//Pokazujemy to w edytorze blueprint pod kategoriπ "Montages"
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* AttackMontage;
 
 	//Pokazujemy to w edytorze blueprint pod kategoriπ "Montages"
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* HitReactMontage;	//Animacja otrzymania ciosu
 
-	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* DeathMontage;	//Animacja úmierci
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
