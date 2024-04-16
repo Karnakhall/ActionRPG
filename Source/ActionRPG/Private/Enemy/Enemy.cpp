@@ -109,8 +109,10 @@ void AEnemy::Destroyed()
 void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z Enemy.h
 {
 	Super::GetHit_Implementation(ImpactPoint);	// Wywo³ujemy funkcjê GetHit_Implementation z BaseCharacter
-	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
 	ShowHealthBar();	//Wywo³ujemy funkcjê ShowHealthBar
+	ClearPatrolTimer();	//Wywo³ujemy funkcjê ClearPatrolTimer
+	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
+	
 }
 
 // Called when the game starts or when spawned
@@ -138,6 +140,7 @@ void AEnemy::Die()
 	DisableCapsule();	// Wywo³ujemy funkcjê DisableCapsule, która wy³¹æza kolizjê kapsu³y po smierci
 	SetLifeSpan(DeathLifeSpan);	// Ustawiamy czas po którym, cia³o przeciwnika znika po 3 sekundach od jego œmierci
 	GetCharacterMovement()->bOrientRotationToMovement = false;	// Wy³¹czamy obracanie siê w kierunku ruchu
+	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);		// Wy³¹czamy kolizjê broni gdy przeicwnik umiera
 }
 
 void AEnemy::Attack()
