@@ -142,7 +142,7 @@ void AWeapon::ExecuteGetHit(FHitResult& BoxHit)
 	IHitInterface* HitInterface = Cast<IHitInterface>(BoxHit.GetActor());	//Castujemy trafionego aktora do interfejsu HitInterface
 	if (HitInterface)	//Sprawdzamy czy trafiony aktor ma interfejs HitInterface
 	{
-		HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint);	//Wywo³ujemy funkcjê GetHit z interfejsu HitInterface native
+		HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint, GetOwner());	//Wywo³ujemy funkcjê GetHit z interfejsu HitInterface native
 	}
 }
 

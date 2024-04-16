@@ -25,16 +25,14 @@ void ABaseCharacter::BeginPlay()
 	
 }
 
-void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint)
+void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
 {
-	if (IsAlive())	// Sprawdzamy czy Attributes nie jest nullpointerem i czy "enemy" ¿yje
+	if (IsAlive() && Hitter)	// Sprawdzamy czy Attributes nie jest nullpointerem i czy "enemy" ¿yje
 	{
-		DirectionalHitReact(ImpactPoint);	// Wywo³ujemy funkcjê DirectionalHitReact z argumentem ImpactPoint
+		DirectionalHitReact(Hitter->GetActorLocation());	// Wywo³ujemy funkcjê DirectionalHitReact z argumentem ImpactPoint
 	}
-	else
-	{
-		Die();	// Wywo³ujemy funkcjê Die
-	}
+	else Die();	// Wywo³ujemy funkcjê Die
+	
 
 	PlayHitSound(ImpactPoint);	// Wywo³ujemy funkcjê PlayHitSound z argumentem ImpactPoint. // Odtwarzamy dŸwiêk otrzymania ciosu
 

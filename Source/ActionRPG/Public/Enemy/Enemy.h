@@ -29,7 +29,7 @@ public:
 
 	/** <IHitInterface> */
 	// Called to bind functionality to input
-	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;	// Implementujemy funkcjê GetHit z interfejsu HitInterface
+	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;	// Implementujemy funkcjê GetHit z interfejsu HitInterface
 	/** </IHitInterface> */
 
 protected:
