@@ -109,7 +109,7 @@ void AEnemy::Destroyed()
 void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z Enemy.h
 {
 	Super::GetHit_Implementation(ImpactPoint);	// Wywo³ujemy funkcjê GetHit_Implementation z BaseCharacter
-	ShowHealthBar();	//Wywo³ujemy funkcjê ShowHealthBar
+	if (!IsDead()) ShowHealthBar();	//Wywo³ujemy funkcjê ShowHealthBar
 	ClearPatrolTimer();	//Wywo³ujemy funkcjê ClearPatrolTimer
 	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
 	
