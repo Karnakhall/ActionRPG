@@ -82,6 +82,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	//Function to know where is the end of equipping
 	void FinishEquipping();
+
+	UFUNCTION(BlueprintCallable)
+	void HitReactEnd();
 private:
 
 	/* Rozwi¹zanie dla zwyk³ej wersji c++
