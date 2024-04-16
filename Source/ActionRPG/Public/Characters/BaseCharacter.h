@@ -25,7 +25,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	//
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;	//Implementujemy funkcjê GetHit z interfejsu HitInterface
 
 	//Function to attack
 	virtual void Attack();

@@ -108,21 +108,9 @@ void AEnemy::Destroyed()
 
 void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)	// Deklarujemy funkcjê GetHit z Enemy.h
 {
+	Super::GetHit_Implementation(ImpactPoint);	// Wywo³ujemy funkcjê GetHit_Implementation z BaseCharacter
 	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
 	ShowHealthBar();	//Wywo³ujemy funkcjê ShowHealthBar
-
-	if (IsAlive())	// Sprawdzamy czy Attributes nie jest nullpointerem i czy "enemy" ¿yje
-	{
-		DirectionalHitReact(ImpactPoint);	// Wywo³ujemy funkcjê DirectionalHitReact z argumentem ImpactPoint
-	}
-	else
-	{
-		Die();	// Wywo³ujemy funkcjê Die
-	}
-
-	PlayHitSound(ImpactPoint);	// Wywo³ujemy funkcjê PlayHitSound z argumentem ImpactPoint. // Odtwarzamy dŸwiêk otrzymania ciosu
-
-	SpawnHitParticles(ImpactPoint);	// Wywo³ujemy funkcjê SpawnHitParticles z argumentem ImpactPoint. // Odtwarzamy system particle  otrzymania ciosu
 }
 
 // Called when the game starts or when spawned
