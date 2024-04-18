@@ -243,7 +243,7 @@ FVector ABaseCharacter::GetTranslationWarpTarget()
 	const FVector TargetToMe = (Location - CombatTargetLocation).GetSafeNormal();	//Obliczamy wektor od celu do nas
 	TargetToMe * WarpTargetDistance;	//Mno¿ymy wektor przez WarpTargetDistance
 
-	DRAW_SPHERE(CombatTargetLocation + TargetToMe);
+	//DRAW_SPHERE(CombatTargetLocation + TargetToMe);	// Rysuje sfere w miejscu gdzie jest cel
 	return CombatTargetLocation + TargetToMe;	//Zwracamy lokalizacjê celu + wektor
 }
 
