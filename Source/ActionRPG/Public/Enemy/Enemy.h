@@ -55,6 +55,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;	//Stan przeciwnika
 
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	AActor* CombatTarget;	//WskaŸnik do celu walki
+
 private:
 
 	/** AI Behavior */
@@ -94,8 +97,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AWeapon> WeaponClass;	//pos³u¿y do spawnowania broni
 
-	UPROPERTY()
-	AActor* CombatTarget;	//WskaŸnik do celu walki
 
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 500.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
