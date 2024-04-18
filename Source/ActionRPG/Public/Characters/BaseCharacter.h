@@ -63,7 +63,7 @@ protected:
 	void PlayHitReactMontage(const FName& SectionName);
 	virtual int32 PlayAttackMontage();
 	virtual int32 PlayDeathMontage();
-		
+	void StopAttackMontage();
 	
 
 	//Variable to keep track of the attack combo

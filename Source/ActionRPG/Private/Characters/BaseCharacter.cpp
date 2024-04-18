@@ -223,6 +223,15 @@ int32 ABaseCharacter::PlayDeathMontage()
 	return PlayRandomMontageSection(DeathMontage, DeathMontageSections);
 }
 
+void ABaseCharacter::StopAttackMontage()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();	//Pobieramy AnimInstance
+	if (AnimInstance)
+	{
+		AnimInstance->Montage_Stop(0.2f, AttackMontage);	//Zatrzymujemy animacjê ataku
+	}
+}
+
 void ABaseCharacter::DisableCapsule() // Wy³¹czamy kolizjê kapsu³y po œmierci przeciwnika
 {
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);	// Wy³¹czamy kolizjê kapsu³y po œmierci przeciwnika

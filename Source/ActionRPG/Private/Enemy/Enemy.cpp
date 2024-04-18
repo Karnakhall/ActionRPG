@@ -93,7 +93,15 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 {
 	HandleDamage(DamageAmount);	// Wywo³ujemy funkcjê HandleDamage z argumentem DamageAmount
 	CombatTarget = EventInstigator->GetPawn();	// Przypisujemy CombatTarget wartoœæ EventInstigator->GetPawn()
-	ChaseTarget();	// Wywo³ujemy funkcjê ChaseTarget
+	
+	if (IsInsideAttackRadius())	//Jeœli postaæ jest w zasiêgu ataku to ustawiamy "enemy" state na attak
+	{
+		EnemyState = EEnemyState::EES_Attacking;
+	}
+	else if (IsOutsideAttackRadius())
+	{
+		ChaseTarget();
+	}
 	return DamageAmount;
 }
 
@@ -111,6 +119,10 @@ void AEnemy::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)	/
 	Super::GetHit_Implementation(ImpactPoint, Hitter);	// Wywo³ujemy funkcjê GetHit_Implementation z BaseCharacter
 	if (!IsDead()) ShowHealthBar();	//Wywo³ujemy funkcjê ShowHealthBar
 	ClearPatrolTimer();	//Wywo³ujemy funkcjê ClearPatrolTimer
+	ClearAttackTimer();	//Wywo³ujemy funkcjê ClearAttackTimer
+
+	StopAttackMontage();	//Wywo³ujemy funkcjê StopAttackMontage
+	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);
 	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
 	
 }
