@@ -55,8 +55,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;	//Stan przeciwnika
 
-	UPROPERTY(BlueprintReadOnly, Category = "Combat")
-	AActor* CombatTarget;	//Wskaünik do celu walki
+
 
 private:
 

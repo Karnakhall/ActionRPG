@@ -7,6 +7,7 @@
 #include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "BaseCharacter" móg³ dziedziczyæ z funkcji AttributeComponent
 #include "Components/CapsuleComponent.h" // for UCapsuleComponent"
 #include "Kismet/GameplayStatics.h"
+#include "ActionRPG/DebugMacros.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -230,6 +231,29 @@ void ABaseCharacter::StopAttackMontage()
 	{
 		AnimInstance->Montage_Stop(0.2f, AttackMontage);	//Zatrzymujemy animacjê ataku
 	}
+}
+
+FVector ABaseCharacter::GetTranslationWarpTarget()
+{
+	if (CombatTarget == nullptr) return FVector();	//Jeœli CombatTarget jest nullptr, to zwracamy pusty wektor
+	
+	const FVector CombatTargetLocation = CombatTarget->GetActorLocation();	//Pobieramy lokalizacjê CombatTarget
+	const FVector Location = GetActorLocation();	//Pobieramy lokalizacjê naszego "enemy"
+
+	const FVector TargetToMe = (Location - CombatTargetLocation).GetSafeNormal();	//Obliczamy wektor od celu do nas
+	TargetToMe * WarpTargetDistance;	//Mno¿ymy wektor przez WarpTargetDistance
+
+	DRAW_SPHERE(CombatTargetLocation + TargetToMe);
+	return CombatTargetLocation + TargetToMe;	//Zwracamy lokalizacjê celu + wektor
+}
+
+FVector ABaseCharacter::GetRotationWarpTarget()	//We want our enemy face to CombatTarget
+{
+	if (CombatTarget)
+	{
+		return CombatTarget->GetActorLocation();
+	}
+	return FVector();
 }
 
 void ABaseCharacter::DisableCapsule() // Wy³¹czamy kolizjê kapsu³y po œmierci przeciwnika

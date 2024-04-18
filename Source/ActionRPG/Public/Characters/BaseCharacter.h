@@ -65,7 +65,11 @@ protected:
 	virtual int32 PlayDeathMontage();
 	void StopAttackMontage();
 	
+	UFUNCTION(BlueprintCallable)
+	FVector GetTranslationWarpTarget();	//Funkcja do zwracania wektora przesuniÍcia
 
+	UFUNCTION(BlueprintCallable)
+	FVector GetRotationWarpTarget();	//Funkcja do zwracania wektora rotacji
 	//Variable to keep track of the attack combo
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	AWeapon* EquippedWeapon;	//Wskaünik do broni
@@ -77,6 +81,11 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* Attributes;	// Wskaünik do komponentu atrybutÛw
 
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	AActor* CombatTarget;	//Wskaünik do celu walki
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	double WarpTargetDistance = 75.f;
 private:
 //Variable to keep track of the attack combo
 	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);	//Funkcja do wywo≥ania losowej sekcji animacji i odtwarzania
