@@ -7,9 +7,12 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GroomComponent.h"
+#include "Components/AttributeComponent.h"
 #include "Items/Item.h"		//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ
 #include "Items/Weapons/Weapon.h"	//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ
 #include "Animation/AnimMontage.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ AnimMontage
+#include "HUD/SlashHUD.h"
+#include "HUD/SlashOverlay.h"
 //#include "Components/BoxComponent.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ BoxComponent
 
 
@@ -85,6 +88,24 @@ void ASlashCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	Tags.Add(FName("EngageableTarget"));	//Dodajemy tag do postaci, ¿eby móc j¹ zidentyfikowaæ albo ¿eby nasi przeciwnicy mogli ja zidentyfikowaæ
+	
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());	//
+	if (PlayerController)
+	{
+		ASlashHUD* SlashHUD = Cast<ASlashHUD>(PlayerController->GetHUD());	//Pobieramy HUD
+		if (SlashHUD)
+		{
+			USlashOverlay* SlashOverlay = SlashHUD->GetSlashOverlay();	//Pobieramy SlashOverlay
+			if (SlashOverlay && Attributes)
+			{
+				SlashOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());	//Ustawiamy procent zdrowia w HealthProgressBar
+				SlashOverlay->SetStaminaBarPercent(1.f);	//Ustawiamy procent staminy w StaminaProgressBar
+				SlashOverlay->SetGoldText(50);	//Ustawiamy iloœæ z³ota w GoldText
+				SlashOverlay->SetSoulsText(0);	//Ustawiamy iloœæ dusz w SoulsText
+			}
+		}
+	}
+	
 	
 }
 

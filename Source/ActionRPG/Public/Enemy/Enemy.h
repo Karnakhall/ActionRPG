@@ -139,5 +139,5 @@ private:
 	float ChasingSpeed = 300.f;	//Prêdkoœæ goniennia
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	float DeathLifeSpan = 8.f;
+	float DeathLifeSpan = 5.f;
 };

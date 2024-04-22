@@ -26,5 +26,8 @@ private:
 
 	UPROPERTY()
 	USlashOverlay* SlashOverlay;
+
+public:
+	FORCEINLINE USlashOverlay* GetSlashOverlay() const { return SlashOverlay; }	// This function is used to get the SlashOverlay widget
 	
 };

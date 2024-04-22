@@ -37,6 +37,6 @@ void USlashOverlay::SetSoulsText(int32 Souls)
 	{
 		const FString String = FString::Printf(TEXT("%d"), Souls);	// Convert the Gold variable to a string
 		const FText Text = FText::FromString(String);	// Convert the string to a FText variable
-		SoulsText->SetText(Text);	// Set the GoldText's Text variable
+		SoulsText->SetText(Text);	// Set the SoulsText's Text variable
 	}
 }
