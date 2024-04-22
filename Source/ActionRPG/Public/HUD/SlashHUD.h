@@ -13,7 +13,9 @@ UCLASS()
 class ACTIONRPG_API ASlashHUD : public AHUD
 {
 	GENERATED_BODY()
+protected:
 
+	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
