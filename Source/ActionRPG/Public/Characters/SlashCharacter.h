@@ -24,7 +24,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obra¿eñ
 	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
 	
 	/*Jeden ze sposobów w³¹czenia i wy³¹czenia kolizji na broni
