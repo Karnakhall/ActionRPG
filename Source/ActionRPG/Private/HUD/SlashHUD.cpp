@@ -14,7 +14,7 @@ void ASlashHUD::BeginPlay()
 		APlayerController* Controller = World->GetFirstPlayerController();	// Get the first player controller
 		if (Controller && SlashOverlayClass)	// If the Controller and SlashOverlayClass are valid
 		{
-			USlashOverlay* SlashOverlay = CreateWidget<USlashOverlay>(Controller, SlashOverlayClass);	// Create the SlashOverlay widget
+			SlashOverlay = CreateWidget<USlashOverlay>(Controller, SlashOverlayClass);	// Create the SlashOverlay widget
 			SlashOverlay->AddToViewport();	// Add the SlashOverlay widget to the viewport
 		}
 	}

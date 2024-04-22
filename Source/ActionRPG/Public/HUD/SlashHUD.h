@@ -9,6 +9,9 @@
 /**
  * 
  */
+
+class USlashOverlay;
+
 UCLASS()
 class ACTIONRPG_API ASlashHUD : public AHUD
 {
@@ -18,7 +21,10 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
-	TSubclassOf<class USlashOverlay> SlashOverlayClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Slash")
+	TSubclassOf<USlashOverlay> SlashOverlayClass;
+
+	UPROPERTY()
+	USlashOverlay* SlashOverlay;
 	
 };
