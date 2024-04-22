@@ -12,6 +12,8 @@ class UCameraComponent;
 class UGroomComponent;
 class AItem;
 class UAnimMontage;
+class USlashOverlay;
+
 
 UCLASS()
 class ACTIONRPG_API ASlashCharacter : public ABaseCharacter
@@ -85,7 +87,10 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void HitReactEnd();
+
 private:
+
+	void InitializeSlashOverlay();	//Function to initialize the slash overlay
 
 	/* Rozwi¹zanie dla zwyk³ej wersji c++
 	//Variable to keep track of the character state
@@ -119,6 +124,10 @@ private:
 	//Montage to equip and unequipped the weapon
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* EquipMontage;
+
+	UPROPERTY()
+	USlashOverlay* SlashOverlay;
+
 public:
 	//Function to pickup items
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }

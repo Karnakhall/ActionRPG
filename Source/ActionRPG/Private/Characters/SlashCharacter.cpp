@@ -89,23 +89,7 @@ void ASlashCharacter::BeginPlay()
 
 	Tags.Add(FName("EngageableTarget"));	//Dodajemy tag do postaci, ¿eby móc j¹ zidentyfikowaæ albo ¿eby nasi przeciwnicy mogli ja zidentyfikowaæ
 	
-	APlayerController* PlayerController = Cast<APlayerController>(GetController());	//
-	if (PlayerController)
-	{
-		ASlashHUD* SlashHUD = Cast<ASlashHUD>(PlayerController->GetHUD());	//Pobieramy HUD
-		if (SlashHUD)
-		{
-			USlashOverlay* SlashOverlay = SlashHUD->GetSlashOverlay();	//Pobieramy SlashOverlay
-			if (SlashOverlay && Attributes)
-			{
-				SlashOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());	//Ustawiamy procent zdrowia w HealthProgressBar
-				SlashOverlay->SetStaminaBarPercent(1.f);	//Ustawiamy procent staminy w StaminaProgressBar
-				SlashOverlay->SetGoldText(50);	//Ustawiamy iloœæ z³ota w GoldText
-				SlashOverlay->SetSoulsText(0);	//Ustawiamy iloœæ dusz w SoulsText
-			}
-		}
-	}
-	
+	InitializeSlashOverlay();	//Funkcja inicjalizuj¹ca SlashOverlay i wyœwietlaj¹ca informacje o postaci na HUD
 	
 }
 
@@ -296,7 +280,25 @@ void ASlashCharacter::HitReactEnd()
 	ActionState = EActionState::EAS_Unoccupied;	//Resetujemy stan postaci
 }
 
-
+void ASlashCharacter::InitializeSlashOverlay()	//Funkcja inicjalizuj¹ca SlashOverlay i wyœwietlaj¹ca informacje o postaci na HUD
+{
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());	//
+	if (PlayerController)
+	{
+		ASlashHUD* SlashHUD = Cast<ASlashHUD>(PlayerController->GetHUD());	//Pobieramy HUD
+		if (SlashHUD)
+		{
+			SlashOverlay = SlashHUD->GetSlashOverlay();	//Pobieramy SlashOverlay
+			if (SlashOverlay && Attributes)
+			{
+				SlashOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());	//Ustawiamy procent zdrowia w HealthProgressBar
+				SlashOverlay->SetStaminaBarPercent(1.f);	//Ustawiamy procent staminy w StaminaProgressBar
+				SlashOverlay->SetGoldText(50);	//Ustawiamy iloœæ z³ota w GoldText
+				SlashOverlay->SetSoulsText(0);	//Ustawiamy iloœæ dusz w SoulsText
+			}
+		}
+	}
+}
 
 
 
