@@ -26,6 +26,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void Jump() override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obra¿eñ
 	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
 	
@@ -90,7 +91,13 @@ protected:
 
 private:
 
+	bool IsUnoccupied();	//Function to check if the character is unoccupied
+
 	void InitializeSlashOverlay();	//Function to initialize the slash overlay
+
+	void SetHUDHealth();	//Function to update health on HUD
+
+
 
 	/* Rozwi¹zanie dla zwyk³ej wersji c++
 	//Variable to keep track of the character state

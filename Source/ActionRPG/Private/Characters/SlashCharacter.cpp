@@ -63,14 +63,24 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAxis(FName("Turn"), this, &ASlashCharacter::Turn);
 	PlayerInputComponent->BindAxis(FName("LookUp"), this, &ASlashCharacter::LookUp);
 
-	PlayerInputComponent->BindAction(FName("Jump"), IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction(FName("Jump"), IE_Pressed, this, &ASlashCharacter::Jump);
 	PlayerInputComponent->BindAction(FName("Equip"), IE_Pressed, this, &ASlashCharacter::EKeyPresed);
 	PlayerInputComponent->BindAction(FName("Attack"), IE_Pressed, this, &ASlashCharacter::Attack);
+}
+
+void ASlashCharacter::Jump()
+{
+	if (IsUnoccupied())
+	{
+		Super::Jump();
+	}
+	
 }
 
 float ASlashCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	HandleDamage(DamageAmount);	//Wywo³ujemy funkcjê obs³ugi obra¿eñ dla naszej postaci
+	SetHUDHealth();
 	return DamageAmount;
 }
 
@@ -280,6 +290,11 @@ void ASlashCharacter::HitReactEnd()
 	ActionState = EActionState::EAS_Unoccupied;	//Resetujemy stan postaci
 }
 
+bool ASlashCharacter::IsUnoccupied()	//Funkcja sprawdzaj¹ca czy postaæ jest w stanie unoccupied
+{
+	return ActionState == EActionState::EAS_Unoccupied;
+}
+
 void ASlashCharacter::InitializeSlashOverlay()	//Funkcja inicjalizuj¹ca SlashOverlay i wyœwietlaj¹ca informacje o postaci na HUD
 {
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());	//
@@ -293,13 +308,19 @@ void ASlashCharacter::InitializeSlashOverlay()	//Funkcja inicjalizuj¹ca SlashOve
 			{
 				SlashOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());	//Ustawiamy procent zdrowia w HealthProgressBar
 				SlashOverlay->SetStaminaBarPercent(1.f);	//Ustawiamy procent staminy w StaminaProgressBar
-				SlashOverlay->SetGoldText(50);	//Ustawiamy iloœæ z³ota w GoldText
-				SlashOverlay->SetSoulsText(0);	//Ustawiamy iloœæ dusz w SoulsText
+				SlashOverlay->SetGoldText(0.f);	//Ustawiamy iloœæ z³ota w GoldText
+				SlashOverlay->SetSoulsText(0.f);	//Ustawiamy iloœæ dusz w SoulsText
 			}
 		}
 	}
 }
 
-
+void ASlashCharacter::SetHUDHealth()	//Function to update health on HUD
+{
+	if (SlashOverlay && Attributes)
+	{
+		SlashOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());	//Ustawiamy procent zdrowia w HealthProgressBar aby sie aktualizowa³ po otrzymaniu obra¿eñ
+	}
+}
 
 
