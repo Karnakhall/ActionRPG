@@ -158,8 +158,10 @@ void AEnemy::Die()
 
 void AEnemy::Attack()
 {
-	EnemyState = EEnemyState::EES_Engaged;	//Ustawiamy EnemyState na EES_Engaged
 	Super::Attack();
+	if (CombatTarget == nullptr) return;	// Sprawdzamy czy CombatTarget nie jest nullpointerem
+
+	EnemyState = EEnemyState::EES_Engaged;	//Ustawiamy EnemyState na EES_Engaged
 	PlayAttackMontage();
 }
 
