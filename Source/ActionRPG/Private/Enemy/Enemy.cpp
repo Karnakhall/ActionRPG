@@ -143,8 +143,9 @@ void AEnemy::BeginPlay()
 
 void AEnemy::Die()
 {
+	Super::Die();	// Wywo³ujemy funkcjê Die z BaseCharacter
 	EnemyState = EEnemyState::EES_Dead;	// Ustawiamy EnemyState na EES_Dead
-	PlayDeathMontage();	// Odtwarzamy animacjê œmierci
+	
 	ClearAttackTimer();	// Czyœcimy timer ataku
 	//Jeœli przeciwnik ma HealthBarWidget, to ustawiamy jego widocznoœæ na false w momencie œmierci
 	HideHealthBar();
@@ -188,7 +189,7 @@ void AEnemy::HandleDamage(float DamageAmount)
 	}
 }
 
-int32 AEnemy::PlayDeathMontage()
+/*int32 AEnemy::PlayDeathMontage()
 {
 	const int32 Selection = Super::PlayDeathMontage();
 	TEnumAsByte<EDeathPose> Pose(Selection);
@@ -198,7 +199,7 @@ int32 AEnemy::PlayDeathMontage()
 	}
 
 	return Selection;
-}
+}*/
 
 
 //Funkcja do inicjalizacji przeciwnika. Ustawa stan pocz¹tkowy, ustawia kontroler AI, ustawia cel patrolu, ustawia pasek ¿ycia

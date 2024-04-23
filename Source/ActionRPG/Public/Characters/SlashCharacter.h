@@ -70,6 +70,9 @@ protected:
 	bool CanArm();
 	void Disarm();
 	void Arm();
+	//Function to play equip montage. We don't need to select a section random. We want to chose whether to play the equip or unequip section
+	void PlayEquipMontage(const FName& SectionName);
+	virtual void Die() override;
 
 	UFUNCTION(BlueprintCallable)
 	//Disarm function for attaching the weapon to the back
@@ -78,9 +81,6 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	//Arm function for attaching the weapon to the hand
 	void AttachWeaponToHand();
-
-	//Function to play equip montage. We don't need to select a section random. We want to chose whether to play the equip or unequip section
-	void PlayEquipMontage(const FName& SectionName);
 
 	UFUNCTION(BlueprintCallable)
 	//Function to know where is the end of equipping
@@ -141,4 +141,7 @@ public:
 
 	//Function to get the character state and make it public. Const nie pozwala na zmiane niczego w funkcji poza zmian¹ state
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
+
+	//Function to get the action state and make it public
+	FORCEINLINE EActionState GetActionState() const { return ActionState; }
 };

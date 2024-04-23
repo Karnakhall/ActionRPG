@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Interfaces/HitInterface.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji HitInterface 
+#include "Interfaces/HitInterface.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji HitInterface
+#include "Characters/CharacterTypes.h"
 #include "BaseCharacter.generated.h"
 
 class AWeapon;
@@ -25,7 +26,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	//
+	
+	/** Combat */
 	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;	//Implementujemy funkcjê GetHit z interfejsu HitInterface
 
 	//Function to attack
@@ -46,7 +48,8 @@ protected:
 	virtual bool CanAttack();
 	//Sprawdzamy czy postaæ ¿yje
 	bool IsAlive();	
-
+	//Funkcja do wy³¹czenia kolizji na meshe aby nie mo¿na by³a zaatakowaæ martwego przeciwnika
+	void DisableMeshCollision();	
 
 	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
 	//Function to stop attack montage
@@ -86,6 +89,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	double WarpTargetDistance = 75.f;
+
+
+	UPROPERTY(BlueprintReadOnly)
+	TEnumAsByte<EDeathPose> DeathPose;	//Zmienna do œledzenia pozycji œmierci
+
 private:
 //Variable to keep track of the attack combo
 	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);	//Funkcja do wywo³ania losowej sekcji animacji i odtwarzania
@@ -114,4 +122,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TArray<FName> DeathMontageSections;	//Tablica nazw animacji œmierci
+
+	public:
+		FORCEINLINE TEnumAsByte<EDeathPose> GetDeathPose() const { return DeathPose; }	//Funkcja do zwracania pozycji œmierci
 };

@@ -45,12 +45,8 @@ protected:
 	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik mo¿e zaatakowaæ
 	virtual void AttackEnd() override;	//Funkcja do zakoñczenia ataku
 	virtual void HandleDamage(float DamageAmount) override;	//Funkcja do obs³ugi obra¿eñ
-	virtual int32 PlayDeathMontage() override;	//Funkcja do odtwarzania animacji œmierci
+	//virtual int32 PlayDeathMontage() override;	//Funkcja do odtwarzania animacji œmierci
 	/** </ABaseCharacter> */
-	
-
-	UPROPERTY(BlueprintReadOnly)
-	TEnumAsByte<EDeathPose> DeathPose;	//Zmienna do œledzenia pozycji œmierci
 
 	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;	//Stan przeciwnika

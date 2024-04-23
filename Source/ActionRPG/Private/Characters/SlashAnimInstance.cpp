@@ -29,6 +29,8 @@ void USlashAnimInstance::NativeUpdateAnimation(float DeltaTime)
 		IsFalling = SlashCharacterMovement->IsFalling();
 		//Set the character state
 		CharacterState = SlashCharacter->GetCharacterState();
-
+		//Set the action state
+		ActionState = SlashCharacter->GetActionState();	//Set the action state
+		DeathPose = SlashCharacter->GetDeathPose();	//Set the death pose
 	}
 }

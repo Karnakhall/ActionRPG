@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h" // for UCapsuleComponent"
 #include "Kismet/GameplayStatics.h"
 #include "ActionRPG/DebugMacros.h"
+#include "Characters/CharacterTypes.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -46,6 +47,7 @@ void ABaseCharacter::Attack()
 
 void ABaseCharacter::Die()
 {
+	PlayDeathMontage();	// Odtwarzamy animacjê œmierci
 }
 
 void ABaseCharacter::PlayHitReactMontage(const FName& SectionName)
@@ -221,7 +223,14 @@ int32 ABaseCharacter::PlayAttackMontage()
 
 int32 ABaseCharacter::PlayDeathMontage()
 {
-	return PlayRandomMontageSection(DeathMontage, DeathMontageSections);
+	const int32 Selection = PlayRandomMontageSection(DeathMontage, DeathMontageSections);
+	TEnumAsByte<EDeathPose> Pose(Selection);
+	if (Pose < EDeathPose::EDP_MAX)
+	{
+		DeathPose = Pose;
+	}
+
+	return Selection;
 }
 
 void ABaseCharacter::StopAttackMontage()
@@ -269,6 +278,11 @@ bool ABaseCharacter::CanAttack()
 bool ABaseCharacter::IsAlive()
 {
 	return Attributes && Attributes->IsAlive();
+}
+
+void ABaseCharacter::DisableMeshCollision()
+{
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);	//Wy³¹czamy kolizjê na meshe postaci aby nie móg³ przeciwnik zadaæ obra¿eñ po œmierci
 }
 
 void ABaseCharacter::AttackEnd()
