@@ -5,18 +5,20 @@
 #include "CoreMinimal.h"
 #include "BaseCharacter.h"	//Potrzebujemy tego nag³ówka aby SlachCharacter móg³ dziedziczyæ funkcje z BaseCharacter
 #include "CharacterTypes.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ enuma
+#include "Interfaces/PickupInterface.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ interfejsu do podnoszenia przedmiotów
 #include "SlashCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
 class UGroomComponent;
 class AItem;
+class ASoul;
 class UAnimMontage;
 class USlashOverlay;
 
 
 UCLASS()
-class ACTIONRPG_API ASlashCharacter : public ABaseCharacter
+class ACTIONRPG_API ASlashCharacter : public ABaseCharacter, public IPickupInterface	//Dodajemy interfejs do podnoszenia przedmiotów
 {
 	GENERATED_BODY()
 
@@ -29,7 +31,9 @@ public:
 	virtual void Jump() override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obra¿eñ
 	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
-	
+	virtual void SetOverlappingItem(AItem* Item) override;
+	virtual void AddSouls(ASoul* Soul) override;
+
 	/*Jeden ze sposobów w³¹czenia i wy³¹czenia kolizji na broni
 	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
 	void EnableWeaponCollision();	//Funkcja do w³¹czenia kolizji broni
@@ -136,8 +140,6 @@ private:
 	USlashOverlay* SlashOverlay;
 
 public:
-	//Function to pickup items
-	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 
 	//Function to get the character state and make it public. Const nie pozwala na zmiane niczego w funkcji poza zmian¹ state
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
