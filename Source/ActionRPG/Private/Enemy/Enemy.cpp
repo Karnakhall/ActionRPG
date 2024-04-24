@@ -430,6 +430,7 @@ void AEnemy::PawnSeen(APawn* SeenPawn)
 		EnemyState != EEnemyState::EES_Chasing &&	// Sprawdzamy czy EnemyState nie jest równy EES_Chasing
 		EnemyState < EEnemyState::EES_Attacking &&	// Sprawdzamy czy EnemyState jest mniejszy od EES_Attacking
 		SeenPawn->ActorHasTag(FName("EngageableTarget"));	// Sprawdzamy czy Actor ma tag
+		SeenPawn->ActorHasTag(FName("Dead"));	// Sprawdzamy czy Actor ma tag, jesli ma to nie podbiegamy do niego gdy ju¿ umar³
 
 	if (bShouldChaseTarget)	//Jeœli bShouldChaseTarget jest true to:
 	{
