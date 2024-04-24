@@ -69,7 +69,7 @@ protected:
 
 	//Niagara system for the embers
 	UPROPERTY(EditAnywhere)
-	class UNiagaraComponent* EmbersEffect;
+	class UNiagaraComponent* ItemEffect;
 
 private:
 

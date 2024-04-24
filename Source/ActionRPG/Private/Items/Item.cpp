@@ -29,8 +29,8 @@ AItem::AItem() // I can asigned here Amplitude(0.25f)
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	Sphere->SetupAttachment(GetRootComponent());
 
-	EmbersEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("EmbersEffect"));	// Create the NiagaraComponent
-	EmbersEffect->SetupAttachment(GetRootComponent());	// Attach the NiagaraComponent to the root component
+	ItemEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("EmbersEffect"));	// Create the NiagaraComponent
+	ItemEffect->SetupAttachment(GetRootComponent());	// Attach the NiagaraComponent to the root component
 }
 
 // Called when the game starts or when spawned

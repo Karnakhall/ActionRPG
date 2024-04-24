@@ -48,9 +48,9 @@ void AWeapon::Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOw
 }
 void AWeapon::DeactivateEmbers()
 {
-	if (EmbersEffect)	//Sprawdzamy czy emberseffect is not nullptr
+	if (ItemEffect)	//Sprawdzamy czy emberseffect is not nullptr
 	{
-		EmbersEffect->Deactivate();	//Deaktywujemy efekt
+		ItemEffect->Deactivate();	//Deaktywujemy efekt
 	}
 }
 void AWeapon::DisableSphereCollision()
