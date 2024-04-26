@@ -3,7 +3,8 @@
 
 #include "Items/Treasure.h"
 #include "Characters/SlashCharacter.h"
-#include "Kismet/GameplayStatics.h"
+#include "Components/SphereComponent.h"
+
 
 void ATreasure::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -11,14 +12,7 @@ void ATreasure::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
 	if (SlashCharacter)
 	{
-		if (PickupSound)	//Sprawdzamy czy nie jest nullpointerem
-		{
-			UGameplayStatics::PlaySoundAtLocation(
-				this,
-				PickupSound, 
-				GetActorLocation()
-			);	//Odtwarzamy dŸwiêk podnoszenia przedmiotu
-		}
+		SpawnPickupSound();	//Spawn the pickup sound
 		
 		Destroy();	//Jeœli bohater overlappuje z naszym przedmiotem, to niszczymy go
 	}

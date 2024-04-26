@@ -7,6 +7,7 @@
 #include "Item.generated.h"
 
 class USphereComponent;
+class UNiagaraComponent;
 
 //Dodanie statusu przedmiotu
 enum class EItemState : uint8
@@ -58,6 +59,9 @@ protected:
 	UFUNCTION()	//Without UFUNCTION() it will not bind
 	virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	virtual void SpawnPickupSystem();
+
+	virtual void SpawnPickupSound();
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* ItemMesh;
 	//Enum to keep track of the item state
@@ -71,10 +75,16 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class UNiagaraComponent* ItemEffect;
 
+	UPROPERTY(EditAnywhere)
+	USoundBase* PickupSound;
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))	// meta = (AllowPrivateAccess = "true") allows to see and change variables in private section
 	float RunningTime;		// Time for sine wave
+
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* PickupEffect;
 };
 
 template<typename T>
