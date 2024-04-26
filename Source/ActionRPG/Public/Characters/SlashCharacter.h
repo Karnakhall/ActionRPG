@@ -60,6 +60,8 @@ protected:
 	void EKeyPresed();
 	//Function to attack
 	virtual void Attack() override;
+	//Function to dodge
+	void Dodge();
 
 	/** Combat */
 	//UFUNCTION(BlueprintCallable) nie potrzebujemy tego tutaj, poniewa¿ dziedziczymy ca³oœæ z Base Character
@@ -67,6 +69,8 @@ protected:
 	void EquipWeapon(AWeapon* Weapon);
 	//Function to stop attack montage
 	virtual void AttackEnd() override;
+	//Function to stop dodge montage
+	virtual void DodgeEnd() override;
 	//Sprawdzamy boolem czy postac mo¿e zaatakowaæ
 	virtual bool CanAttack() override;
 
