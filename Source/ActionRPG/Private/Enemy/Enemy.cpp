@@ -9,7 +9,7 @@
 #include "HUD/HealthBarComponent.h"
 #include "Items/Weapons/Weapon.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji Weapon
 #include "Kismet/KismetSystemLibrary.h"
-
+#include "Items/Soul.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji Soul
 
 #include "Navigation/PathFollowingComponent.h"
 #include "ActionRPG/DebugMacros.h"	// Potrzebujemy tego nag³ówka aby móc u¿ywaæ makr debuguj¹cych
@@ -154,6 +154,20 @@ void AEnemy::Die()
 	SetLifeSpan(DeathLifeSpan);	// Ustawiamy czas po którym, cia³o przeciwnika znika po 3 sekundach od jego œmierci
 	GetCharacterMovement()->bOrientRotationToMovement = false;	// Wy³¹czamy obracanie siê w kierunku ruchu
 	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);		// Wy³¹czamy kolizjê broni gdy przeicwnik umiera
+	SpawnSoul();
+}
+
+void AEnemy::SpawnSoul()
+{
+	UWorld* World = GetWorld();	// Pobieramy œwiat
+	if (World && SoulClass && Attributes)
+	{
+		ASoul* SpawnedSoul = World->SpawnActor<ASoul>(SoulClass, GetActorLocation(), GetActorRotation());	// Spawnujemy duszê w miejscu œmierci przeciwnika
+		if (SpawnedSoul)
+		{
+			SpawnedSoul->SetSouls(Attributes->GetSouls());	// Ustawiamy iloœæ dusz do zebrania
+		}
+	}
 }
 
 void AEnemy::Attack()

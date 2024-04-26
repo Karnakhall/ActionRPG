@@ -41,6 +41,7 @@ protected:
 
 	/** <ABaseCharacter> */
 	virtual void Die() override;	//Funkcja do œmierci
+	void SpawnSoul();	//Funkcja do spawnowania duszy po œmierci przeciwnika
 	virtual void Attack() override;	//Funkcja do ataku
 	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik mo¿e zaatakowaæ
 	virtual void AttackEnd() override;	//Funkcja do zakoñczenia ataku
@@ -136,4 +137,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float DeathLifeSpan = 5.f;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TSubclassOf<class ASoul> SoulClass;	//Klasa duszy
 };

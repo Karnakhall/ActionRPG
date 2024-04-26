@@ -21,4 +21,5 @@ private:
 	int32 Souls;
 public:
 	FORCEINLINE int32 GetSouls() const { return Souls; }	//Getter do dusz
+	FORCEINLINE void SetSouls(int32 NumberOfSouls) { Souls = NumberOfSouls; }	//Setter do dusz
 };
