@@ -38,6 +38,16 @@ bool UAttributeComponent::IsAlive()	//Funkcja do sprawdzania czy aktor ¿yje
 	return Health > 0.f;	//Jeœli ¿ycie jest wiêksze ni¿ 0, to aktor ¿yje
 }
 
+void UAttributeComponent::AddGold(int32 AmountOfGold)
+{
+	Gold += AmountOfGold;	//Dodajemy z³oto
+}
+
+void UAttributeComponent::AddSouls(int32 NumberOfSouls)
+{
+	Souls += NumberOfSouls;	//Dodajemy dusze
+}
+
 
 // Called every frame
 void UAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

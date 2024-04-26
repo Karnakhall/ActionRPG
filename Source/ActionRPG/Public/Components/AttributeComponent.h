@@ -29,9 +29,22 @@ private:
 	// Maximum health of the actor
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
 	float MaxHealth;	
+
+	UPROPERTY(VisibleAnywhere, Category = "Actor Attributes")
+	int32 Gold;	//Zmienna do przechowywania z³ota
+
+	UPROPERTY(VisibleAnywhere, Category = "Actor Attributes")
+	int32 Souls;	//Zmienna do przechowywania dusz
 	
 public:	// Getters and setters
 	void ReceiveDamage(float Damage);	//Funkcja do otrzymywania obra¿eñ
 	float GetHealthPercent();	//Funkcja do pobierania ¿ycia
 	bool IsAlive();	//Funkcja do sprawdzania czy aktor ¿yje
+	void AddGold(int32 AmountOfGold);	//Funkcja do dodawania z³ota
+	void AddSouls(int32 NumberOfSouls);	//Funkcja do dodawania dusz
+
+
+	FORCEINLINE int32 GetGold() const { return Gold; }		//Getter do z³ota
+	FORCEINLINE int32 GetSouls() const { return Souls; }	//Getter do z³ota
+
 };

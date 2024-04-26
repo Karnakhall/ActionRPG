@@ -13,6 +13,8 @@
 #include "Animation/AnimMontage.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ AnimMontage
 #include "HUD/SlashHUD.h"
 #include "HUD/SlashOverlay.h"
+#include "Items/Soul.h"	
+#include "Items/Treasure.h"	
 //#include "Components/BoxComponent.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ BoxComponent
 
 
@@ -102,7 +104,22 @@ void ASlashCharacter::SetOverlappingItem(AItem* Item)
 
 void ASlashCharacter::AddSouls(ASoul* Soul)
 {
+	if (Attributes && SlashOverlay)
+	{
+		Attributes->AddSouls(Soul->GetSouls());
+		SlashOverlay->SetSoulsText(Attributes->GetSouls());
+	}
 	UE_LOG(LogTemp, Warning, TEXT("Souls added"));
+}
+
+void ASlashCharacter::AddGold(ATreasure* Treasure)
+{
+	if (Attributes && SlashOverlay)
+	{
+		Attributes->AddGold(Treasure->GetGold());
+		SlashOverlay->SetGoldText(Attributes->GetGold());
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Gold added"));
 }
 
 // Called when the game starts or when spawned

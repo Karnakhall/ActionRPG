@@ -2,18 +2,18 @@
 
 
 #include "Items/Treasure.h"
-#include "Characters/SlashCharacter.h"
+#include "Interfaces/PickupInterface.h"
 #include "Components/SphereComponent.h"
 
 
 void ATreasure::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//Sprawdzamy czy bohater overlappuje z naszym przedmiotem, jesli tak, mo¿emy podnieœæ przedmiot
-	ASlashCharacter* SlashCharacter = Cast<ASlashCharacter>(OtherActor);
-	if (SlashCharacter)
+	IPickupInterface* PickupInterface = Cast<IPickupInterface>(OtherActor);
+	if (PickupInterface)
 	{
+		PickupInterface->AddGold(this);
 		SpawnPickupSound();	//Spawn the pickup sound
-		
+
 		Destroy();	//Jeœli bohater overlappuje z naszym przedmiotem, to niszczymy go
 	}
 }
