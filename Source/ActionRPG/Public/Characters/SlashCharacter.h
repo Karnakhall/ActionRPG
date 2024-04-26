@@ -26,7 +26,7 @@ class ACTIONRPG_API ASlashCharacter : public ABaseCharacter, public IPickupInter
 public:
 	// Sets default values for this character's properties
 	ASlashCharacter();
-
+	virtual void Tick(float DeltaTime) override;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
@@ -63,6 +63,7 @@ protected:
 	//Function to dodge
 	void Dodge();
 
+
 	/** Combat */
 	//UFUNCTION(BlueprintCallable) nie potrzebujemy tego tutaj, poniewa¿ dziedziczymy ca³oœæ z Base Character
 	
@@ -83,6 +84,8 @@ protected:
 	//Function to play equip montage. We don't need to select a section random. We want to chose whether to play the equip or unequip section
 	void PlayEquipMontage(const FName& SectionName);
 	virtual void Die() override;
+	bool HasEnoughStamina();
+	bool IsOccupied();
 
 	UFUNCTION(BlueprintCallable)
 	//Disarm function for attaching the weapon to the back

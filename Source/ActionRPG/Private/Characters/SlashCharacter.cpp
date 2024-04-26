@@ -22,7 +22,7 @@
 ASlashCharacter::ASlashCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 //Set this character to be controlled by the lowest-numbered player
 	bUseControllerRotationPitch = false;
@@ -53,6 +53,15 @@ ASlashCharacter::ASlashCharacter()
 	Eyebrows = CreateDefaultSubobject<UGroomComponent>(TEXT("Eyebrows"));
 	Eyebrows->SetupAttachment(GetMesh());
 	Eyebrows->AttachmentName = FString("head");
+}
+
+void ASlashCharacter::Tick(float DeltaTime)
+{
+	if (Attributes && SlashOverlay)
+	{
+		Attributes->RegenStamina(DeltaTime);	//Funkcja do regeneracji staminy
+		SlashOverlay->SetStaminaBarPercent(Attributes->GetStaminaPercent());	//Ustawiamy procent staminy w StaminaProgressBar
+	}
 }
 
 // Called to bind functionality to input
@@ -225,9 +234,15 @@ void ASlashCharacter::Attack()
 
 void ASlashCharacter::Dodge()
 {
-	if (ActionState != EActionState::EAS_Unoccupied) return;	
+	if (IsOccupied() || !HasEnoughStamina()) return;
+	
 	PlayDodgeMontage();
 	ActionState = EActionState::EAS_Dodge;
+	if (Attributes && SlashOverlay)
+	{
+		Attributes->UseStamina(Attributes->GetDodgeCost());
+		SlashOverlay->SetStaminaBarPercent(Attributes->GetStaminaPercent());	//Ustawiamy procent staminy w StaminaProgressBar
+	}
 }
 
 void ASlashCharacter::EquipWeapon(AWeapon* Weapon)
@@ -331,6 +346,16 @@ void ASlashCharacter::Die()
 
 	ActionState = EActionState::EAS_Dead;	//Zmieniamy stan postaci na dead
 	DisableMeshCollision();	//Funkcja do wy³¹czenia kolizji na meshe aby nie mo¿na by³a zaatakowaæ martwego przeciwnika
+}
+
+bool ASlashCharacter::HasEnoughStamina()
+{
+	return Attributes && Attributes->GetStamina() > Attributes->GetDodgeCost();	//Sprawdzamy czy postaæ ma wystarczaj¹co du¿o staminy aby móc unikn¹æ ciosu
+}
+
+bool ASlashCharacter::IsOccupied()
+{
+	return ActionState != EActionState::EAS_Unoccupied;
 }
 
 void ASlashCharacter::FinishEquipping()
