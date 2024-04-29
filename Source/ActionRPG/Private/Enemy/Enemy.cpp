@@ -385,7 +385,7 @@ void AEnemy::MoveToTarget(AActor* Target)
 	if (EnemyController == nullptr || Target == nullptr) return;	// Sprawdzamy czy EnemyController i Target nie s¹ nullpointerami
 	FAIMoveRequest MoveRequest;	// Tworzymy strukturê FAIMoveRequest
 	MoveRequest.SetGoalActor(Target);	// Ustawiamy cel ruchu na PatrolTarget
-	MoveRequest.SetAcceptanceRadius(50.f);	// Ustawiamy promieñ akceptacji na 50
+	MoveRequest.SetAcceptanceRadius(AcceptanceRadius);	// Ustawiamy promieñ akceptacji
 	//FNavPathSharedPtr NavPath;	// Tworzymy wskaŸnik do œcie¿ki nawigacji
 	EnemyController->MoveTo(MoveRequest/*, &NavPath*/);	// Wywo³ujemy funkcjê MoveTo z kontrolera przeciwnika. &NavPath w³¹æzamy, gdy chcemy zobaczyc œciê¿kê poruszania siê
 	/*

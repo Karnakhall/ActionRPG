@@ -100,6 +100,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	double AttackRadius = 150.f;	//Promieñ walki w którym bêdziemy mogli zaatakowac przeciwnika i na odwró
 
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	double AcceptanceRadius = 50.f;	//Promieñ walki w którym bêdziemy mogli zaatakowac przeciwnika i na odwró
+
 	UPROPERTY()
 	class AAIController* EnemyController;	//WskaŸnik do kontrolera AI
 	// Current patrol target
