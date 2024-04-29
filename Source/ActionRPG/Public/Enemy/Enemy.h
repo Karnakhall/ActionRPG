@@ -90,14 +90,14 @@ private:
 
 	UPawnSensingComponent* PawnSensing;	// WskaŸnik do komponentu PawnSensing
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	TSubclassOf<class AWeapon> WeaponClass;	//pos³u¿y do spawnowania broni
 
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	double CombatRadius = 500.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	double AttackRadius = 150.f;	//Promieñ walki w którym bêdziemy mogli zaatakowac przeciwnika i na odwró
 
 	UPROPERTY()
