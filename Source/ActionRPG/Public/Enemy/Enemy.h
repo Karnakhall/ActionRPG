@@ -40,7 +40,7 @@ protected:
 	/** </AActor> */
 
 	/** <ABaseCharacter> */
-	virtual void Die() override;	//Funkcja do œmierci
+	virtual void Die_Implementation() override;	//Funkcja do œmierci
 	void SpawnSoul();	//Funkcja do spawnowania duszy po œmierci przeciwnika
 	virtual void Attack() override;	//Funkcja do ataku
 	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik mo¿e zaatakowaæ

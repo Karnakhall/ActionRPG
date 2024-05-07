@@ -146,9 +146,9 @@ void AEnemy::BeginPlay()
 	Tags.Add(FName("Enemy"));
 }
 
-void AEnemy::Die()
+void AEnemy::Die_Implementation()
 {
-	Super::Die();	// Wywo³ujemy funkcjê Die z BaseCharacter
+	Super::Die_Implementation();	// Wywo³ujemy funkcjê Die z BaseCharacter
 	EnemyState = EEnemyState::EES_Dead;	// Ustawiamy EnemyState na EES_Dead
 	
 	ClearAttackTimer();	// Czyœcimy timer ataku

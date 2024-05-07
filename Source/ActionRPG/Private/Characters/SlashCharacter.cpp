@@ -340,9 +340,9 @@ void ASlashCharacter::PlayEquipMontage(const FName& SectionName)
 	}
 }
 
-void ASlashCharacter::Die()
+void ASlashCharacter::Die_Implementation()
 {
-	Super::Die();
+	Super::Die_Implementation();
 
 	ActionState = EActionState::EAS_Dead;	//Zmieniamy stan postaci na dead
 	DisableMeshCollision();	//Funkcja do wy³¹czenia kolizji na meshe aby nie mo¿na by³a zaatakowaæ martwego przeciwnika

@@ -83,7 +83,7 @@ protected:
 	void Arm();
 	//Function to play equip montage. We don't need to select a section random. We want to chose whether to play the equip or unequip section
 	void PlayEquipMontage(const FName& SectionName);
-	virtual void Die() override;
+	virtual void Die_Implementation() override;
 	bool HasEnoughStamina();
 	bool IsOccupied();
 

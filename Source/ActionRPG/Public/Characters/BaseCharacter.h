@@ -32,8 +32,12 @@ protected:
 
 	//Function to attack
 	virtual void Attack();
+
+	UFUNCTION(BlueprintNativeEvent)
 	//Funkcja do œmierci
-	virtual void Die();
+	void Die();
+
+
 	//Funkcja do reakcji na cios w zale¿noœci od kierunku
 	void DirectionalHitReact(const FVector& ImpactPoint);
 	//Funkcja do odtwarzania dŸwiêku otrzymania ciosu
