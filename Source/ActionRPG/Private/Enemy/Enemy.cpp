@@ -120,9 +120,14 @@ void AEnemy::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)	/
 	if (!IsDead()) ShowHealthBar();	//Wywo³ujemy funkcjê ShowHealthBar
 	ClearPatrolTimer();	//Wywo³ujemy funkcjê ClearPatrolTimer
 	ClearAttackTimer();	//Wywo³ujemy funkcjê ClearAttackTimer
-
-	StopAttackMontage();	//Wywo³ujemy funkcjê StopAttackMontage
+	
 	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);
+	
+	StopAttackMontage();	//Wywo³ujemy funkcjê StopAttackMontage
+	if (IsInsideAttackRadius())
+	{
+		if (!IsDead()) StartAttackTimer();	//Funkcja do rozpoczêcia timera ataku
+	}
 	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
 	
 }

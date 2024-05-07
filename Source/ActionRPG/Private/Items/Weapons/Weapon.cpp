@@ -156,6 +156,7 @@ void AWeapon::BoxTrace(FHitResult& BoxHit)
 	//Tworzymy tablicê aktorów do ignorowania
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(this);	//Dodajemy nasz obiekt do tablicy aktorów do ignorowania. Dziêki temu nie bêdziemy sprawdzaæ kolizji z nasz¹ postaci¹
+	ActorsToIgnore.Add(GetOwner());	//Dodajemy w³aœciciela do tablicy aktorów do ignorowania. Dziêki temu nie bêdziemy sprawdzaæ kolizji z w³aœcicielem
 
 	for (AActor* Actor : IgnoreActors)	//Iterujemy przez tablicê IgnoreActors
 	{

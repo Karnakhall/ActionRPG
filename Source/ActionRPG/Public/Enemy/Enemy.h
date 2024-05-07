@@ -49,7 +49,7 @@ protected:
 	//virtual int32 PlayDeathMontage() override;	//Funkcja do odtwarzania animacji œmierci
 	/** </ABaseCharacter> */
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;	//Stan przeciwnika
 
 
