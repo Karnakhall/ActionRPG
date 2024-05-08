@@ -167,10 +167,12 @@ void AEnemy::SpawnSoul()
 	UWorld* World = GetWorld();	// Pobieramy œwiat
 	if (World && SoulClass && Attributes)
 	{
-		ASoul* SpawnedSoul = World->SpawnActor<ASoul>(SoulClass, GetActorLocation(), GetActorRotation());	// Spawnujemy duszê w miejscu œmierci przeciwnika
+		const FVector SpawnLocation = GetActorLocation() + FVector(0.f, 0.f, 125.f);	// Pobieramy lokalizacjê przeciwnika
+		ASoul* SpawnedSoul = World->SpawnActor<ASoul>(SoulClass, SpawnLocation, GetActorRotation());	// Spawnujemy duszê w miejscu œmierci przeciwnika
 		if (SpawnedSoul)
 		{
 			SpawnedSoul->SetSouls(Attributes->GetSouls());	// Ustawiamy iloœæ dusz do zebrania
+			SpawnedSoul->SetOwner(this);	// Ustawiamy w³aœciciela
 		}
 	}
 }

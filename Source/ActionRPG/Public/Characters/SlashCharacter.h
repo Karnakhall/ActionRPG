@@ -57,7 +57,7 @@ protected:
 	//Looking up and down
 	void LookUp(float Value);
 	//Funtcion to equip
-	void EKeyPresed();
+	void EKeyPressed();
 	//Function to attack
 	virtual void Attack() override;
 	//Function to dodge
