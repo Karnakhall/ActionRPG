@@ -59,7 +59,7 @@ void ABird::MoveForward(float Value)	//Moving with the W,S keys
 	}
 }
 
-//Old way of input and turning the camera
+//Old way of input anding the camera
 /*void ABird::Turn(float Value)			//Turning right/left with the mouse
 {
 	AddControllerYawInput(Value);
