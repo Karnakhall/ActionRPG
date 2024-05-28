@@ -15,6 +15,10 @@
 #include "HUD/SlashOverlay.h"
 #include "Items/Soul.h"	
 #include "Items/Treasure.h"	
+
+#include "Components/InputComponent.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 //#include "Components/BoxComponent.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ BoxComponent
 
 
@@ -138,10 +142,22 @@ void ASlashCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(SlashContext, 0);
+		}
+	}
+
 	Tags.Add(FName("EngageableTarget"));	//Dodajemy tag do postaci, ¿eby móc j¹ zidentyfikowaæ albo ¿eby nasi przeciwnicy mogli ja zidentyfikowaæ
 	
 	InitializeSlashOverlay();	//Funkcja inicjalizuj¹ca SlashOverlay i wyœwietlaj¹ca informacje o postaci na HUD
 	
+}
+
+void ASlashCharacter::Move(const FInputActionValue& Value)
+{
 }
 
 void ASlashCharacter::MoveForward(float Value)

@@ -6,6 +6,7 @@
 #include "BaseCharacter.h"	//Potrzebujemy tego nag³ówka aby SlachCharacter móg³ dziedziczyæ funkcje z BaseCharacter
 #include "CharacterTypes.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ enuma
 #include "Interfaces/PickupInterface.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ interfejsu do podnoszenia przedmiotów
+#include "InputActionValue.h"
 #include "SlashCharacter.generated.h"
 
 class USpringArmComponent;
@@ -16,6 +17,8 @@ class ASoul;
 class ATreasure;
 class UAnimMontage;
 class USlashOverlay;
+class UInputMappingContext;
+class UInputAction;
 
 
 UCLASS()
@@ -46,6 +49,14 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputMappingContext* SlashContext;	//Context for input mapping
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* MovementAction;
+
+	void Move(const FInputActionValue& Value);	//
 
 	/** Callbacks for input	*/
 	//Moving the character forward and backward
