@@ -56,7 +56,23 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* MovementAction;
 
-	void Move(const FInputActionValue& Value);	//
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* LookAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* JumpAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* EKeyAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* AttackAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* DodgeAction;
+
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
 
 	/** Callbacks for input	*/
 	//Moving the character forward and backward
