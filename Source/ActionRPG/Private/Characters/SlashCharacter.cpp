@@ -8,9 +8,9 @@
 #include "Components/StaticMeshComponent.h"
 #include "GroomComponent.h"
 #include "Components/AttributeComponent.h"
-#include "Items/Item.h"		//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ
-#include "Items/Weapons/Weapon.h"	//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ
-#include "Animation/AnimMontage.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ AnimMontage
+#include "Items/Item.h"		//Potrzebujemy tego nagï¿½ï¿½wka aby mï¿½c podnieï¿½ï¿½ broï¿½
+#include "Items/Weapons/Weapon.h"	//Potrzebujemy tego nagï¿½ï¿½wka aby mï¿½c podnieï¿½ï¿½ broï¿½
+#include "Animation/AnimMontage.h"	//Potrzebujemy tego nagï¿½ï¿½wka aby mï¿½c uï¿½yï¿½ AnimMontage
 #include "HUD/SlashHUD.h"
 #include "HUD/SlashOverlay.h"
 #include "Items/Soul.h"	
@@ -19,7 +19,7 @@
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-//#include "Components/BoxComponent.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ BoxComponent
+//#include "Components/BoxComponent.h"	//Potrzebujemy tego nagï¿½ï¿½wka aby mï¿½c uï¿½yï¿½ BoxComponent
 
 
 // Sets default values
@@ -106,7 +106,7 @@ void ASlashCharacter::Jump()
 
 float ASlashCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	HandleDamage(DamageAmount);	//Wywo³ujemy funkcjê obs³ugi obra¿eñ dla naszej postaci
+	HandleDamage(DamageAmount);	//Wywoï¿½ujemy funkcjï¿½ obsï¿½ugi obraï¿½eï¿½ dla naszej postaci
 	SetHUDHealth();
 	return DamageAmount;
 }
@@ -160,9 +160,9 @@ void ASlashCharacter::BeginPlay()
 		}
 	}
 
-	Tags.Add(FName("EngageableTarget"));	//Dodajemy tag do postaci, ¿eby móc j¹ zidentyfikowaæ albo ¿eby nasi przeciwnicy mogli ja zidentyfikowaæ
+	Tags.Add(FName("EngageableTarget"));	//Dodajemy tag do postaci, ï¿½eby mï¿½c jï¿½ zidentyfikowaï¿½ albo ï¿½eby nasi przeciwnicy mogli ja zidentyfikowaï¿½
 	
-	InitializeSlashOverlay();	//Funkcja inicjalizuj¹ca SlashOverlay i wyœwietlaj¹ca informacje o postaci na HUD
+	InitializeSlashOverlay();	//Funkcja inicjalizujï¿½ca SlashOverlay i wyï¿½wietlajï¿½ca informacje o postaci na HUD
 	
 }
 
@@ -196,9 +196,9 @@ void ASlashCharacter::Look(const FInputActionValue& Value)
 
 void ASlashCharacter::MoveForward(float Value)
 {
-	//Jeœli postaæ jest w stanie ataku, to nie mo¿e siê poruszaæ
+	//Jeï¿½li postaï¿½ jest w stanie ataku, to nie moï¿½e siï¿½ poruszaï¿½
 	if (ActionState != EActionState::EAS_Unoccupied) return;
-	//Jeœli postaæ nie atakuje, to mo¿e siê poruszaæ
+	//Jeï¿½li postaï¿½ nie atakuje, to moï¿½e siï¿½ poruszaï¿½
 	if (Controller && (Value != 0.f))
 	{
 		//Moving only in one direction
@@ -216,9 +216,9 @@ void ASlashCharacter::MoveForward(float Value)
 
 void ASlashCharacter::MoveRight(float Value)
 {
-	//Jeœli postaæ jest w stanie ataku, to nie mo¿e siê poruszaæ
+	//Jeï¿½li postaï¿½ jest w stanie ataku, to nie moï¿½e siï¿½ poruszaï¿½
 	if (ActionState != EActionState::EAS_Unoccupied) return;
-	//Jeœli postaæ nie atakuje, to mo¿e siê poruszaæ
+	//Jeï¿½li postaï¿½ nie atakuje, to moï¿½e siï¿½ poruszaï¿½
 	if (Controller && (Value != 0.f))
 	{
 		//Moving only in the left and right	direction
@@ -246,7 +246,7 @@ void ASlashCharacter::LookUp(float Value)
 	AddControllerPitchInput(Value);
 }
 
-//Funkcja podnoszenia broni po naciœnieciu przycisku
+//Funkcja podnoszenia broni po naciï¿½nieciu przycisku
 void ASlashCharacter::EKeyPressed()
 {
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
@@ -260,7 +260,7 @@ void ASlashCharacter::EKeyPressed()
 	}
 	else
 	{
-		//Wrzucamy zwrot z boola aby zobaczyæ czy mo¿emy zdj¹æ/za³o¿yæ broñ 
+		//Wrzucamy zwrot z boola aby zobaczyï¿½ czy moï¿½emy zdjï¿½ï¿½/zaï¿½oï¿½yï¿½ broï¿½ 
 		if (CanDisarm())
 		{
 			Disarm();
@@ -276,12 +276,12 @@ void ASlashCharacter::EKeyPressed()
 void ASlashCharacter::Attack()
 {	
 	Super::Attack();
-	//Jeœli postaæ ma odpowiednie statusy akcji oraz postaci, to atakujemy
+	//Jeï¿½li postaï¿½ ma odpowiednie statusy akcji oraz postaci, to atakujemy
 	if (CanAttack())
 	{
-		//Wywo³ujemy funkcjê odtwarzaj¹c¹ animacjê ataku
+		//Wywoï¿½ujemy funkcjï¿½ odtwarzajï¿½cï¿½ animacjï¿½ ataku
 		PlayAttackMontage();
-		//Jeœli postaæ jest w stanie unoccupied, to zmieniamy jej stan na occupied
+		//Jeï¿½li postaï¿½ jest w stanie unoccupied, to zmieniamy jej stan na occupied
 		ActionState = EActionState::EAS_Attacking;
 	}
 }
@@ -301,7 +301,7 @@ void ASlashCharacter::Dodge()
 
 void ASlashCharacter::EquipWeapon(AWeapon* Weapon)
 {
-	//Jeœli klikniemy przycisk E, to podnosimy broñ i doczepiamy do socketu w d³oni
+	//Jeï¿½li klikniemy przycisk E, to podnosimy broï¿½ i doczepiamy do socketu w dï¿½oni
 	Weapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
 
 	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
@@ -311,10 +311,10 @@ void ASlashCharacter::EquipWeapon(AWeapon* Weapon)
 	EquippedWeapon = Weapon;
 }
 
-//Funkcja koñcz¹ca atak
+//Funkcja koï¿½czï¿½ca atak
 void ASlashCharacter::AttackEnd()
 {
-	//Jeœli postaæ jest w stanie ataku, to zmieniamy jej stan na unoccupied w momencie gdy animacja ataku siê skoñczy
+	//Jeï¿½li postaï¿½ jest w stanie ataku, to zmieniamy jej stan na unoccupied w momencie gdy animacja ataku siï¿½ skoï¿½czy
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
@@ -325,18 +325,18 @@ void ASlashCharacter::DodgeEnd()
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
-//Funkcja sprawdzaj¹ca czy postaæ mo¿e zaatakowaæ
+//Funkcja sprawdzajï¿½ca czy postaï¿½ moï¿½e zaatakowaï¿½
 bool ASlashCharacter::CanAttack()
 {
-	//Sprawdzamy czy postaæ ma odpowiednie statusy akcji oraz postaci aby móc zaatakowaæ
+	//Sprawdzamy czy postaï¿½ ma odpowiednie statusy akcji oraz postaci aby mï¿½c zaatakowaï¿½
 	return ActionState == EActionState::EAS_Unoccupied && 
 		CharacterState != ECharacterState::ECS_Unequipped;
 }
 
-//Funkcja sprawdzaj¹ca czy postaæ mo¿e zdj¹æ broñ lub j¹ za³o¿yæ
+//Funkcja sprawdzajï¿½ca czy postaï¿½ moï¿½e zdjï¿½ï¿½ broï¿½ lub jï¿½ zaï¿½oï¿½yï¿½
 bool ASlashCharacter::CanDisarm()
 {
-	//Sprawdzamy action state oraz character state, jeœli s¹ odpowiednie, to mo¿emy odpaliæ animacjê EquipMontage 
+	//Sprawdzamy action state oraz character state, jeï¿½li sï¿½ odpowiednie, to moï¿½emy odpaliï¿½ animacjï¿½ EquipMontage 
 	return ActionState == EActionState::EAS_Unoccupied && 
 		CharacterState != ECharacterState::ECS_Unequipped;
 }
@@ -350,24 +350,24 @@ bool ASlashCharacter::CanArm()
 
 void ASlashCharacter::Disarm()
 {
-	PlayEquipMontage(FName("Unequip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
+	PlayEquipMontage(FName("Unequip"));	//Odtwarzamy animacjï¿½ EquipMontage we should set our state right after that
 	CharacterState = ECharacterState::ECS_Unequipped;
 	ActionState = EActionState::EAS_EquippingWeapon;
 }
 
 void ASlashCharacter::Arm()
 {
-	PlayEquipMontage(FName("Equip"));	//Odtwarzamy animacjê EquipMontage we should set our state right after that
+	PlayEquipMontage(FName("Equip"));	//Odtwarzamy animacjï¿½ EquipMontage we should set our state right after that
 	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 	ActionState = EActionState::EAS_EquippingWeapon;
 }
 
 void ASlashCharacter::AttachWeaponToBack()
 {
-	//Sprawdzamy, czy broñ jest wyekwipowana i nie jest nullptr
+	//Sprawdzamy, czy broï¿½ jest wyekwipowana i nie jest nullptr
 	if (EquippedWeapon)
 	{
-		//Wywo³ujemy funkcjê, która "doczepia" broñ do socketu. W tym przypadku do socketu na plecach
+		//Wywoï¿½ujemy funkcjï¿½, ktï¿½ra "doczepia" broï¿½ do socketu. W tym przypadku do socketu na plecach
 		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("SpineSocket"));
 	}
 }
@@ -377,19 +377,19 @@ void ASlashCharacter::AttachWeaponToHand()
 	
 	if (EquippedWeapon)
 	{
-		//Wywo³ujemy funkcjê, która "doczepia" broñ do socketu. W tym przypadku do socketu w prawej d³oni
+		//Wywoï¿½ujemy funkcjï¿½, ktï¿½ra "doczepia" broï¿½ do socketu. W tym przypadku do socketu w prawej dï¿½oni
 		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("RightHandSocket"));
 	}
 }
 
-//Funkcja odtwarzaj¹ca animacjê EquipMontage
+//Funkcja odtwarzajï¿½ca animacjï¿½ EquipMontage
 void ASlashCharacter::PlayEquipMontage(const FName& SectionName)
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && EquipMontage)	//Jeœli AnimInstance i EquipMontage nie s¹ nullpointerami, to odtwarzamy animacjê equip
+	if (AnimInstance && EquipMontage)	//Jeï¿½li AnimInstance i EquipMontage nie sï¿½ nullpointerami, to odtwarzamy animacjï¿½ equip
 	{
 		AnimInstance->Montage_Play(EquipMontage);
-		//Po wyborze sekcji animacji, odtwarzamy j¹
+		//Po wyborze sekcji animacji, odtwarzamy jï¿½
 		AnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
 	}
 }
@@ -399,12 +399,12 @@ void ASlashCharacter::Die_Implementation()
 	Super::Die_Implementation();
 
 	ActionState = EActionState::EAS_Dead;	//Zmieniamy stan postaci na dead
-	DisableMeshCollision();	//Funkcja do wy³¹czenia kolizji na meshe aby nie mo¿na by³a zaatakowaæ martwego przeciwnika
+	DisableMeshCollision();	//Funkcja do wyï¿½ï¿½czenia kolizji na meshe aby nie moï¿½na byï¿½a zaatakowaï¿½ martwego przeciwnika
 }
 
 bool ASlashCharacter::HasEnoughStamina()
 {
-	return Attributes && Attributes->GetStamina() > Attributes->GetDodgeCost();	//Sprawdzamy czy postaæ ma wystarczaj¹co du¿o staminy aby móc unikn¹æ ciosu
+	return Attributes && Attributes->GetStamina() > Attributes->GetDodgeCost();	//Sprawdzamy czy postaï¿½ ma wystarczajï¿½co duï¿½o staminy aby mï¿½c uniknï¿½ï¿½ ciosu
 }
 
 bool ASlashCharacter::IsOccupied()
@@ -423,12 +423,12 @@ void ASlashCharacter::HitReactEnd()
 	ActionState = EActionState::EAS_Unoccupied;	//Resetujemy stan postaci
 }
 
-bool ASlashCharacter::IsUnoccupied()	//Funkcja sprawdzaj¹ca czy postaæ jest w stanie unoccupied
+bool ASlashCharacter::IsUnoccupied()	//Funkcja sprawdzajï¿½ca czy postaï¿½ jest w stanie unoccupied
 {
 	return ActionState == EActionState::EAS_Unoccupied;
 }
 
-void ASlashCharacter::InitializeSlashOverlay()	//Funkcja inicjalizuj¹ca SlashOverlay i wyœwietlaj¹ca informacje o postaci na HUD
+void ASlashCharacter::InitializeSlashOverlay()	//Funkcja inicjalizujï¿½ca SlashOverlay i wyï¿½wietlajï¿½ca informacje o postaci na HUD
 {
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());	//
 	if (PlayerController)
@@ -441,8 +441,8 @@ void ASlashCharacter::InitializeSlashOverlay()	//Funkcja inicjalizuj¹ca SlashOve
 			{
 				SlashOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());	//Ustawiamy procent zdrowia w HealthProgressBar
 				SlashOverlay->SetStaminaBarPercent(1.f);	//Ustawiamy procent staminy w StaminaProgressBar
-				SlashOverlay->SetGoldText(0.f);	//Ustawiamy iloœæ z³ota w GoldText
-				SlashOverlay->SetSoulsText(0.f);	//Ustawiamy iloœæ dusz w SoulsText
+				SlashOverlay->SetGoldText(0.f);	//Ustawiamy iloï¿½ï¿½ zï¿½ota w GoldText
+				SlashOverlay->SetSoulsText(0.f);	//Ustawiamy iloï¿½ï¿½ dusz w SoulsText
 			}
 		}
 	}
@@ -452,7 +452,7 @@ void ASlashCharacter::SetHUDHealth()	//Function to update health on HUD
 {
 	if (SlashOverlay && Attributes)
 	{
-		SlashOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());	//Ustawiamy procent zdrowia w HealthProgressBar aby sie aktualizowa³ po otrzymaniu obra¿eñ
+		SlashOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());	//Ustawiamy procent zdrowia w HealthProgressBar aby sie aktualizowaï¿½ po otrzymaniu obraï¿½eï¿½
 	}
 }
 
