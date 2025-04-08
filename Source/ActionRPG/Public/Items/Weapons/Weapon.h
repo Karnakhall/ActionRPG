@@ -29,11 +29,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	//Delegate function for sphere overlap
-	//UFUNCTION nie mo¿e byæ w klasie pochodnej. Dostaniemy b³êdy w kompilacji. Mamy UFUNCTION z funkcji z której dziedziczymy
+	//UFUNCTION nie moï¿½e byï¿½ w klasie pochodnej. Dostaniemy bï¿½ï¿½dy w kompilacji. Mamy UFUNCTION z funkcji z ktï¿½rej dziedziczymy
 	//virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
 	//Delegate funtion for sphere endoverlap
-	//UFUNCTION nie mo¿e byæ w klasie pochodnej. Dostaniemy b³êdy w kompilacji
+	//UFUNCTION nie moï¿½e byï¿½ w klasie pochodnej. Dostaniemy bï¿½ï¿½dy w kompilacji
 	//virtual void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
 	
 	//Delegate function for box overlap

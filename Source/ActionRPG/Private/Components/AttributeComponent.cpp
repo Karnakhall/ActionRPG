@@ -23,34 +23,34 @@ void UAttributeComponent::BeginPlay()
 	
 }
 
-void UAttributeComponent::ReceiveDamage(float Damage)	//Funkcja do otrzymywania obra¿eñ
+void UAttributeComponent::ReceiveDamage(float Damage)	//Funkcja do otrzymywania obraï¿½eï¿½
 {
-	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);	//Odejmujemy obra¿enia od ¿ycia, ale nie jest mniejsze ni¿ 0 albo wiêksze ni¿ maks. ¿ycie
+	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);	//Odejmujemy obraï¿½enia od ï¿½ycia, ale nie jest mniejsze niï¿½ 0 albo wiï¿½ksze niï¿½ maks. ï¿½ycie
 }
 
 void UAttributeComponent::UseStamina(float StaminaCost)
 {
-	Stamina = FMath::Clamp(Stamina - StaminaCost, 0.f, MaxStamina);	//Odejmujemy koszt staminy od staminy, ale nie jest mniejsze ni¿ 0 albo wiêksze ni¿ maks. stamina
+	Stamina = FMath::Clamp(Stamina - StaminaCost, 0.f, MaxStamina);	//Odejmujemy koszt staminy od staminy, ale nie jest mniejsze niï¿½ 0 albo wiï¿½ksze niï¿½ maks. stamina
 }
 
 float UAttributeComponent::GetHealthPercent()
 {
-	return Health / MaxHealth;	//Zwracamy wartoœæ ¿ycia w procentach
+	return Health / MaxHealth;	//Zwracamy wartoï¿½ï¿½ ï¿½ycia w procentach
 }
 
 float UAttributeComponent::GetStaminaPercent()
 {
-	return Stamina / MaxStamina;	//Zwracamy wartoœæ staminy w procentach
+	return Stamina / MaxStamina;	//Zwracamy wartoï¿½ï¿½ staminy w procentach
 }
 
-bool UAttributeComponent::IsAlive()	//Funkcja do sprawdzania czy aktor ¿yje
+bool UAttributeComponent::IsAlive()	//Funkcja do sprawdzania czy aktor ï¿½yje
 {
-	return Health > 0.f;	//Jeœli ¿ycie jest wiêksze ni¿ 0, to aktor ¿yje
+	return Health > 0.f;	//Jeï¿½li ï¿½ycie jest wiï¿½ksze niï¿½ 0, to aktor ï¿½yje
 }
 
 void UAttributeComponent::AddGold(int32 AmountOfGold)
 {
-	Gold += AmountOfGold;	//Dodajemy z³oto
+	Gold += AmountOfGold;	//Dodajemy zï¿½oto
 }
 
 void UAttributeComponent::AddSouls(int32 NumberOfSouls)

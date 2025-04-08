@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Interfaces/HitInterface.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji HitInterface
+#include "Interfaces/HitInterface.h"	// Potrzebujemy tego nagï¿½ï¿½wka aby nasz "AEnemy" mï¿½gï¿½ dziedziczyï¿½ z funkcji HitInterface
 #include "Characters/CharacterTypes.h"
 #include "BaseCharacter.generated.h"
 
@@ -28,43 +28,43 @@ protected:
 	virtual void BeginPlay() override;
 	
 	/** Combat */
-	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;	//Implementujemy funkcjê GetHit z interfejsu HitInterface
+	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;	//Implementujemy funkcjï¿½ GetHit z interfejsu HitInterface
 
 	//Function to attack
 	virtual void Attack();
 
 	UFUNCTION(BlueprintNativeEvent)
-	//Funkcja do œmierci
+	//Funkcja do ï¿½mierci
 	void Die();
 
 
-	//Funkcja do reakcji na cios w zale¿noœci od kierunku
+	//Funkcja do reakcji na cios w zaleï¿½noï¿½ci od kierunku
 	void DirectionalHitReact(const FVector& ImpactPoint);
-	//Funkcja do odtwarzania dŸwiêku otrzymania ciosu
+	//Funkcja do odtwarzania dï¿½wiï¿½ku otrzymania ciosu
 	void PlayHitSound(const FVector& ImpactPoint);	
 	//Funkcja do spawnowania particle systemu otrzymania ciosu
 	void SpawnHitParticles(const FVector& ImpactPoint);	
-	//Funkcja do obs³ugi obra¿eñ
+	//Funkcja do obsï¿½ugi obraï¿½eï¿½
 	virtual void HandleDamage(float DamageAmount);	
-	//Funkcja do wy³¹czenia kapsu³y kolizji
+	//Funkcja do wyï¿½ï¿½czenia kapsuï¿½y kolizji
 	void DisableCapsule();	
-	//Sprawdzamy boolem czy postac mo¿e zaatakowaæ
+	//Sprawdzamy boolem czy postac moï¿½e zaatakowaï¿½
 	virtual bool CanAttack();
-	//Sprawdzamy czy postaæ ¿yje
+	//Sprawdzamy czy postaï¿½ ï¿½yje
 	bool IsAlive();	
-	//Funkcja do wy³¹czenia kolizji na meshe aby nie mo¿na by³a zaatakowaæ martwego przeciwnika
+	//Funkcja do wyï¿½ï¿½czenia kolizji na meshe aby nie moï¿½na byï¿½a zaatakowaï¿½ martwego przeciwnika
 	void DisableMeshCollision();	
 
-	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
+	UFUNCTION(BlueprintCallable)	//Dziï¿½ki temu moï¿½emy wywoï¿½aï¿½ tï¿½ funkcjï¿½ z blueprintu
 	//Function to stop attack montage
 	virtual void AttackEnd();
 
-	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
+	UFUNCTION(BlueprintCallable)	//Dziï¿½ki temu moï¿½emy wywoï¿½aï¿½ tï¿½ funkcjï¿½ z blueprintu
 	//Function to stop dodge montage
 	virtual void DodgeEnd();
 
-	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
-	void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);	//Funkcja do w³¹czenia i wy³¹czenia kolizji na broni
+	UFUNCTION(BlueprintCallable)	//Dziï¿½ki temu moï¿½emy wywoï¿½aï¿½ tï¿½ funkcjï¿½ z blueprintu
+	void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);	//Funkcja do wï¿½ï¿½czenia i wyï¿½ï¿½czenia kolizji na broni
 
 	/**
 	* Play Montage functions
@@ -78,52 +78,52 @@ protected:
 	void StopAttackMontage();
 	
 	UFUNCTION(BlueprintCallable)
-	FVector GetTranslationWarpTarget();	//Funkcja do zwracania wektora przesuniêcia
+	FVector GetTranslationWarpTarget();	//Funkcja do zwracania wektora przesuniï¿½cia
 
 	UFUNCTION(BlueprintCallable)
 	FVector GetRotationWarpTarget();	//Funkcja do zwracania wektora rotacji
 	//Variable to keep track of the attack combo
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
-	AWeapon* EquippedWeapon;	//WskaŸnik do broni
+	AWeapon* EquippedWeapon;	//Wskaï¿½nik do broni
 
 	/*
 	* Components
 	*/
 
 	UPROPERTY(VisibleAnywhere)
-	UAttributeComponent* Attributes;	// WskaŸnik do komponentu atrybutów
+	UAttributeComponent* Attributes;	// Wskaï¿½nik do komponentu atrybutï¿½w
 
 	UPROPERTY(BlueprintReadOnly, Category = "Combat")
-	AActor* CombatTarget;	//WskaŸnik do celu walki
+	AActor* CombatTarget;	//Wskaï¿½nik do celu walki
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	double WarpTargetDistance = 75.f;
 
 
 	UPROPERTY(BlueprintReadOnly)
-	TEnumAsByte<EDeathPose> DeathPose;	//Zmienna do œledzenia pozycji œmierci
+	TEnumAsByte<EDeathPose> DeathPose;	//Zmienna do ï¿½ledzenia pozycji ï¿½mierci
 
 private:
 //Variable to keep track of the attack combo
-	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);	//Funkcja do wywo³ania losowej sekcji animacji i odtwarzania
-	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames);	//Funkcja do wywo³ania losowej sekcji animacji i odtwarzania
+	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);	//Funkcja do wywoï¿½ania losowej sekcji animacji i odtwarzania
+	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames);	//Funkcja do wywoï¿½ania losowej sekcji animacji i odtwarzania
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	USoundBase* HitSound;	//DŸwiêk otrzymania ciosu. Przechowujemy ten asset we wskaŸniku
+	USoundBase* HitSound;	//Dï¿½wiï¿½k otrzymania ciosu. Przechowujemy ten asset we wskaï¿½niku
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	UParticleSystem* HitParticles;	//Particle system otrzymania ciosu. Przechowujemy ten asset we wskaŸniku
+	UParticleSystem* HitParticles;	//Particle system otrzymania ciosu. Przechowujemy ten asset we wskaï¿½niku
 
-	//Pokazujemy to w edytorze blueprint pod kategori¹ "Montages"
+	//Pokazujemy to w edytorze blueprint pod kategoriï¿½ "Montages"
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* AttackMontage;
 
-	//Pokazujemy to w edytorze blueprint pod kategori¹ "Montages"
+	//Pokazujemy to w edytorze blueprint pod kategoriï¿½ "Montages"
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* HitReactMontage;	//Animacja otrzymania ciosu
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
-	UAnimMontage* DeathMontage;	//Animacja œmierci
+	UAnimMontage* DeathMontage;	//Animacja ï¿½mierci
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UAnimMontage* DodgeMontage;	//Animacja uniku
@@ -133,8 +133,8 @@ private:
 
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	TArray<FName> DeathMontageSections;	//Tablica nazw animacji œmierci
+	TArray<FName> DeathMontageSections;	//Tablica nazw animacji ï¿½mierci
 
 	public:
-		FORCEINLINE TEnumAsByte<EDeathPose> GetDeathPose() const { return DeathPose; }	//Funkcja do zwracania pozycji œmierci
+		FORCEINLINE TEnumAsByte<EDeathPose> GetDeathPose() const { return DeathPose; }	//Funkcja do zwracania pozycji ï¿½mierci
 };

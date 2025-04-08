@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BaseCharacter.h"	//Potrzebujemy tego nag³ówka aby SlachCharacter móg³ dziedziczyæ funkcje z BaseCharacter
-#include "CharacterTypes.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ enuma
-#include "Interfaces/PickupInterface.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ interfejsu do podnoszenia przedmiotów
+#include "BaseCharacter.h"	//Potrzebujemy tego nagï¿½ï¿½wka aby SlachCharacter mï¿½gï¿½ dziedziczyï¿½ funkcje z BaseCharacter
+#include "CharacterTypes.h"	//Potrzebujemy tego nagï¿½ï¿½wka aby mï¿½c uï¿½yï¿½ enuma
+#include "Interfaces/PickupInterface.h"	//Potrzebujemy tego nagï¿½ï¿½wka aby mï¿½c uï¿½yï¿½ interfejsu do podnoszenia przedmiotï¿½w
 #include "InputActionValue.h"
 #include "SlashCharacter.generated.h"
 
@@ -22,7 +22,7 @@ class UInputAction;
 
 
 UCLASS()
-class ACTIONRPG_API ASlashCharacter : public ABaseCharacter, public IPickupInterface	//Dodajemy interfejs do podnoszenia przedmiotów
+class ACTIONRPG_API ASlashCharacter : public ABaseCharacter, public IPickupInterface	//Dodajemy interfejs do podnoszenia przedmiotï¿½w
 {
 	GENERATED_BODY()
 
@@ -33,18 +33,18 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obra¿eñ
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obraï¿½eï¿½
 	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
 	virtual void SetOverlappingItem(AItem* Item) override;
 	virtual void AddSouls(ASoul* Soul) override;
 	virtual void AddGold(ATreasure* Treasure) override;
 
-	/*Jeden ze sposobów w³¹czenia i wy³¹czenia kolizji na broni
-	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
-	void EnableWeaponCollision();	//Funkcja do w³¹czenia kolizji broni
+	/*Jeden ze sposobï¿½w wï¿½ï¿½czenia i wyï¿½ï¿½czenia kolizji na broni
+	UFUNCTION(BlueprintCallable)	//Dziï¿½ki temu moï¿½emy wywoï¿½aï¿½ tï¿½ funkcjï¿½ z blueprintu
+	void EnableWeaponCollision();	//Funkcja do wï¿½ï¿½czenia kolizji broni
 
-	UFUNCTION(BlueprintCallable)	//Dziêki temu mo¿emy wywo³aæ t¹ funkcjê z blueprintu
-	void DisableWeaponCollision();	//Funkcja do wy³¹czenia kolizji broni
+	UFUNCTION(BlueprintCallable)	//Dziï¿½ki temu moï¿½emy wywoï¿½aï¿½ tï¿½ funkcjï¿½ z blueprintu
+	void DisableWeaponCollision();	//Funkcja do wyï¿½ï¿½czenia kolizji broni
 	*/
 protected:
 	// Called when the game starts or when spawned
@@ -92,19 +92,19 @@ protected:
 
 
 	/** Combat */
-	//UFUNCTION(BlueprintCallable) nie potrzebujemy tego tutaj, poniewa¿ dziedziczymy ca³oœæ z Base Character
+	//UFUNCTION(BlueprintCallable) nie potrzebujemy tego tutaj, poniewaï¿½ dziedziczymy caï¿½oï¿½ï¿½ z Base Character
 	
 	void EquipWeapon(AWeapon* Weapon);
 	//Function to stop attack montage
 	virtual void AttackEnd() override;
 	//Function to stop dodge montage
 	virtual void DodgeEnd() override;
-	//Sprawdzamy boolem czy postac mo¿e zaatakowaæ
+	//Sprawdzamy boolem czy postac moï¿½e zaatakowaï¿½
 	virtual bool CanAttack() override;
 
-	//Sprawdzamy boolem czy postaæ mo¿e uzyæ animacji equip lub unequip
+	//Sprawdzamy boolem czy postaï¿½ moï¿½e uzyï¿½ animacji equip lub unequip
 	bool CanDisarm();
-	//Sprawdzamy boolem czy postaæ mo¿e za³o¿yæ broñ
+	//Sprawdzamy boolem czy postaï¿½ moï¿½e zaï¿½oï¿½yï¿½ broï¿½
 	bool CanArm();
 	void Disarm();
 	void Arm();
@@ -139,7 +139,7 @@ private:
 
 
 
-	/* Rozwi¹zanie dla zwyk³ej wersji c++
+	/* Rozwiï¿½zanie dla zwykï¿½ej wersji c++
 	//Variable to keep track of the character state
 	CharacterState State = Unequipped;
 	*/
@@ -147,7 +147,7 @@ private:
 	//Variable to keep track of the character state
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 	//Variable to keep track of the action state
-	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true")/*Dodajemy AllowPrivateAccess aby mieæ dostêp do statusu z prywatnej sekcji*/)
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true")/*Dodajemy AllowPrivateAccess aby mieï¿½ dostï¿½p do statusu z prywatnej sekcji*/)
 	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 	/** Character components */
@@ -177,7 +177,7 @@ private:
 
 public:
 
-	//Function to get the character state and make it public. Const nie pozwala na zmiane niczego w funkcji poza zmian¹ state
+	//Function to get the character state and make it public. Const nie pozwala na zmiane niczego w funkcji poza zmianï¿½ state
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 
 	//Function to get the action state and make it public

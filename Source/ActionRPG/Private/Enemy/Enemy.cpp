@@ -5,14 +5,14 @@
 #include "Components/SkeletalMeshComponent.h" // for USkeletalMeshComponent
 #include "GameFramework/CharacterMovementComponent.h" // for UCharacterMovementComponent
 #include "Perception/PawnSensingComponent.h"	// for UPawnSensingComponent
-#include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji AttributeComponent
+#include "Components/AttributeComponent.h"	// Potrzebujemy tego nagï¿½ï¿½wka aby nasz "AEnemy" mï¿½gï¿½ dziedziczyï¿½ z funkcji AttributeComponent
 #include "HUD/HealthBarComponent.h"
-#include "Items/Weapons/Weapon.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji Weapon
+#include "Items/Weapons/Weapon.h"	// Potrzebujemy tego nagï¿½ï¿½wka aby nasz "AEnemy" mï¿½gï¿½ dziedziczyï¿½ z funkcji Weapon
 #include "Kismet/KismetSystemLibrary.h"
-#include "Items/Soul.h"	// Potrzebujemy tego nag³ówka aby nasz "AEnemy" móg³ dziedziczyæ z funkcji Soul
+#include "Items/Soul.h"	// Potrzebujemy tego nagï¿½ï¿½wka aby nasz "AEnemy" mï¿½gï¿½ dziedziczyï¿½ z funkcji Soul
 
 #include "Navigation/PathFollowingComponent.h"
-#include "ActionRPG/DebugMacros.h"	// Potrzebujemy tego nag³ówka aby móc u¿ywaæ makr debuguj¹cych
+#include "ActionRPG/DebugMacros.h"	// Potrzebujemy tego nagï¿½ï¿½wka aby mï¿½c uï¿½ywaï¿½ makr debugujï¿½cych
 
 
 
@@ -27,19 +27,19 @@ AEnemy::AEnemy()
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);	// Set the collision response to Camera
 	GetMesh()->SetGenerateOverlapEvents(true);	// Set the mesh to generate overlap events
 	
-	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));	// Tworzymy domyœlny subobiekt "HealthBarWidget" z klasy UHealthBarComponent
+	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));	// Tworzymy domyï¿½lny subobiekt "HealthBarWidget" z klasy UHealthBarComponent
 	HealthBarWidget->SetupAttachment(GetRootComponent());	// Ustawiamy HealthBarWidget jako podobiekt do naszego "enemy"
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;	// Obracamy naszego "enemy" w kierunku ruchu
 	
-	bUseControllerRotationPitch = false;	// Nie u¿ywamy kontrolera do obracania siê w osi X
-	bUseControllerRotationYaw = false;	// Nie u¿ywamy kontrolera do obracania siê w osi Y
-	bUseControllerRotationRoll = false;	// Nie u¿ywamy kontrolera do obracania siê w osi Z
+	bUseControllerRotationPitch = false;	// Nie uï¿½ywamy kontrolera do obracania siï¿½ w osi X
+	bUseControllerRotationYaw = false;	// Nie uï¿½ywamy kontrolera do obracania siï¿½ w osi Y
+	bUseControllerRotationRoll = false;	// Nie uï¿½ywamy kontrolera do obracania siï¿½ w osi Z
 
-	PawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));	// Tworzymy domyœlny subobiekt "PawnSensing" z klasy UPawnSensingComponent
-	PawnSensing->SetPeripheralVisionAngle(45.f);	// Ustawiamy k¹t widzenia na 45 stopni
-	PawnSensing->SightRadius = 2000.f;	// Ustawiamy promieñ widzenia na 1200
-	PawnSensing->HearingThreshold = 600.f;	// Ustawiamy próg s³yszenia na 600
+	PawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));	// Tworzymy domyï¿½lny subobiekt "PawnSensing" z klasy UPawnSensingComponent
+	PawnSensing->SetPeripheralVisionAngle(45.f);	// Ustawiamy kï¿½t widzenia na 45 stopni
+	PawnSensing->SightRadius = 2000.f;	// Ustawiamy promieï¿½ widzenia na 1200
+	PawnSensing->HearingThreshold = 600.f;	// Ustawiamy prï¿½g sï¿½yszenia na 600
 
 }
 
@@ -47,41 +47,41 @@ AEnemy::AEnemy()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (IsDead()) return;	// Wywo³ujemy funkcjê IsDed która sprawdza czy EnemyState jest równy EES_Dead, jeœli tak to zwracamy
-	if (EnemyState > EEnemyState::EES_Patrolling)	//Jeœli EnemyState jest wiêkszy od EES_Patrolling to:
+	if (IsDead()) return;	// Wywoï¿½ujemy funkcjï¿½ IsDed ktï¿½ra sprawdza czy EnemyState jest rï¿½wny EES_Dead, jeï¿½li tak to zwracamy
+	if (EnemyState > EEnemyState::EES_Patrolling)	//Jeï¿½li EnemyState jest wiï¿½kszy od EES_Patrolling to:
 	{
-		CheckCombatTarget();	// Wywo³ujemy funkcjê CheckCombatTarget
+		CheckCombatTarget();	// Wywoï¿½ujemy funkcjï¿½ CheckCombatTarget
 	}
 	else
 	{
-		CheckPatrolTarget();	// Wywo³ujemy funkcjê CheckPatrolTarget
+		CheckPatrolTarget();	// Wywoï¿½ujemy funkcjï¿½ CheckPatrolTarget
 	}
 
-	/*if (PatrolTarget && EnemyController) ca³y kod poni¿ej mam powy¿szym if statementem
+	/*if (PatrolTarget && EnemyController) caï¿½y kod poniï¿½ej mam powyï¿½szym if statementem
 	{
-		if (InTargetRange(PatrolTarget, PatrolRadius))	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(PatrolTarget) jest mniejsza ni¿ PatrolRadius to:
+		if (InTargetRange(PatrolTarget, PatrolRadius))	//Jeï¿½li odlegï¿½oï¿½ï¿½ miï¿½dzy nami a naszym "enemy"(PatrolTarget) jest mniejsza niï¿½ PatrolRadius to:
 		{
-			TArray<AActor*> ValidTargets;	// Tworzymy tablicê ValidTargets
-			for (AActor* Target : PatrolTargets)	// Pêtla for, która sprawdza czy Target jest ró¿ny od PatrolTarget
+			TArray<AActor*> ValidTargets;	// Tworzymy tablicï¿½ ValidTargets
+			for (AActor* Target : PatrolTargets)	// Pï¿½tla for, ktï¿½ra sprawdza czy Target jest rï¿½ny od PatrolTarget
 			{
-				if (Target != PatrolTarget)	// Jeœli Target jest ró¿ny od PatrolTarget, to dodajemy go do tablicy ValidTargets
+				if (Target != PatrolTarget)	// Jeï¿½li Target jest rï¿½ny od PatrolTarget, to dodajemy go do tablicy ValidTargets
 				{
 					ValidTargets.AddUnique(Target);		// Dodajemy Target do tablicy ValidTargets
 				}
 			}
 
 
-			const int32 NumPatrolTargets = PatrolTargets.Num() - 1;	//Pobieramy iloœæ PatrolTargets
+			const int32 NumPatrolTargets = PatrolTargets.Num() - 1;	//Pobieramy iloï¿½ï¿½ PatrolTargets
 			if (NumPatrolTargets > 0)
 			{
 				const int32 TargetSelection = FMath::RandRange(0, NumPatrolTargets);	//Losujemy numer z tablicy PatrolTargets
-				AActor* Target = PatrolTargets[TargetSelection];	//Przypisujemy Target wartoœæ PatrolTargets[TargetSelection]
-				PatrolTarget = Target;	//Przypisujemy PatrolTarget wartoœæ Target
+				AActor* Target = PatrolTargets[TargetSelection];	//Przypisujemy Target wartoï¿½ï¿½ PatrolTargets[TargetSelection]
+				PatrolTarget = Target;	//Przypisujemy PatrolTarget wartoï¿½ï¿½ Target
 
-				FAIMoveRequest MoveRequest;	// Tworzymy strukturê FAIMoveRequest
+				FAIMoveRequest MoveRequest;	// Tworzymy strukturï¿½ FAIMoveRequest
 				MoveRequest.SetGoalActor(PatrolTarget);	// Ustawiamy cel ruchu na PatrolTarget
-				MoveRequest.SetAcceptanceRadius(15.f);	// Ustawiamy promieñ akceptacji na 15
-				EnemyController->MoveTo(MoveRequest);	// Wywo³ujemy funkcjê MoveTo z kontrolera przeciwnika
+				MoveRequest.SetAcceptanceRadius(15.f);	// Ustawiamy promieï¿½ akceptacji na 15
+				EnemyController->MoveTo(MoveRequest);	// Wywoï¿½ujemy funkcjï¿½ MoveTo z kontrolera przeciwnika
 			}
 
 		}
@@ -91,10 +91,10 @@ void AEnemy::Tick(float DeltaTime)
 
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
-	HandleDamage(DamageAmount);	// Wywo³ujemy funkcjê HandleDamage z argumentem DamageAmount
-	CombatTarget = EventInstigator->GetPawn();	// Przypisujemy CombatTarget wartoœæ EventInstigator->GetPawn()
+	HandleDamage(DamageAmount);	// Wywoï¿½ujemy funkcjï¿½ HandleDamage z argumentem DamageAmount
+	CombatTarget = EventInstigator->GetPawn();	// Przypisujemy CombatTarget wartoï¿½ï¿½ EventInstigator->GetPawn()
 	
-	if (IsInsideAttackRadius())	//Jeœli postaæ jest w zasiêgu ataku to ustawiamy "enemy" state na attak
+	if (IsInsideAttackRadius())	//Jeï¿½li postaï¿½ jest w zasiï¿½gu ataku to ustawiamy "enemy" state na attak
 	{
 		EnemyState = EEnemyState::EES_Attacking;
 	}
@@ -109,26 +109,26 @@ void AEnemy::Destroyed()
 {
 	if (EquippedWeapon)
 	{
-		EquippedWeapon->Destroy();	// Usuwamy broñ jesli bêdziemy chcieli aby przeciwnik upuszcza³ broñ, mo¿emy to zrobic w³aœnie w tym miejscu
+		EquippedWeapon->Destroy();	// Usuwamy broï¿½ jesli bï¿½dziemy chcieli aby przeciwnik upuszczaï¿½ broï¿½, moï¿½emy to zrobic wï¿½aï¿½nie w tym miejscu
 	}
 	Super::Destroyed();
 }
 
-void AEnemy::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)	// Deklarujemy funkcjê GetHit z Enemy.h
+void AEnemy::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)	// Deklarujemy funkcjï¿½ GetHit z Enemy.h
 {
-	Super::GetHit_Implementation(ImpactPoint, Hitter);	// Wywo³ujemy funkcjê GetHit_Implementation z BaseCharacter
-	if (!IsDead()) ShowHealthBar();	//Wywo³ujemy funkcjê ShowHealthBar
-	ClearPatrolTimer();	//Wywo³ujemy funkcjê ClearPatrolTimer
-	ClearAttackTimer();	//Wywo³ujemy funkcjê ClearAttackTimer
+	Super::GetHit_Implementation(ImpactPoint, Hitter);	// Wywoï¿½ujemy funkcjï¿½ GetHit_Implementation z BaseCharacter
+	if (!IsDead()) ShowHealthBar();	//Wywoï¿½ujemy funkcjï¿½ ShowHealthBar
+	ClearPatrolTimer();	//Wywoï¿½ujemy funkcjï¿½ ClearPatrolTimer
+	ClearAttackTimer();	//Wywoï¿½ujemy funkcjï¿½ ClearAttackTimer
 	
 	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);
 	
-	StopAttackMontage();	//Wywo³ujemy funkcjê StopAttackMontage
+	StopAttackMontage();	//Wywoï¿½ujemy funkcjï¿½ StopAttackMontage
 	if (IsInsideAttackRadius())
 	{
-		if (!IsDead()) StartAttackTimer();	//Funkcja do rozpoczêcia timera ataku
+		if (!IsDead()) StartAttackTimer();	//Funkcja do rozpoczï¿½cia timera ataku
 	}
-	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkê w kolorze pomarañczowym gdy uderzymy mieczem w "enemy"
+	//DRAW_SPHRE_COLOR(ImpactPoint, FColor::Orange);	// Rysujemy kulkï¿½ w kolorze pomaraï¿½czowym gdy uderzymy mieczem w "enemy"
 	
 }
 
@@ -139,40 +139,40 @@ void AEnemy::BeginPlay()
 	
 	if (PawnSensing)
 	{
-		PawnSensing->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);	// Dodajemy dynamicznie funkcjê PawnSeen do delegata OnSeePawn
+		PawnSensing->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);	// Dodajemy dynamicznie funkcjï¿½ PawnSeen do delegata OnSeePawn
 	}
-	InitializeEnemy();	// Wywo³ujemy funkcjê InitializeEnemy
+	InitializeEnemy();	// Wywoï¿½ujemy funkcjï¿½ InitializeEnemy
 
 	Tags.Add(FName("Enemy"));
 }
 
 void AEnemy::Die_Implementation()
 {
-	Super::Die_Implementation();	// Wywo³ujemy funkcjê Die z BaseCharacter
+	Super::Die_Implementation();	// Wywoï¿½ujemy funkcjï¿½ Die z BaseCharacter
 	EnemyState = EEnemyState::EES_Dead;	// Ustawiamy EnemyState na EES_Dead
 	
-	ClearAttackTimer();	// Czyœcimy timer ataku
-	//Jeœli przeciwnik ma HealthBarWidget, to ustawiamy jego widocznoœæ na false w momencie œmierci
+	ClearAttackTimer();	// Czyï¿½cimy timer ataku
+	//Jeï¿½li przeciwnik ma HealthBarWidget, to ustawiamy jego widocznoï¿½ï¿½ na false w momencie ï¿½mierci
 	HideHealthBar();
 
-	DisableCapsule();	// Wywo³ujemy funkcjê DisableCapsule, która wy³¹æza kolizjê kapsu³y po smierci
-	SetLifeSpan(DeathLifeSpan);	// Ustawiamy czas po którym, cia³o przeciwnika znika po 3 sekundach od jego œmierci
-	GetCharacterMovement()->bOrientRotationToMovement = false;	// Wy³¹czamy obracanie siê w kierunku ruchu
-	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);		// Wy³¹czamy kolizjê broni gdy przeicwnik umiera
+	DisableCapsule();	// Wywoï¿½ujemy funkcjï¿½ DisableCapsule, ktï¿½ra wyï¿½ï¿½ï¿½za kolizjï¿½ kapsuï¿½y po smierci
+	SetLifeSpan(DeathLifeSpan);	// Ustawiamy czas po ktï¿½rym, ciaï¿½o przeciwnika znika po 3 sekundach od jego ï¿½mierci
+	GetCharacterMovement()->bOrientRotationToMovement = false;	// Wyï¿½ï¿½czamy obracanie siï¿½ w kierunku ruchu
+	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);		// Wyï¿½ï¿½czamy kolizjï¿½ broni gdy przeicwnik umiera
 	SpawnSoul();
 }
 
 void AEnemy::SpawnSoul()
 {
-	UWorld* World = GetWorld();	// Pobieramy œwiat
+	UWorld* World = GetWorld();	// Pobieramy ï¿½wiat
 	if (World && SoulClass && Attributes)
 	{
-		const FVector SpawnLocation = GetActorLocation() + FVector(0.f, 0.f, 125.f);	// Pobieramy lokalizacjê przeciwnika
-		ASoul* SpawnedSoul = World->SpawnActor<ASoul>(SoulClass, SpawnLocation, GetActorRotation());	// Spawnujemy duszê w miejscu œmierci przeciwnika
+		const FVector SpawnLocation = GetActorLocation() + FVector(0.f, 0.f, 125.f);	// Pobieramy lokalizacjï¿½ przeciwnika
+		ASoul* SpawnedSoul = World->SpawnActor<ASoul>(SoulClass, SpawnLocation, GetActorRotation());	// Spawnujemy duszï¿½ w miejscu ï¿½mierci przeciwnika
 		if (SpawnedSoul)
 		{
-			SpawnedSoul->SetSouls(Attributes->GetSouls());	// Ustawiamy iloœæ dusz do zebrania
-			SpawnedSoul->SetOwner(this);	// Ustawiamy w³aœciciela
+			SpawnedSoul->SetSouls(Attributes->GetSouls());	// Ustawiamy iloï¿½ï¿½ dusz do zebrania
+			SpawnedSoul->SetOwner(this);	// Ustawiamy wï¿½aï¿½ciciela
 		}
 	}
 }
@@ -199,7 +199,7 @@ bool AEnemy::CanAttack()
 void AEnemy::AttackEnd()
 {
 	EnemyState = EEnemyState::EES_NoState;	//Ustawiamy EnemyState na EES_NoState
-	CheckCombatTarget();	//Wywo³ujemy funkcjê CheckCombatTarget
+	CheckCombatTarget();	//Wywoï¿½ujemy funkcjï¿½ CheckCombatTarget
 }
 
 void AEnemy::HandleDamage(float DamageAmount)
@@ -225,19 +225,19 @@ void AEnemy::HandleDamage(float DamageAmount)
 }*/
 
 
-//Funkcja do inicjalizacji przeciwnika. Ustawa stan pocz¹tkowy, ustawia kontroler AI, ustawia cel patrolu, ustawia pasek ¿ycia
+//Funkcja do inicjalizacji przeciwnika. Ustawa stan poczï¿½tkowy, ustawia kontroler AI, ustawia cel patrolu, ustawia pasek ï¿½ycia
 void AEnemy::InitializeEnemy()
 {
-	//	Przypisujemy wskaŸnik do kontrolera przeciwnika
+	//	Przypisujemy wskaï¿½nik do kontrolera przeciwnika
 	EnemyController = Cast<AAIController>(GetController());
 
-	// Wywo³ujemy funkcjê MoveToTarget z argumentem PatrolTarget
+	// Wywoï¿½ujemy funkcjï¿½ MoveToTarget z argumentem PatrolTarget
 	MoveToTarget(PatrolTarget);
 
-	//Wywo³ujemy funkcjê HideHealthBar która ukrywa pasek ¿ycia
+	//Wywoï¿½ujemy funkcjï¿½ HideHealthBar ktï¿½ra ukrywa pasek ï¿½ycia
 	HideHealthBar();
 
-	// Wywo³ujemy funkcjê SpawnDefaultWeapon która tworzy spawnuje broñ
+	// Wywoï¿½ujemy funkcjï¿½ SpawnDefaultWeapon ktï¿½ra tworzy spawnuje broï¿½
 	SpawnDefaultWeapon();
 }
 
@@ -245,55 +245,55 @@ void AEnemy::CheckPatrolTarget()
 {
 	if (InTargetRange(PatrolTarget, PatrolRadius))
 	{
-		PatrolTarget = ChoosePatrolTarget();	// Wywo³ujemy funkcjê ChoosePatrolTarget
+		PatrolTarget = ChoosePatrolTarget();	// Wywoï¿½ujemy funkcjï¿½ ChoosePatrolTarget
 		const float WaitTime = FMath::RandRange(PatrolWaitMin, PatrolWaitMax);	// Losujemy czas oczekiwania
 		GetWorldTimerManager().SetTimer(PatrolTimer, this, &AEnemy::PatrolTimerFinished, WaitTime);	// Ustawiamy timer na 5 sekund
-		//MoveToTarget(PatrolTarget);	// Wywo³ujemy funkcjê MoveToTarget z argumentem PatrolTarget
+		//MoveToTarget(PatrolTarget);	// Wywoï¿½ujemy funkcjï¿½ MoveToTarget z argumentem PatrolTarget
 
 	}
 }
 
 void AEnemy::CheckCombatTarget()
 {
-	// const double DistanceToTarget = (CombatTarget->GetActorLocation() - GetActorLocation()).Size();	//Mamy to w InTargetRange. Obliczamy odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget)
-	if (IsOutsideCombatRadius())	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ CombatRadius to:
+	// const double DistanceToTarget = (CombatTarget->GetActorLocation() - GetActorLocation()).Size();	//Mamy to w InTargetRange. Obliczamy odlegï¿½oï¿½ï¿½ miï¿½dzy nami a naszym "enemy"(CombatTarget)
+	if (IsOutsideCombatRadius())	//Jeï¿½li odlegï¿½oï¿½ï¿½ miï¿½dzy nami a naszym "enemy"(CombatTarget) jest wiï¿½ksza niï¿½ CombatRadius to:
 	{
-		ClearAttackTimer();	//Wywo³ujemy funkcjê ClearAttackTimer
-		LoseInterest();	//Wywo³ujemy funkcjê LoseInterest
-		if (!IsEngaged()) StartPatrolling();	//Wywo³ujemy funkcjê StartPatrolling
+		ClearAttackTimer();	//Wywoï¿½ujemy funkcjï¿½ ClearAttackTimer
+		LoseInterest();	//Wywoï¿½ujemy funkcjï¿½ LoseInterest
+		if (!IsEngaged()) StartPatrolling();	//Wywoï¿½ujemy funkcjï¿½ StartPatrolling
 
 
 		UE_LOG(LogTemp, Warning, TEXT("Lose interest"))
 	}
-	else if (IsOutsideAttackRadius() && !IsChasing())	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest wiêksza ni¿ AttackRadius i EnemyState nie jest równy EES_Chasing to:
+	else if (IsOutsideAttackRadius() && !IsChasing())	//Jeï¿½li odlegï¿½oï¿½ï¿½ miï¿½dzy nami a naszym "enemy"(CombatTarget) jest wiï¿½ksza niï¿½ AttackRadius i EnemyState nie jest rï¿½wny EES_Chasing to:
 	{
 		ClearAttackTimer();
-		if (!IsEngaged()) ChaseTarget();	//Wywo³ujemy funkcjê ChaseTarget
+		if (!IsEngaged()) ChaseTarget();	//Wywoï¿½ujemy funkcjï¿½ ChaseTarget
 
 		UE_LOG(LogTemp, Warning, TEXT("Chasing"))
 	}
-	else if (CanAttack())	//Jeœli odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget) jest mniejsza ni¿ AttackRadius i EnemyState nie jest równy EES_Attacking to:
+	else if (CanAttack())	//Jeï¿½li odlegï¿½oï¿½ï¿½ miï¿½dzy nami a naszym "enemy"(CombatTarget) jest mniejsza niï¿½ AttackRadius i EnemyState nie jest rï¿½wny EES_Attacking to:
 	{
 		/*// Inside attack range, attack character
 		EnemyState = EEnemyState::EES_Attacking;	//Ustawiamy EnemyState na EES_Attacking
 		// TODO: Attack montage
-		Attack();	//Wywo³ujemy funkcjê Attack
+		Attack();	//Wywoï¿½ujemy funkcjï¿½ Attack
 		*/
-		StartAttackTimer();	//Funkcja do rozpoczêcia timera ataku
+		StartAttackTimer();	//Funkcja do rozpoczï¿½cia timera ataku
 		UE_LOG(LogTemp, Warning, TEXT("Attacking"))
 	}
 }
 
 void AEnemy::PatrolTimerFinished()
 {
-	MoveToTarget(PatrolTarget);	// Wywo³ujemy funkcjê MoveToTarget z argumentem PatrolTarget
+	MoveToTarget(PatrolTarget);	// Wywoï¿½ujemy funkcjï¿½ MoveToTarget z argumentem PatrolTarget
 }
 
 void AEnemy::HideHealthBar()
 {
 	if (HealthBarWidget)
 	{
-		HealthBarWidget->SetVisibility(false);	//I ustawiamy widocznoœæ paska ¿ycia na false
+		HealthBarWidget->SetVisibility(false);	//I ustawiamy widocznoï¿½ï¿½ paska ï¿½ycia na false
 	}
 }
 
@@ -301,7 +301,7 @@ void AEnemy::ShowHealthBar()
 {
 	if (HealthBarWidget)
 	{
-		HealthBarWidget->SetVisibility(true);	//I ustawiamy widocznoœæ paska ¿ycia na true
+		HealthBarWidget->SetVisibility(true);	//I ustawiamy widocznoï¿½ï¿½ paska ï¿½ycia na true
 	}
 }
 
@@ -309,21 +309,21 @@ void AEnemy::ShowHealthBar()
 void AEnemy::LoseInterest()
 {
 	CombatTarget = nullptr;	//Ustawiamy CombatTarget na nullptr
-	HideHealthBar();	//Wywo³ujemy funkcjê HideHealthBar
+	HideHealthBar();	//Wywoï¿½ujemy funkcjï¿½ HideHealthBar
 }
 
 void AEnemy::StartPatrolling()
 {
 	EnemyState = EEnemyState::EES_Patrolling;	//Ustawiamy EnemyState na EES_Patrolling
-	GetCharacterMovement()->MaxWalkSpeed = PatrollingSpeed;	//Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 150
-	MoveToTarget(PatrolTarget);	//Wywo³ujemy funkcjê MoveToTarget z argumentem PatrolTarget
+	GetCharacterMovement()->MaxWalkSpeed = PatrollingSpeed;	//Ustawiamy maksymalnï¿½ prï¿½dkoï¿½ï¿½ chodzenia na 150
+	MoveToTarget(PatrolTarget);	//Wywoï¿½ujemy funkcjï¿½ MoveToTarget z argumentem PatrolTarget
 }
 
 void AEnemy::ChaseTarget()	// Outside attack range, chase character
 {
 	EnemyState = EEnemyState::EES_Chasing;	//Ustawiamy EnemyState na EES_Chasing
-	GetCharacterMovement()->MaxWalkSpeed = ChasingSpeed;	//Ustawiamy maksymaln¹ prêdkoœæ pogoni
-	MoveToTarget(CombatTarget);	//Wywo³ujemy funkcjê MoveToTarget z argumentem CombatTarget
+	GetCharacterMovement()->MaxWalkSpeed = ChasingSpeed;	//Ustawiamy maksymalnï¿½ prï¿½dkoï¿½ï¿½ pogoni
+	MoveToTarget(CombatTarget);	//Wywoï¿½ujemy funkcjï¿½ MoveToTarget z argumentem CombatTarget
 }
 
 bool AEnemy::IsOutsideCombatRadius()
@@ -353,7 +353,7 @@ bool AEnemy::IsAttacking()
 
 bool AEnemy::IsDead()
 {
-	return EnemyState == EEnemyState::EES_Dead; // Sprawdzamy czy EnemyState jest równy EES_Dead, jeœli tak to zwracamy
+	return EnemyState == EEnemyState::EES_Dead; // Sprawdzamy czy EnemyState jest rï¿½wny EES_Dead, jeï¿½li tak to zwracamy
 }
 
 bool AEnemy::IsEngaged()
@@ -363,10 +363,10 @@ bool AEnemy::IsEngaged()
 
 void AEnemy::ClearPatrolTimer()
 {
-	GetWorldTimerManager().ClearTimer(PatrolTimer);	//Czyœcimy timer
+	GetWorldTimerManager().ClearTimer(PatrolTimer);	//Czyï¿½cimy timer
 }
 
-void AEnemy::StartAttackTimer()	//Funkcja do rozpoczêcia timera ataku
+void AEnemy::StartAttackTimer()	//Funkcja do rozpoczï¿½cia timera ataku
 {
 	EnemyState = EEnemyState::EES_Attacking;	//Ustawiamy EnemyState na EES_Attacking
 	const float AttackTime = FMath::RandRange(AttackMin, AttackMax);		//Losujemy czas ataku
@@ -375,13 +375,13 @@ void AEnemy::StartAttackTimer()	//Funkcja do rozpoczêcia timera ataku
 
 void AEnemy::ClearAttackTimer()
 {
-	GetWorldTimerManager().ClearTimer(AttackTimer);	//Czyœcimy timer ataku
+	GetWorldTimerManager().ClearTimer(AttackTimer);	//Czyï¿½cimy timer ataku
 }
 
-bool AEnemy::InTargetRange(AActor* Target, double Radius)	// Deklarujemy funkcjê InTargetRange z Enemy.h
+bool AEnemy::InTargetRange(AActor* Target, double Radius)	// Deklarujemy funkcjï¿½ InTargetRange z Enemy.h
 {
 	if (Target == nullptr) return false;	// Sprawdzamy czy Target nie jest nullpointerem
-	const double DistanceToTarget = (Target->GetActorLocation() - GetActorLocation()).Size();	//Obliczamy odleg³oœæ miêdzy nami a naszym "enemy"(CombatTarget)
+	const double DistanceToTarget = (Target->GetActorLocation() - GetActorLocation()).Size();	//Obliczamy odlegï¿½oï¿½ï¿½ miï¿½dzy nami a naszym "enemy"(CombatTarget)
 	DRAW_SPHERE_SingleFrame(GetActorLocation());
 	DRAW_SPHERE_SingleFrame(Target->GetActorLocation());
 	return DistanceToTarget <= Radius;
@@ -389,91 +389,91 @@ bool AEnemy::InTargetRange(AActor* Target, double Radius)	// Deklarujemy funkcjê
 
 void AEnemy::MoveToTarget(AActor* Target)
 {
-	if (EnemyController == nullptr || Target == nullptr) return;	// Sprawdzamy czy EnemyController i Target nie s¹ nullpointerami
-	FAIMoveRequest MoveRequest;	// Tworzymy strukturê FAIMoveRequest
+	if (EnemyController == nullptr || Target == nullptr) return;	// Sprawdzamy czy EnemyController i Target nie sï¿½ nullpointerami
+	FAIMoveRequest MoveRequest;	// Tworzymy strukturï¿½ FAIMoveRequest
 	MoveRequest.SetGoalActor(Target);	// Ustawiamy cel ruchu na PatrolTarget
-	MoveRequest.SetAcceptanceRadius(AcceptanceRadius);	// Ustawiamy promieñ akceptacji
-	//FNavPathSharedPtr NavPath;	// Tworzymy wskaŸnik do œcie¿ki nawigacji
-	EnemyController->MoveTo(MoveRequest/*, &NavPath*/);	// Wywo³ujemy funkcjê MoveTo z kontrolera przeciwnika. &NavPath w³¹æzamy, gdy chcemy zobaczyc œciê¿kê poruszania siê
+	MoveRequest.SetAcceptanceRadius(AcceptanceRadius);	// Ustawiamy promieï¿½ akceptacji
+	//FNavPathSharedPtr NavPath;	// Tworzymy wskaï¿½nik do ï¿½cieï¿½ki nawigacji
+	EnemyController->MoveTo(MoveRequest/*, &NavPath*/);	// Wywoï¿½ujemy funkcjï¿½ MoveTo z kontrolera przeciwnika. &NavPath wï¿½ï¿½ï¿½zamy, gdy chcemy zobaczyc ï¿½ciï¿½kï¿½ poruszania siï¿½
 	/*
-	TArray<FNavPathPoint>& PathPoints = NavPath->GetPathPoints();	// Tworzymy tablicê PathPoints i przypisujemy jej wartoœæ œcie¿ki nawigacji
-	//Pêtla for, która rysuje kule debugowania na œcie¿ce nawigacji
+	TArray<FNavPathPoint>& PathPoints = NavPath->GetPathPoints();	// Tworzymy tablicï¿½ PathPoints i przypisujemy jej wartoï¿½ï¿½ ï¿½cieï¿½ki nawigacji
+	//Pï¿½tla for, ktï¿½ra rysuje kule debugowania na ï¿½cieï¿½ce nawigacji
 	for (auto& Point : PathPoints)
 	{
-		const FVector& Location = Point.Location;	// Pobieramy lokalizacjê punktu
-		DrawDebugSphere(GetWorld(), Location, 12.f, 12, FColor::Green, false, 10.f);	// Rysujemy sferê debugowania
+		const FVector& Location = Point.Location;	// Pobieramy lokalizacjï¿½ punktu
+		DrawDebugSphere(GetWorld(), Location, 12.f, 12, FColor::Green, false, 10.f);	// Rysujemy sferï¿½ debugowania
 	}
 	*/
 }
 
-AActor* AEnemy::ChoosePatrolTarget()	// Deklarujemy funkcjê ChoosePatrolTarget z Enemy.h
+AActor* AEnemy::ChoosePatrolTarget()	// Deklarujemy funkcjï¿½ ChoosePatrolTarget z Enemy.h
 {
-	TArray<AActor*> ValidTargets;	// Tworzymy tablicê ValidTargets
-	for (AActor* Target : PatrolTargets)	// Pêtla for, która sprawdza czy Target jest ró¿ny od PatrolTarget
+	TArray<AActor*> ValidTargets;	// Tworzymy tablicï¿½ ValidTargets
+	for (AActor* Target : PatrolTargets)	// Pï¿½tla for, ktï¿½ra sprawdza czy Target jest rï¿½ny od PatrolTarget
 	{
-		if (Target != PatrolTarget)	// Jeœli Target jest ró¿ny od PatrolTarget, to dodajemy go do tablicy ValidTargets
+		if (Target != PatrolTarget)	// Jeï¿½li Target jest rï¿½ny od PatrolTarget, to dodajemy go do tablicy ValidTargets
 		{
 			ValidTargets.AddUnique(Target);		// Dodajemy Target do tablicy ValidTargets
 		}
 	}
 
 
-	const int32 NumPatrolTargets = ValidTargets.Num();	//Pobieramy iloœæ PatrolTargets
+	const int32 NumPatrolTargets = ValidTargets.Num();	//Pobieramy iloï¿½ï¿½ PatrolTargets
 	if (NumPatrolTargets > 0)
 	{
 		const int32 TargetSelection = FMath::RandRange(0, NumPatrolTargets - 1);	//Losujemy numer z tablicy PatrolTargets
-		return ValidTargets[TargetSelection];	//Przypisujemy Target wartoœæ PatrolTargets[TargetSelection]
-		/*PatrolTarget = Target;	//Przypisujemy PatrolTarget wartoœæ Target
+		return ValidTargets[TargetSelection];	//Przypisujemy Target wartoï¿½ï¿½ PatrolTargets[TargetSelection]
+		/*PatrolTarget = Target;	//Przypisujemy PatrolTarget wartoï¿½ï¿½ Target
 
-		FAIMoveRequest MoveRequest;	// Tworzymy strukturê FAIMoveRequest
+		FAIMoveRequest MoveRequest;	// Tworzymy strukturï¿½ FAIMoveRequest
 		MoveRequest.SetGoalActor(PatrolTarget);	// Ustawiamy cel ruchu na PatrolTarget
-		MoveRequest.SetAcceptanceRadius(15.f);	// Ustawiamy promieñ akceptacji na 15
-		EnemyController->MoveTo(MoveRequest);	// Wywo³ujemy funkcjê MoveTo z kontrolera przeciwnika*/
+		MoveRequest.SetAcceptanceRadius(15.f);	// Ustawiamy promieï¿½ akceptacji na 15
+		EnemyController->MoveTo(MoveRequest);	// Wywoï¿½ujemy funkcjï¿½ MoveTo z kontrolera przeciwnika*/
 	}
 	return nullptr;
 }
 
 void AEnemy::SpawnDefaultWeapon()
 {
-	UWorld* World = GetWorld();	// Pobieramy œwiat
+	UWorld* World = GetWorld();	// Pobieramy ï¿½wiat
 	if (World && WeaponClass)	// 
 	{
-		AWeapon* DefaultWeapon = World->SpawnActor<AWeapon>(WeaponClass);	// Tworzymy domyœln¹ broñ
-		DefaultWeapon->Equip(GetMesh(), FName("WeaponSocket"), this, this);	// Wyposa¿amy broñ
-		EquippedWeapon = DefaultWeapon;	// Przypisujemy EquippedWeapon wartoœæ DefaultWeapon
+		AWeapon* DefaultWeapon = World->SpawnActor<AWeapon>(WeaponClass);	// Tworzymy domyï¿½lnï¿½ broï¿½
+		DefaultWeapon->Equip(GetMesh(), FName("WeaponSocket"), this, this);	// Wyposaï¿½amy broï¿½
+		EquippedWeapon = DefaultWeapon;	// Przypisujemy EquippedWeapon wartoï¿½ï¿½ DefaultWeapon
 	}
 }
 
 void AEnemy::PawnSeen(APawn* SeenPawn)
 {
 	const bool bShouldChaseTarget =
-		EnemyState != EEnemyState::EES_Dead &&	// Sprawdzamy czy EnemyState nie jest równy EES_Dead
-		EnemyState != EEnemyState::EES_Chasing &&	// Sprawdzamy czy EnemyState nie jest równy EES_Chasing
+		EnemyState != EEnemyState::EES_Dead &&	// Sprawdzamy czy EnemyState nie jest rï¿½wny EES_Dead
+		EnemyState != EEnemyState::EES_Chasing &&	// Sprawdzamy czy EnemyState nie jest rï¿½wny EES_Chasing
 		EnemyState < EEnemyState::EES_Attacking &&	// Sprawdzamy czy EnemyState jest mniejszy od EES_Attacking
 		SeenPawn->ActorHasTag(FName("EngageableTarget")) &&	// Sprawdzamy czy Actor ma tag
-		!SeenPawn->ActorHasTag(FName("Dead"));	// Sprawdzamy czy Actor ma tag, jesli ma to nie podbiegamy do niego gdy ju¿ umar³
+		!SeenPawn->ActorHasTag(FName("Dead"));	// Sprawdzamy czy Actor ma tag, jesli ma to nie podbiegamy do niego gdy juï¿½ umarï¿½
 
-	if (bShouldChaseTarget)	//Jeœli bShouldChaseTarget jest true to:
+	if (bShouldChaseTarget)	//Jeï¿½li bShouldChaseTarget jest true to:
 	{
-		CombatTarget = SeenPawn;	// Przypisujemy CombatTarget wartoœæ SeenPawn
-		ClearPatrolTimer();	// Wywo³ujemy funkcjê ClearPatrolTimer
-		ChaseTarget();	// Wywo³ujemy funkcjê ChaseTarget
+		CombatTarget = SeenPawn;	// Przypisujemy CombatTarget wartoï¿½ï¿½ SeenPawn
+		ClearPatrolTimer();	// Wywoï¿½ujemy funkcjï¿½ ClearPatrolTimer
+		ChaseTarget();	// Wywoï¿½ujemy funkcjï¿½ ChaseTarget
 	}
 	
-	/*Powy¿ej jest skrócona wersja poni¿szych warunków
+	/*Powyï¿½ej jest skrï¿½cona wersja poniï¿½szych warunkï¿½w
 	
-	kiedy ma byc goniony bohater warunki poni¿ej
-	if (EnemyState == EEnemyState::EES_Chasing) return;	// Sprawdzamy czy EnemyState jest równy EES_Chasing, sprawdzamy to tutaj poniewa¿ chcemy aby poni¿szy statement wykona³ siê tylko raz a nie ci¹gle
+	kiedy ma byc goniony bohater warunki poniï¿½ej
+	if (EnemyState == EEnemyState::EES_Chasing) return;	// Sprawdzamy czy EnemyState jest rï¿½wny EES_Chasing, sprawdzamy to tutaj poniewaï¿½ chcemy aby poniï¿½szy statement wykonaï¿½ siï¿½ tylko raz a nie ciï¿½gle
 	if (SeenPawn->ActorHasTag(FName("SlashCharacter")))	// Sprawdzamy czy Actor ma tag
 	{
-		ClearPatrolTimer();	// Wywo³ujemy funkcjê ClearPatrolTimer
-		GetCharacterMovement()->MaxWalkSpeed = 300.f;	// Ustawiamy maksymaln¹ prêdkoœæ chodzenia na 300
-		CombatTarget = SeenPawn;	// Przypisujemy CombatTarget wartoœæ SeenPawn
+		ClearPatrolTimer();	// Wywoï¿½ujemy funkcjï¿½ ClearPatrolTimer
+		GetCharacterMovement()->MaxWalkSpeed = 300.f;	// Ustawiamy maksymalnï¿½ prï¿½dkoï¿½ï¿½ chodzenia na 300
+		CombatTarget = SeenPawn;	// Przypisujemy CombatTarget wartoï¿½ï¿½ SeenPawn
 
 		if (EnemyState != EEnemyState::EES_Attacking)
 		{
 			EnemyState = EEnemyState::EES_Chasing;	// Ustawiamy EnemyState na EES_Chasing
-			MoveToTarget(CombatTarget);	// Wywo³ujemy funkcjê MoveToTarget z argumentem CombatTarget i powinien zacz¹æ nas goniæ
+			MoveToTarget(CombatTarget);	// Wywoï¿½ujemy funkcjï¿½ MoveToTarget z argumentem CombatTarget i powinien zaczï¿½ï¿½ nas goniï¿½
 			UE_LOG(LogTemp, Warning, TEXT("Pawn Seen! and chasing"))
 		}
 	}

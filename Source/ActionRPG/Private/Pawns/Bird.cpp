@@ -19,7 +19,7 @@ ABird::ABird()
 	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
 	Capsule->SetCapsuleHalfHeight(20.f);
 	Capsule->SetCapsuleRadius(15.f);
-	SetRootComponent(Capsule);		//RootComponent = Capsule; mo¿na zapisaæ równie¿ w ten sposób
+	SetRootComponent(Capsule);		//RootComponent = Capsule; moï¿½na zapisaï¿½ rï¿½wnieï¿½ w ten sposï¿½b
 
 	BirdMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("BirdMesh"));
 	BirdMesh->SetupAttachment(GetRootComponent());

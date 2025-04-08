@@ -14,6 +14,6 @@ void ATreasure::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		PickupInterface->AddGold(this);
 		SpawnPickupSound();	//Spawn the pickup sound
 
-		Destroy();	//Jeœli bohater overlappuje z naszym przedmiotem, to niszczymy go
+		Destroy();	//Jeï¿½li bohater overlappuje z naszym przedmiotem, to niszczymy go
 	}
 }

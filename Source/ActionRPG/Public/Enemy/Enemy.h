@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Characters/BaseCharacter.h"	// Potrzebujemy tego nag³ówka aby Enemy móg³ dziedziczyæ funkcje z BaseCharacter
+#include "Characters/BaseCharacter.h"	// Potrzebujemy tego nagï¿½ï¿½wka aby Enemy mï¿½gï¿½ dziedziczyï¿½ funkcje z BaseCharacter
 #include "Characters/CharacterTypes.h"
 #include "Enemy.generated.h"
 
@@ -23,13 +23,13 @@ public:
 	/** <AActor> */
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obra¿eñ
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;	//Funkcja do otrzymywania obraï¿½eï¿½
 	virtual void Destroyed() override;
 	/** </AActor> */
 
 	/** <IHitInterface> */
 	// Called to bind functionality to input
-	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;	// Implementujemy funkcjê GetHit z interfejsu HitInterface
+	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;	// Implementujemy funkcjï¿½ GetHit z interfejsu HitInterface
 	/** </IHitInterface> */
 
 protected:
@@ -40,13 +40,13 @@ protected:
 	/** </AActor> */
 
 	/** <ABaseCharacter> */
-	virtual void Die_Implementation() override;	//Funkcja do œmierci
-	void SpawnSoul();	//Funkcja do spawnowania duszy po œmierci przeciwnika
+	virtual void Die_Implementation() override;	//Funkcja do ï¿½mierci
+	void SpawnSoul();	//Funkcja do spawnowania duszy po ï¿½mierci przeciwnika
 	virtual void Attack() override;	//Funkcja do ataku
-	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik mo¿e zaatakowaæ
-	virtual void AttackEnd() override;	//Funkcja do zakoñczenia ataku
-	virtual void HandleDamage(float DamageAmount) override;	//Funkcja do obs³ugi obra¿eñ
-	//virtual int32 PlayDeathMontage() override;	//Funkcja do odtwarzania animacji œmierci
+	virtual bool CanAttack() override;	//Funkcja do sprawdzania czy przeciwnik moï¿½e zaatakowaï¿½
+	virtual void AttackEnd() override;	//Funkcja do zakoï¿½czenia ataku
+	virtual void HandleDamage(float DamageAmount) override;	//Funkcja do obsï¿½ugi obraï¿½eï¿½
+	//virtual int32 PlayDeathMontage() override;	//Funkcja do odtwarzania animacji ï¿½mierci
 	/** </ABaseCharacter> */
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
@@ -57,64 +57,64 @@ protected:
 private:
 
 	/** AI Behavior */
-	void InitializeEnemy();		//Funkcja do inicjalizacji przeciwnika. Ustawa stan pocz¹tkowy, ustawia kontroler AI, ustawia cel patrolu, ustawia pasek ¿ycia
+	void InitializeEnemy();		//Funkcja do inicjalizacji przeciwnika. Ustawa stan poczï¿½tkowy, ustawia kontroler AI, ustawia cel patrolu, ustawia pasek ï¿½ycia
 	void CheckPatrolTarget();	//Funkcja do sprawdzania celu patrolu
 	void CheckCombatTarget();	//Funkcja do sprawdzania celu walki
-	void PatrolTimerFinished();	//Funkcja do zakoñczenia patrolu
-	void HideHealthBar();	//Funkcja do ukrycia paska ¿ycia
-	void ShowHealthBar();	//Funkcja do pokazania paska ¿ycia
+	void PatrolTimerFinished();	//Funkcja do zakoï¿½czenia patrolu
+	void HideHealthBar();	//Funkcja do ukrycia paska ï¿½ycia
+	void ShowHealthBar();	//Funkcja do pokazania paska ï¿½ycia
 	void LoseInterest();	//Funkcja do utraty zainteresowania
-	void StartPatrolling();	//Funkcja do rozpoczêcia patrolowania
+	void StartPatrolling();	//Funkcja do rozpoczï¿½cia patrolowania
 	void ChaseTarget();	//Funkcja do goniennia celu
-	bool IsOutsideCombatRadius();	//Sprawdzenie czy przeciwnik jest poza zasiêgiem walki
-	bool IsOutsideAttackRadius();	//Sprawdzenie czy przeciwnik jest poza zasiêgiem ataku
-	bool IsInsideAttackRadius();	//Sprawdzenie czy przeciwnik jest w zasiêgu ataku
+	bool IsOutsideCombatRadius();	//Sprawdzenie czy przeciwnik jest poza zasiï¿½giem walki
+	bool IsOutsideAttackRadius();	//Sprawdzenie czy przeciwnik jest poza zasiï¿½giem ataku
+	bool IsInsideAttackRadius();	//Sprawdzenie czy przeciwnik jest w zasiï¿½gu ataku
 	bool IsChasing();	//Sprawdzenie czy przeciwnik goni
 	bool IsAttacking();	//Sprawdzenie czy przeciwnik atakuje
 	bool IsDead();	//Sprawdzenie czy przeciwnik jest martwy
-	bool IsEngaged();	//Sprawdzenie czy przeciwnik jest zaanga¿owany w walkê
+	bool IsEngaged();	//Sprawdzenie czy przeciwnik jest zaangaï¿½owany w walkï¿½
 	void ClearPatrolTimer();	//Funkcja do wyczyszczenia timera patrolu
 	
 	/** Combat */
-	void StartAttackTimer();	//Funkcja do rozpoczêcia timera ataku
+	void StartAttackTimer();	//Funkcja do rozpoczï¿½cia timera ataku
 	void ClearAttackTimer();	//Funkcja do wyczyszczenia timera ataku
-	bool InTargetRange(AActor* Target, double Radius);	//Funkcja do sprawdzania czy przeciwnik jest w zasiêgu
-	void MoveToTarget(AActor* Target);	//Funkcja do poruszania siê do oznaczonych celów
+	bool InTargetRange(AActor* Target, double Radius);	//Funkcja do sprawdzania czy przeciwnik jest w zasiï¿½gu
+	void MoveToTarget(AActor* Target);	//Funkcja do poruszania siï¿½ do oznaczonych celï¿½w
 	AActor* ChoosePatrolTarget();	//Funkcja do wyboru celu patrolu
 	void SpawnDefaultWeapon();	//Funkcja do spawnowania broni
 	UFUNCTION()
 	void PawnSeen(APawn* Pawn);	//Funkcja widzenia dla pionka. Callback for OnSeePawn in UPawnSensingComponent
 
 	UPROPERTY(VisibleAnywhere)
-	UHealthBarComponent* HealthBarWidget;	// WskaŸnik do komponentu widgetu paska ¿ycia
+	UHealthBarComponent* HealthBarWidget;	// Wskaï¿½nik do komponentu widgetu paska ï¿½ycia
 
-	UPawnSensingComponent* PawnSensing;	// WskaŸnik do komponentu PawnSensing
-
-	UPROPERTY(EditAnywhere, Category = "Combat")
-	TSubclassOf<class AWeapon> WeaponClass;	//pos³u¿y do spawnowania broni
-
+	UPawnSensingComponent* PawnSensing;	// Wskaï¿½nik do komponentu PawnSensing
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	double CombatRadius = 500.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
+	TSubclassOf<class AWeapon> WeaponClass;	//posï¿½uï¿½y do spawnowania broni
+
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	double AttackRadius = 150.f;	//Promieñ walki w którym bêdziemy mogli zaatakowac przeciwnika i na odwró
+	double CombatRadius = 500.f;	//Promieï¿½ walki w ktï¿½rym bï¿½dziemy widzieli pasek przeciwnika
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	double AcceptanceRadius = 50.f;	//Promieñ walki w którym bêdziemy mogli zaatakowac przeciwnika i na odwró
+	double AttackRadius = 150.f;	//Promieï¿½ walki w ktï¿½rym bï¿½dziemy mogli zaatakowac przeciwnika i na odwrï¿½
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	double AcceptanceRadius = 50.f;	//Promieï¿½ walki w ktï¿½rym bï¿½dziemy mogli zaatakowac przeciwnika i na odwrï¿½
 
 	UPROPERTY()
-	class AAIController* EnemyController;	//WskaŸnik do kontrolera AI
+	class AAIController* EnemyController;	//Wskaï¿½nik do kontrolera AI
 	// Current patrol target
 	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")//, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	AActor* PatrolTarget;	//WskaŸnik do celu patrolu
+	AActor* PatrolTarget;	//Wskaï¿½nik do celu patrolu
 
 	// Array of patrol points
 	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
-	TArray<AActor*> PatrolTargets;	//Tablica celów patrolu
+	TArray<AActor*> PatrolTargets;	//Tablica celï¿½w patrolu
 
 	UPROPERTY(EditAnywhere)
-	double PatrolRadius = 200.f;	//Promieñ walki w którym bêdziemy widzieli pasek przeciwnika
+	double PatrolRadius = 200.f;	//Promieï¿½ walki w ktï¿½rym bï¿½dziemy widzieli pasek przeciwnika
 
 	FTimerHandle PatrolTimer;	//Timer do patrolu
 
@@ -125,7 +125,7 @@ private:
 	float PatrolWaitMax = 10.f;	//Maksymalny czas oczekiwania
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	float PatrollingSpeed = 125.f;	//Prêdkoœæ patrolowania
+	float PatrollingSpeed = 125.f;	//Prï¿½dkoï¿½ï¿½ patrolowania
 
 	FTimerHandle AttackTimer;	//Timer do ataku
 
@@ -136,7 +136,7 @@ private:
 	float AttackMax = 1.f;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	float ChasingSpeed = 300.f;	//Prêdkoœæ goniennia
+	float ChasingSpeed = 300.f;	//Prï¿½dkoï¿½ï¿½ goniennia
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float DeathLifeSpan = 5.f;

@@ -2,9 +2,9 @@
 
 
 #include "Characters/BaseCharacter.h"
-#include "Components/BoxComponent.h"	//Potrzebujemy tego nag³ówka aby móc u¿yæ BoxComponent
-#include "Items/Weapons/Weapon.h"	//Potrzebujemy tego nag³ówka aby móc podnieœæ broñ ora u¿yæ AWeapon
-#include "Components/AttributeComponent.h"	// Potrzebujemy tego nag³ówka aby nasz "BaseCharacter" móg³ dziedziczyæ z funkcji AttributeComponent
+#include "Components/BoxComponent.h"	//Potrzebujemy tego nagï¿½ï¿½wka aby mï¿½c uï¿½yï¿½ BoxComponent
+#include "Items/Weapons/Weapon.h"	//Potrzebujemy tego nagï¿½ï¿½wka aby mï¿½c podnieï¿½ï¿½ broï¿½ ora uï¿½yï¿½ AWeapon
+#include "Components/AttributeComponent.h"	// Potrzebujemy tego nagï¿½ï¿½wka aby nasz "BaseCharacter" mï¿½gï¿½ dziedziczyï¿½ z funkcji AttributeComponent
 #include "Components/CapsuleComponent.h" // for UCapsuleComponent"
 #include "Kismet/GameplayStatics.h"
 #include "ActionRPG/DebugMacros.h"
@@ -15,7 +15,7 @@ ABaseCharacter::ABaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	// Tworzymy domyœlny subobiekt "Attributes" z klasy UAttributeComponent
+	// Tworzymy domyï¿½lny subobiekt "Attributes" z klasy UAttributeComponent
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));	
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore); // Set the collision response to Camera
 }
@@ -29,16 +29,16 @@ void ABaseCharacter::BeginPlay()
 
 void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
 {
-	if (IsAlive() && Hitter)	// Sprawdzamy czy Attributes nie jest nullpointerem i czy "enemy" ¿yje
+	if (IsAlive() && Hitter)	// Sprawdzamy czy Attributes nie jest nullpointerem i czy "enemy" ï¿½yje
 	{
-		DirectionalHitReact(Hitter->GetActorLocation());	// Wywo³ujemy funkcjê DirectionalHitReact z argumentem ImpactPoint
+		DirectionalHitReact(Hitter->GetActorLocation());	// Wywoï¿½ujemy funkcjï¿½ DirectionalHitReact z argumentem ImpactPoint
 	}
-	else Die();	// Wywo³ujemy funkcjê Die
+	else Die();	// Wywoï¿½ujemy funkcjï¿½ Die
 	
 
-	PlayHitSound(ImpactPoint);	// Wywo³ujemy funkcjê PlayHitSound z argumentem ImpactPoint. // Odtwarzamy dŸwiêk otrzymania ciosu
+	PlayHitSound(ImpactPoint);	// Wywoï¿½ujemy funkcjï¿½ PlayHitSound z argumentem ImpactPoint. // Odtwarzamy dï¿½wiï¿½k otrzymania ciosu
 
-	SpawnHitParticles(ImpactPoint);	// Wywo³ujemy funkcjê SpawnHitParticles z argumentem ImpactPoint. // Odtwarzamy system particle  otrzymania ciosu
+	SpawnHitParticles(ImpactPoint);	// Wywoï¿½ujemy funkcjï¿½ SpawnHitParticles z argumentem ImpactPoint. // Odtwarzamy system particle  otrzymania ciosu
 }
 
 void ABaseCharacter::Attack()
@@ -52,30 +52,30 @@ void ABaseCharacter::Attack()
 void ABaseCharacter::Die_Implementation()
 {
 	Tags.Add("Dead");
-	PlayDeathMontage();	// Odtwarzamy animacjê œmierci
+	PlayDeathMontage();	// Odtwarzamy animacjï¿½ ï¿½mierci
 }
 
 void ABaseCharacter::PlayHitReactMontage(const FName& SectionName)
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && HitReactMontage)	//Jeœli AnimInstance i EquipMontage nie s¹ nullpointerami, to odtwarzamy animacjê equip
+	if (AnimInstance && HitReactMontage)	//Jeï¿½li AnimInstance i EquipMontage nie sï¿½ nullpointerami, to odtwarzamy animacjï¿½ equip
 	{
 		AnimInstance->Montage_Play(HitReactMontage);
-		//Po wyborze sekcji animacji, odtwarzamy j¹
+		//Po wyborze sekcji animacji, odtwarzamy jï¿½
 		AnimInstance->Montage_JumpToSection(SectionName, HitReactMontage);
 	}
 }
-// Deklarujemy funkcjê DirectionalHitReact z argumentem ImpactPoint która pokazuje z jakiego kierunku otrzymaliœmy cios
+// Deklarujemy funkcjï¿½ DirectionalHitReact z argumentem ImpactPoint ktï¿½ra pokazuje z jakiego kierunku otrzymaliï¿½my cios
 void ABaseCharacter::DirectionalHitReact(const FVector& ImpactPoint)
 {
 	const FVector Forward = GetActorForwardVector();	// Pobieramy wektor Forward dla naszego "enemy"
 	// Lower Impact Point to the Enemy's Actor Location Z
 	const FVector ImpactLowered(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
-	const FVector ToHit = (ImpactLowered - GetActorLocation()).GetSafeNormal();	// Pobieramy wektor ToHit dla naszego "enemy". Otrzymujemy wektor (ImpactPoint - GetActorLocation()) i normalizujemy go (obliczamy wektor jednostkowy). GetSafeNormal powoduje, ¿e nie bêdziemy dzieliæ przez 0
+	const FVector ToHit = (ImpactLowered - GetActorLocation()).GetSafeNormal();	// Pobieramy wektor ToHit dla naszego "enemy". Otrzymujemy wektor (ImpactPoint - GetActorLocation()) i normalizujemy go (obliczamy wektor jednostkowy). GetSafeNormal powoduje, ï¿½e nie bï¿½dziemy dzieliï¿½ przez 0
 
-	//	Forward * ToHit = (magnitude)|Forward| * |ToHit| * cos(theta) // Obliczamy k¹t miêdzy Forward i ToHit
+	//	Forward * ToHit = (magnitude)|Forward| * |ToHit| * cos(theta) // Obliczamy kï¿½t miï¿½dzy Forward i ToHit
 	// |Forward| = 1, |ToHit| = 1, Forward * ToHit = cos(theta)
-	const double CosTheta = FVector::DotProduct(Forward, ToHit);	// Obliczamy k¹t miêdzy Forward i ToHit
+	const double CosTheta = FVector::DotProduct(Forward, ToHit);	// Obliczamy kï¿½t miï¿½dzy Forward i ToHit
 	// Take the inverse cosine (arc-cosine) of cos(theta) to get theta
 	double Theta = FMath::Acos(CosTheta);
 	//	convert from radians to degrees
@@ -86,32 +86,32 @@ void ABaseCharacter::DirectionalHitReact(const FVector& ImpactPoint)
 
 	if (CrossProduct.Z < 0)
 	{
-		Theta *= -1;	// Jeœli CrossProduct.Z jest mniejsze od 0, to Theta mno¿ymy przez -1
+		Theta *= -1;	// Jeï¿½li CrossProduct.Z jest mniejsze od 0, to Theta mnoï¿½ymy przez -1
 	}
 
-	FName Section("FromBack");	// Deklarujemy zmienn¹ Section i przypisujemy jej wartoœæ "FromBack"
+	FName Section("FromBack");	// Deklarujemy zmiennï¿½ Section i przypisujemy jej wartoï¿½ï¿½ "FromBack"
 
-	if (Theta >= -45.f && Theta < 45.f)	// Jeœli Theta jest wiêksze lub równe -45 i mniejsze od 45
+	if (Theta >= -45.f && Theta < 45.f)	// Jeï¿½li Theta jest wiï¿½ksze lub rï¿½wne -45 i mniejsze od 45
 	{
-		Section = FName("FromFront");	// Przypisujemy zmiennej Section wartoœæ "FromFront"
+		Section = FName("FromFront");	// Przypisujemy zmiennej Section wartoï¿½ï¿½ "FromFront"
 	}
-	else if (Theta >= -135.f && Theta < -45.f)	// Jeœli Theta jest wiêksze lub równe -135 i mniejsze od -45
+	else if (Theta >= -135.f && Theta < -45.f)	// Jeï¿½li Theta jest wiï¿½ksze lub rï¿½wne -135 i mniejsze od -45
 	{
-		Section = FName("FromLeft");	// Przypisujemy zmiennej Section wartoœæ "FromLeft"
+		Section = FName("FromLeft");	// Przypisujemy zmiennej Section wartoï¿½ï¿½ "FromLeft"
 	}
-	else if (Theta >= 45.f && Theta < 135.f)	// Jeœli Theta jest wiêksze lub równe 45 i mniejsze od 135
+	else if (Theta >= 45.f && Theta < 135.f)	// Jeï¿½li Theta jest wiï¿½ksze lub rï¿½wne 45 i mniejsze od 135
 	{
-		Section = FName("FromRight");	// Przypisujemy zmiennej Section wartoœæ "FromRight"
+		Section = FName("FromRight");	// Przypisujemy zmiennej Section wartoï¿½ï¿½ "FromRight"
 	}
-	/*else if (Theta >= 135.f || Theta < -135.f)	// Jeœli Theta jest wiêksze lub równe 135 lub mniejsze od -135
+	/*else if (Theta >= 135.f || Theta < -135.f)	// Jeï¿½li Theta jest wiï¿½ksze lub rï¿½wne 135 lub mniejsze od -135
 	{
-	Section = "FromBack";	// Przypisujemy zmiennej Section wartoœæ "FromBack"
+	Section = "FromBack";	// Przypisujemy zmiennej Section wartoï¿½ï¿½ "FromBack"
 	}*/
 
 
-	PlayHitReactMontage(Section);	// Odtwarzamy animacjê otrzymania ciosu z danego kierunku
+	PlayHitReactMontage(Section);	// Odtwarzamy animacjï¿½ otrzymania ciosu z danego kierunku
 
-	/* Jeœli chcemy zobaczyæ jak dzia³a nasz kod, mo¿emy odkomentowaæ poni¿sze linie
+	/* Jeï¿½li chcemy zobaczyï¿½ jak dziaï¿½a nasz kod, moï¿½emy odkomentowaï¿½ poniï¿½sze linie
 	// Draw a debug arrow to show the cross product
 	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + CrossProduct * 100.f, 5.f, FColor::Blue, 5.f);
 
@@ -134,7 +134,7 @@ void ABaseCharacter::PlayHitSound(const FVector& ImpactPoint)
 		UGameplayStatics::PlaySoundAtLocation(
 			this,
 			HitSound,
-			ImpactPoint);	// Odtwarzamy dŸwiêk otrzymania ciosu
+			ImpactPoint);	// Odtwarzamy dï¿½wiï¿½k otrzymania ciosu
 	}
 }
 
@@ -153,7 +153,7 @@ void ABaseCharacter::HandleDamage(float DamageAmount)
 {
 	if (Attributes)
 	{
-		Attributes->ReceiveDamage(DamageAmount);	// Wywo³ujemy funkcjê ReceiveDamage z klasy UAttributeComponent
+		Attributes->ReceiveDamage(DamageAmount);	// Wywoï¿½ujemy funkcjï¿½ ReceiveDamage z klasy UAttributeComponent
 	}
 }
 
@@ -161,21 +161,21 @@ void ABaseCharacter::PlayMontageSection(UAnimMontage* Montage, const FName& Sect
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();	//Pobieramy AnimInstance
 	//Sprawdzamy czy to nie jest nullpointer
-	if (AnimInstance && Montage)	//Jeœli AnimInstance i AttackMontage nie s¹ nullpointerami, to odtwarzamy animacjê ataku
+	if (AnimInstance && Montage)	//Jeï¿½li AnimInstance i AttackMontage nie sï¿½ nullpointerami, to odtwarzamy animacjï¿½ ataku
 	{
 		AnimInstance->Montage_Play(Montage);
-		//Po wyborze sekcji animacji, odtwarzamy j¹
+		//Po wyborze sekcji animacji, odtwarzamy jï¿½
 		AnimInstance->Montage_JumpToSection(SectionName, Montage);
 	}
 }
 
 int32 ABaseCharacter::PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames)
 {
-	//Dziêki sposobowi poni¿ej mo¿emy dodawac i usuwaæ nielimitowan¹ iloœæ sekcji animacji ataku, bez potrzeby ich rêcznego dodawania do kodu
-	if (SectionNames.Num() <= 0) return -1;	// Sprawdzamy czy SectionNames nie jest mniejsze lub równe 0
-	const int32 MaxSectionIndex = SectionNames.Num() - 1;	// Pobieramy maksymalny indeks sekcji. Musimy ustawiæ -1 aby nie wyjœæ poza zakres sekcji i nieywo³aæ b³êdu
+	//Dziï¿½ki sposobowi poniï¿½ej moï¿½emy dodawac i usuwaï¿½ nielimitowanï¿½ iloï¿½ï¿½ sekcji animacji ataku, bez potrzeby ich rï¿½cznego dodawania do kodu
+	if (SectionNames.Num() <= 0) return -1;	// Sprawdzamy czy SectionNames nie jest mniejsze lub rï¿½wne 0
+	const int32 MaxSectionIndex = SectionNames.Num() - 1;	// Pobieramy maksymalny indeks sekcji. Musimy ustawiï¿½ -1 aby nie wyjï¿½ï¿½ poza zakres sekcji i nieywoï¿½aï¿½ bï¿½ï¿½du
 	const int32 Selection = FMath::RandRange(0, MaxSectionIndex);	//Losujemy numer sekcji
-	PlayMontageSection(Montage, SectionNames[Selection]);	//Wywo³ujemy funkcjê PlayMontageSection z AttackMontage i SectionNames[Selection]
+	PlayMontageSection(Montage, SectionNames[Selection]);	//Wywoï¿½ujemy funkcjï¿½ PlayMontageSection z AttackMontage i SectionNames[Selection]
 
 	return Selection;
 }
@@ -185,30 +185,30 @@ int32 ABaseCharacter::PlayAttackMontage()
 
 	return PlayRandomMontageSection(AttackMontage, AttackMontageSections);
 
-	/*Dziêki sposobowi poni¿ej mo¿emy dodawac i usuwaæ nielimitowan¹ iloœæ sekcji animacji ataku, bez potrzeby ich rêcznego dodawania do kodu
-	if (AttackMontageSections.Num() <= 0) return;	// Sprawdzamy czy AttackMontageSections nie jest mniejsze lub równe 0
-	const int32 MaxSectionIndex = AttackMontageSections.Num() - 1;	// Pobieramy maksymalny indeks sekcji. Musimy ustawiæ -1 aby nie wyjœæ poza zakres sekcji i nieywo³aæ b³êdu
+	/*Dziï¿½ki sposobowi poniï¿½ej moï¿½emy dodawac i usuwaï¿½ nielimitowanï¿½ iloï¿½ï¿½ sekcji animacji ataku, bez potrzeby ich rï¿½cznego dodawania do kodu
+	if (AttackMontageSections.Num() <= 0) return;	// Sprawdzamy czy AttackMontageSections nie jest mniejsze lub rï¿½wne 0
+	const int32 MaxSectionIndex = AttackMontageSections.Num() - 1;	// Pobieramy maksymalny indeks sekcji. Musimy ustawiï¿½ -1 aby nie wyjï¿½ï¿½ poza zakres sekcji i nieywoï¿½aï¿½ bï¿½ï¿½du
 	const int32 Selection = FMath::RandRange(0, MaxSectionIndex);	//Losujemy numer sekcji
-	PlayMontageSection(AttackMontage, AttackMontageSections[Selection]);	//Wywo³ujemy funkcjê PlayMontageSection z AttackMontage i AttackMontageSections[Selection]
+	PlayMontageSection(AttackMontage, AttackMontageSections[Selection]);	//Wywoï¿½ujemy funkcjï¿½ PlayMontageSection z AttackMontage i AttackMontageSections[Selection]
 	*/
-	/*Stary sposób odtwarzania animacji, powy¿ej zmieniony na wydajnieszy
+	/*Stary sposï¿½b odtwarzania animacji, powyï¿½ej zmieniony na wydajnieszy
 	Super::PlayAttackMontage();
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();	//Pobieramy AnimInstance
 	//Sprawdzamy czy to nie jest nullpointer
-	if (AnimInstance && AttackMontage)	//Jeœli AnimInstance i AttackMontage nie s¹ nullpointerami, to odtwarzamy animacjê ataku
+	if (AnimInstance && AttackMontage)	//Jeï¿½li AnimInstance i AttackMontage nie sï¿½ nullpointerami, to odtwarzamy animacjï¿½ ataku
 	{
 		AnimInstance->Montage_Play(AttackMontage);
-		//Mamy 3 sekcje w animacji ataku, wiêc losujemy która z nich zostanie odtworzona, wiêc dodajemy liczbê losow¹ 0, 1 albo 2
-		const int32 Selection = FMath::RandRange(0, 2);	//Trochê jak rzut monet¹, generuje nam 0, 1 albo 2
-		//Tworzymy zmienn¹, która bêdzie przechowywaæ nazwê sekcji animacji - pozostawiamy j¹ pust¹ poniewa¿ sekcja zostanie wybrana przez switch.
+		//Mamy 3 sekcje w animacji ataku, wiï¿½c losujemy ktï¿½ra z nich zostanie odtworzona, wiï¿½c dodajemy liczbï¿½ losowï¿½ 0, 1 albo 2
+		const int32 Selection = FMath::RandRange(0, 2);	//Trochï¿½ jak rzut monetï¿½, generuje nam 0, 1 albo 2
+		//Tworzymy zmiennï¿½, ktï¿½ra bï¿½dzie przechowywaï¿½ nazwï¿½ sekcji animacji - pozostawiamy jï¿½ pustï¿½ poniewaï¿½ sekcja zostanie wybrana przez switch.
 		FName SectionName = FName();
-		//Wybieramy sekcjê animacji ataku i zmieniamy siê pomiêdzy nimi
+		//Wybieramy sekcjï¿½ animacji ataku i zmieniamy siï¿½ pomiï¿½dzy nimi
 		switch (Selection)
 		{
 		case 0:
 			SectionName = FName("Attack1");
-			//Break jest potrzebny, ¿eby wyjœæ z pêtli switch
+			//Break jest potrzebny, ï¿½eby wyjï¿½ï¿½ z pï¿½tli switch
 			break;
 		case 1:
 			SectionName = FName("Attack2");
@@ -220,7 +220,7 @@ int32 ABaseCharacter::PlayAttackMontage()
 			break;
 
 		}
-		//Po wyborze sekcji animacji, odtwarzamy j¹
+		//Po wyborze sekcji animacji, odtwarzamy jï¿½
 		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
 	}
 	*/
@@ -248,22 +248,22 @@ void ABaseCharacter::StopAttackMontage()
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();	//Pobieramy AnimInstance
 	if (AnimInstance)
 	{
-		AnimInstance->Montage_Stop(0.2f, AttackMontage);	//Zatrzymujemy animacjê ataku
+		AnimInstance->Montage_Stop(0.2f, AttackMontage);	//Zatrzymujemy animacjï¿½ ataku
 	}
 }
 
 FVector ABaseCharacter::GetTranslationWarpTarget()
 {
-	if (CombatTarget == nullptr) return FVector();	//Jeœli CombatTarget jest nullptr, to zwracamy pusty wektor
+	if (CombatTarget == nullptr) return FVector();	//Jeï¿½li CombatTarget jest nullptr, to zwracamy pusty wektor
 	
-	const FVector CombatTargetLocation = CombatTarget->GetActorLocation();	//Pobieramy lokalizacjê CombatTarget
-	const FVector Location = GetActorLocation();	//Pobieramy lokalizacjê naszego "enemy"
+	const FVector CombatTargetLocation = CombatTarget->GetActorLocation();	//Pobieramy lokalizacjï¿½ CombatTarget
+	const FVector Location = GetActorLocation();	//Pobieramy lokalizacjï¿½ naszego "enemy"
 
 	const FVector TargetToMe = (Location - CombatTargetLocation).GetSafeNormal();	//Obliczamy wektor od celu do nas
-	TargetToMe * WarpTargetDistance;	//Mno¿ymy wektor przez WarpTargetDistance
+	TargetToMe * WarpTargetDistance;	//Mnoï¿½ymy wektor przez WarpTargetDistance
 
 	//DRAW_SPHERE(CombatTargetLocation + TargetToMe);	// Rysuje sfere w miejscu gdzie jest cel
-	return CombatTargetLocation + TargetToMe;	//Zwracamy lokalizacjê celu + wektor
+	return CombatTargetLocation + TargetToMe;	//Zwracamy lokalizacjï¿½ celu + wektor
 }
 
 FVector ABaseCharacter::GetRotationWarpTarget()	//We want our enemy face to CombatTarget
@@ -275,9 +275,9 @@ FVector ABaseCharacter::GetRotationWarpTarget()	//We want our enemy face to Comb
 	return FVector();
 }
 
-void ABaseCharacter::DisableCapsule() // Wy³¹czamy kolizjê kapsu³y po œmierci przeciwnika
+void ABaseCharacter::DisableCapsule() // Wyï¿½ï¿½czamy kolizjï¿½ kapsuï¿½y po ï¿½mierci przeciwnika
 {
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);	// Wy³¹czamy kolizjê kapsu³y po œmierci przeciwnika
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);	// Wyï¿½ï¿½czamy kolizjï¿½ kapsuï¿½y po ï¿½mierci przeciwnika
 }
 
 bool ABaseCharacter::CanAttack()
@@ -292,7 +292,7 @@ bool ABaseCharacter::IsAlive()
 
 void ABaseCharacter::DisableMeshCollision()
 {
-	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);	//Wy³¹czamy kolizjê na meshe postaci aby nie móg³ przeciwnik zadaæ obra¿eñ po œmierci
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);	//Wyï¿½ï¿½czamy kolizjï¿½ na meshe postaci aby nie mï¿½gï¿½ przeciwnik zadaï¿½ obraï¿½eï¿½ po ï¿½mierci
 }
 
 void ABaseCharacter::AttackEnd()
@@ -312,10 +312,10 @@ void ABaseCharacter::Tick(float DeltaTime)
 
 void ABaseCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled)
 {
-	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())	//Jeœli broñ jest wyekwipowana i nie jest nullptr, to wtedy mo¿emy w³¹czyæ lub wy³¹czyæ kolizjê
+	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())	//Jeï¿½li broï¿½ jest wyekwipowana i nie jest nullptr, to wtedy moï¿½emy wï¿½ï¿½czyï¿½ lub wyï¿½ï¿½czyï¿½ kolizjï¿½
 	{
 		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
-		EquippedWeapon->IgnoreActors.Empty();	//Czyscimy tablicê aktorów, któr¹ mamy w broni
+		EquippedWeapon->IgnoreActors.Empty();	//Czyscimy tablicï¿½ aktorï¿½w, ktï¿½rï¿½ mamy w broni
 	}
 }
 

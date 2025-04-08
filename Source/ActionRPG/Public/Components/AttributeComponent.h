@@ -38,7 +38,7 @@ private:
 	float MaxStamina;
 
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
-	int32 Gold;	//Zmienna do przechowywania z³ota
+	int32 Gold;	//Zmienna do przechowywania zï¿½ota
 
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
 	int32 Souls;	//Zmienna do przechowywania dusz
@@ -47,20 +47,20 @@ private:
 	float DodgeCost = 14.f;
 
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
-	float StaminaRegenRate = 8.f;	//Regeneracja staminy na sekundê
+	float StaminaRegenRate = 8.f;	//Regeneracja staminy na sekundï¿½
 	
 public:	// Getters and setters
-	void ReceiveDamage(float Damage);	//Funkcja do otrzymywania obra¿eñ
+	void ReceiveDamage(float Damage);	//Funkcja do otrzymywania obraï¿½eï¿½
 	void UseStamina(float StaminaCost);	//Funkcja do otrzymywania staminy
-	float GetHealthPercent();	//Funkcja do pobierania ¿ycia
+	float GetHealthPercent();	//Funkcja do pobierania ï¿½ycia
 	float GetStaminaPercent();	//Funkcja do pobierania staminy
-	bool IsAlive();	//Funkcja do sprawdzania czy aktor ¿yje
-	void AddGold(int32 AmountOfGold);	//Funkcja do dodawania z³ota
+	bool IsAlive();	//Funkcja do sprawdzania czy aktor ï¿½yje
+	void AddGold(int32 AmountOfGold);	//Funkcja do dodawania zï¿½ota
 	void AddSouls(int32 NumberOfSouls);	//Funkcja do dodawania dusz
 
 
-	FORCEINLINE int32 GetGold() const { return Gold; }		//Getter do z³ota
-	FORCEINLINE int32 GetSouls() const { return Souls; }	//Getter do z³ota
+	FORCEINLINE int32 GetGold() const { return Gold; }		//Getter do zï¿½ota
+	FORCEINLINE int32 GetSouls() const { return Souls; }	//Getter do zï¿½ota
 	FORCEINLINE float GetDodgeCost() const { return DodgeCost; }	//Getter do kosztu uniku
 	FORCEINLINE float GetStamina() const { return Stamina; }	//Getter do staminy
 

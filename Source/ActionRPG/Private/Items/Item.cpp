@@ -69,7 +69,7 @@ void AItem::BeginPlay()
 	// DRAW_SPHERE(Location);
 	//DRAW_LINE(Location, Location + Forward * 100.f);
 	//DRAW_POINT(Location + Forward * 100.f);
-	//zamiast dwóch powy¿szych linijek makro, poni¿ej zosta³a stworzona jedna linijka makro któa zawiera dwie powy¿sze instrukcje w sobie
+	//zamiast dwï¿½ch powyï¿½szych linijek makro, poniï¿½ej zostaï¿½a stworzona jedna linijka makro ktï¿½a zawiera dwie powyï¿½sze instrukcje w sobie
 	// DRAW_VECTOR(Location, Location + Forward * 100.f);
 }
 
@@ -85,7 +85,7 @@ float AItem::TransformedCos()
 //Delagate function
 void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	/* Poni¿szy kod sprwdza czy actor overlappuje z naszym przedmiotem i wyœwietlamy informacjê na ekranie
+	/* Poniï¿½szy kod sprwdza czy actor overlappuje z naszym przedmiotem i wyï¿½wietlamy informacjï¿½ na ekranie
 	//Taking name of the object that overlapped with the sphere
 	const FString OtherActorName = OtherActor->GetName();
 	//show messege on engine screen
@@ -95,7 +95,7 @@ void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	}
 	*/
 	
-	//Sprawdzamy czy bohater overlappuje z naszym przedmiotem, jesli tak, mo¿emy podnieœæ przedmiot
+	//Sprawdzamy czy bohater overlappuje z naszym przedmiotem, jesli tak, moï¿½emy podnieï¿½ï¿½ przedmiot
 	IPickupInterface* PickupInterface = Cast<IPickupInterface>(OtherActor);
 	if (PickupInterface)
 	{
@@ -145,19 +145,19 @@ void AItem::Tick(float DeltaTime)
 	
 	RunningTime += DeltaTime;
 	
-	if (ItemState == EItemState::EIS_Hovering)	//Jeœli nasz przedmiot jest w stanie Hovering, to unosimy go i opuszczamy
+	if (ItemState == EItemState::EIS_Hovering)	//Jeï¿½li nasz przedmiot jest w stanie Hovering, to unosimy go i opuszczamy
 	{
 		//Hovering item
 		AddActorWorldOffset(FVector(0.f, 0.f, TransformedSin()));
 	}
 	
 
-	/*Poruszanie aktorem(sfer¹), razem z pokazaniem vektora ruchu // Movement rate in units of cm/s
+	/*Poruszanie aktorem(sferï¿½), razem z pokazaniem vektora ruchu // Movement rate in units of cm/s
 	float MovementRate = 50.f;
 	float RotationRate = 45.f;
 
 	MovementRate * DeltaTime (cm/s) * (s/frame) = (cm/frame)
-	AddActorWorldOffset(FVector(MovementRate * DeltaTime, 0.f, 0.f));			// Przesuwamy "aktora" o 50 w osi X, bez wzglêdu na to ile FPS ma dany komputer
+	AddActorWorldOffset(FVector(MovementRate * DeltaTime, 0.f, 0.f));			// Przesuwamy "aktora" o 50 w osi X, bez wzglï¿½du na to ile FPS ma dany komputer
 	AddActorWorldRotation(FRotator(0.f, RotationRate * DeltaTime, 0.f));
 	*/
 
@@ -165,7 +165,7 @@ void AItem::Tick(float DeltaTime)
 
 	//AddActorWorldRotation(FRotator(0.f, 100.f * DeltaTime, 0.f));	// Actor rotator - Section 6 Challenge
 
-	//float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);		// period = 2*pi/K  funkcja powoduj¹ca unoszenie siê i opadanie danego obiektu
+	//float DeltaZ = Amplitude * FMath::Sin(RunningTime * TimeConstant);		// period = 2*pi/K  funkcja powodujï¿½ca unoszenie siï¿½ i opadanie danego obiektu
 
 	//AddActorWorldOffset(FVector(0.f, 0.f, DeltaZ));
 
@@ -175,9 +175,9 @@ void AItem::Tick(float DeltaTime)
 	FVector AvgVector = Avg<FVector>(GetActorLocation(), FVector::ZeroVector);
 	DRAW_POINT_SingleFrame(AvgVector);*/
 
-	// FRotator AvgRotator = Avg<FRotator>(GetActorRotation(), FRotator::ZeroRotator);  W tym przypadku nasza funkcja nie dzia³a poniewa¿ w odniesieniu nie ma wbudowanego dzielenia, wiêc nie mo¿emy go wykorzystac w tym przypadku
+	// FRotator AvgRotator = Avg<FRotator>(GetActorRotation(), FRotator::ZeroRotator);  W tym przypadku nasza funkcja nie dziaï¿½a poniewaï¿½ w odniesieniu nie ma wbudowanego dzielenia, wiï¿½c nie moï¿½emy go wykorzystac w tym przypadku
 	
-	/*Informacje wyœwietlacj¹ce w output log oraz na ekranie
+	/*Informacje wyï¿½wietlacjï¿½ce w output log oraz na ekranie
 	UE_LOG(LogTemp, Warning, TEXT("DeltaTime: %f"), DeltaTime);
 
 	if (GEngine)
