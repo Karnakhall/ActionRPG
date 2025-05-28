@@ -18,6 +18,7 @@ class ACTIONRPG_API ABaseCharacter : public ACharacter, public IHitInterface
 	GENERATED_BODY()
 
 public:
+
 	// Sets default values for this character's properties
 	ABaseCharacter();
 	// Called every frame
