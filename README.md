@@ -1,12 +1,11 @@
 ActionRPG
 
 ActionRPG to projekt edukacyjny stworzony w Unreal Engine 5 podczas nauki programowania gier w C++.  
-Jest to prototyp gry RPG akcji w perspektywie trzeciej osoby, z mechaniką walki i systemem ekwipunku.
+Jest to prototyp gry RPG akcji w perspektywie trzeciej osoby, z mechaniką walki.
 
 Funkcje projektu
 - Podstawowy system poruszania i animacji postaci
-- Mechanika walki wręcz i dystansowej
-- Podstawowy system ekwipunku
+- Mechanika walki wręcz
 - Interakcje z obiektami w świecie gry
 - System zdrowia i obrażeń
 
@@ -24,12 +23,11 @@ Projekt edukacyjny – prototyp mechanik, nieukończona gra.
 English below
 
 ActionRPG is an educational project created in Unreal Engine 5 while learning C++ game development.  
-It is a prototype of a third-person action RPG featuring combat and an inventory system.
+It is a prototype of a third-person action RPG featuring combat system.
 
 Features
 - Basic character movement and animation system
-- Melee and ranged combat mechanics
-- Basic inventory system
+- Melee combat mechanics
 - Interactions with world objects
 - Health and damage system
 
