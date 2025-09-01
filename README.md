@@ -1,3 +1,5 @@
+© 2025, Wszelkie prawa zastrzeżone.Niniejsza gra/projekt został przygotowany na potrzeby nauki. Wykorzystywanie, publikacja, kopiowanie, modyfikacja, dystrybucja oraz użycie komercyjne bez pisemnej zgody autora są zabronione. Wszystkie znaki towarowe i materiały stron trzecich należą do ich prawnych właścicieli.
+
 ActionRPG
 
 ActionRPG to projekt edukacyjny stworzony w Unreal Engine 5 podczas nauki programowania gier w C++.  
